@@ -2,9 +2,9 @@
 #include "build_speak_parser.h"
 using namespace std;
 
-Build_speak_parser::Build_speak_parser()
+Build_speak_parser::Build_speak_parser(Player* p)
 {
-//	myPlayer = p;
+	myPlayer = p;
 	createPattern1 = ("create (.+) called (.+) and described by (.*)");
 	createPattern2 = ("create (.+) (.+)");
 	connectPattern = ("connect room (.+) to (.+) via (.+)");
@@ -32,19 +32,30 @@ bool Build_speak_parser::activities(string command)
 			if (m[1] == "room") {
 
 				// TODO: Create a room 
+				tempRoom = new Room(name, description);
 
 
 				cout << "You created a room: " << name << endl;
-				cout << "Describtion for this room: " << description << endl;
+				cout << "Description for this room: " << description << endl;
 				return true;
 			}
 			else if (m[1] == "item") {
 
-				//TODO: Create an item
-
-
-				cout << "You created an Item: " << name << endl;
-				cout << "Describtion for this item: " << description << endl;
+				tempItem = new Item(name, description);
+				//TODO: Put item in player's inventory. 
+				//		When reaching the limit, drop item to the player's room.
+				if (myPlayer->getCanBuild() != false) {
+					myPlayer->addItemToInventory(tempItem);
+					cout << "You created an Item: " << name << endl;
+					cout << "Description for this item: " << description << endl;
+					cout << "Item added to player: " << myPlayer->getUsername() << endl;
+				}
+				else {
+					myPlayer->getRoom()->addItemToFloor(tempItem);
+					cout << "Your bag is full! Item will be droped to the floor." << endl;
+					cout << "You created an Item: " << name << endl;
+					cout << "Description for this item: " << description << endl;
+				}
 				return true;
 			}
 
@@ -60,6 +71,7 @@ bool Build_speak_parser::activities(string command)
 				getline(cin, description);
 
 				//TODO: create a room
+				tempRoom = new Room(name, description);
 
 
 				cout << "You created a room: " << name << endl;
@@ -72,11 +84,21 @@ bool Build_speak_parser::activities(string command)
 				cout << "> " ;
 				getline(cin, description);
 
-				//TODO: create an item
-
-
-				cout << "You created an item: " << name << endl;
-				cout << "Description: " << description << endl;
+				//TODO: Put item in player's inventory. 
+				//		When reaching the limit, drop item to the player's room.
+				tempItem = new Item(name, description);
+				if (myPlayer->getCanBuild() != false) {
+					myPlayer->addItemToInventory(tempItem);
+					cout << "You created an Item: " << name << endl;
+					cout << "Description for this item: " << description << endl;
+					cout << "Item added to player: " << myPlayer->getUsername() << endl;
+				}
+				else {
+					myPlayer->getRoom()->addItemToFloor(tempItem);
+					cout << "Your bag is full! Item will be droped to the floor." << endl;
+					cout << "You created an Item: " << name << endl;
+					cout << "Description for this item: " << description << endl;
+				}
 				return true;
 			}
 		}
@@ -141,7 +163,11 @@ Simple execution example
 */
 int main()
 {
-	Build_speak_parser * test = new Build_speak_parser();
+	Player *p = new Player("Yuki", "Female");
+	p->setCanBuild(false);
+	Room *r = new Room("Lobby", "A lobby");
+	p->setRoom(r);
+	Build_speak_parser * test = new Build_speak_parser(p);
 	string input;
 	while (true) {
 		cout << "> ";
