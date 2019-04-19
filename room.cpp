@@ -1,3 +1,4 @@
+#include <iostream>
 #include "room.h"
 
 using namespace std;
@@ -37,7 +38,7 @@ set<Item*> Room::getFloor() const {
     return floor;
 }
 
-Item* Room::findItemOnFloor(std::string) const {
+Item* Room::findItemOnFloor(std::string name) const {
     set<Item*>::const_iterator p;
     for(p = floor.begin(); p != floor.end(); p++) {
         if ((*p)->getName() == name) {
