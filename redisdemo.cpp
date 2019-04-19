@@ -5,27 +5,20 @@
  *  Created on: Apr 18, 2019
  *      Author: SMING
  */
-#include "hiredis.h"
 #include "redisdemo.h"
 #include <string>
+#include <iostream>
 using namespace std;
-
-redisdemo::redisdemo(){
-	context = redisConnect("localhost",6379);
-
-}
-
-
-void redisdemo::write(redisContext *c, string const &key, string const &value){
+void RedisDemo::write(string key, string value){
     redisReply *reply;
-    reply = (redisReply*) redisCommand(c,"SET %s %s", key.c_str(), value.c_str());
+    reply = (redisReply*) redisCommand(context,"SET %s %s", key.c_str(), value.c_str());
     freeReplyObject(reply);
 }
 
 //Gets/reads value of an assigned KEY using redisContext c
-string redisdemo::read(redisContext *c, string const &key){
+string RedisDemo::read(string key){
     redisReply *reply;
-    reply = (redisReply*) redisCommand(c,"GET %s", key.c_str());
+    reply = (redisReply*) redisCommand(context,"GET %s", key.c_str());
     string s(reply->str);
     cout << s;
     freeReplyObject(reply);
