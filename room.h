@@ -28,7 +28,7 @@ class Room {
         void setReq(Item*, Room*);
         void setDesc(Room*, std::string);
         void setreqMove(Room*, Item*, Room*);
-        void setChance(Room*, doubble, Room*);
+        void setChance(Room*, double, Room*);
 };
 
 #endif

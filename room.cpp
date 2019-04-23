@@ -61,3 +61,19 @@ void Room::listItemsOnFloor() {
             }
         }
 }
+void Room::setReq(Item* req, Room* room)
+{
+
+}
+void Room::setDesc(Room* room, string description)
+{
+
+}
+void Room::setreqMove(Room* oldroom, Item* req, Room* newroom)
+{
+
+}
+void Room::setChance(Room* oldRoom, double chance, Room* newroom)
+{
+
+}
