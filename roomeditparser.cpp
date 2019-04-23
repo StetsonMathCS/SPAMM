@@ -5,7 +5,7 @@
 
 
 
-int main()
+bool Parser::handleInput(Player* player, GameMap* gm)
 {
     //
     //    /setdesc <roomname> "description"
@@ -33,16 +33,12 @@ int main()
     items.insert(std::make_pair("Staff", "a white staff"));
 
 
-
-    // PROMPT
-    std::cout << "Type 'help' for a list of commands" << std::endl;
-
     bool running = true;
     while(running == true)
     {
 
 
-    getline(std::cin, input);
+        getline(std::cin, input);
 
         if(input == "help")
         {
