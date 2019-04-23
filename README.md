@@ -15,5 +15,8 @@ Ben:
 Write parser for room creation: “set first description for room X to Y”, “require item X to enter room Y”, “when player enters X and [has/has not] item Y, teleport player to room Z”, “when player enters X, with random Y% chance, teleport player to room Z”
 
 
-
-
+![logo_one](readme_images/spam_logo_one.png)
+![logo_one](readme_images/spam_logo_two.png)
+![logo_one](readme_images/spam_logo_three.png)
+![logo_one](readme_images/spam_logo_four.png)
+![logo_one](readme_images/spam_logo_five.png)
