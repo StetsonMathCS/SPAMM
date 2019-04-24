@@ -11,15 +11,17 @@
 class Database{
     private:
         redisContext *context;
-
     public:
+        //values
+        int lastid=0;
         Database(){ context = redisConnect("localhost",6379); } //default constructor
+        //methods
         void write(std::string key, std::string value){
             redisReply *reply;
             reply = (redisReply*) redisCommand(context,"SET %s %s", key.c_str(), value.c_str());
             freeReplyObject(reply);
         }
-        std::string read(std::string key){
+        std::string read(std::string key) const{
             redisReply *reply;
             reply = (redisReply*) redisCommand(context,"GET %s", key.c_str());
             std::string s(reply->str);
@@ -28,9 +30,8 @@ class Database{
             return s;
 
         }
-        int lastid;
-        void read_lastid(int id);
-
+        void read_lastid(int id) const;
+        void increment_lastid();
 };
 
 #endif 

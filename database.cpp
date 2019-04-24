@@ -11,7 +11,7 @@ void Database::write(string key, string value){
 }
 
 //Gets/reads value of an assigned KEY using redisContext
-string Database::read(string key){
+string Database::read(string key) const{
     redisReply *reply;
     reply = (redisReply*) redisCommand(context,"GET %s", key.c_str());
     string s(reply->str);
@@ -20,7 +20,10 @@ string Database::read(string key){
 }
 
 //This looks like it does nothing now, but it should interact with item ids.
-void read_lastid(int id){
-
-    return id;
+void read_lastid(int id) const{
+    read(toString(id));
 } 
+
+void increment_lastid(){
+    lastid++; 
+}
