@@ -15,7 +15,7 @@ void Item::save(int id)
     string s;
     s = to_string(id);
 
-    d->write(this,s); 
+    //d->write(this,s); 
 
     //should write to database   
 }

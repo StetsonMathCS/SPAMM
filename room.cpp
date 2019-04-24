@@ -49,9 +49,10 @@ Item* Room::findItemOnFloor(std::string name) const {
     return NULL;
 }
 
-void Room::listItemsOnFloor() {
+void Room::listItemsOnFloor() const {
         set<Item*>::const_iterator p;
         cout << "You scan the room and try to find anything useful." << endl;
+        /*
         if (roomSet.size() == 0) {
             cout << "There are no useful items in this room." << endl;
         } else {
@@ -60,6 +61,7 @@ void Room::listItemsOnFloor() {
                 cout << (*p)->getName() << endl;
             }
         }
+        */
 }
 void Room::setReq(Item* req, Room* room)
 {

@@ -1,14 +1,24 @@
-CXX=g++
-CXX_FLAGS = -Wall -pedantic -g -O2 -ltelnet
+CXX=g++ -Wall -std=c++11 -ltelnet -lhiredis
 
-all: main 
+src = $(wildcard *.cpp)
+obj = $(src:.cpp=.o)
+dep = $(obj:.o=.d)  # one dependency file for each source
 
-game_server.o: game_server.cpp game_server.cpp
-	$(CXX) $(CXX_FLAGS) -c  game_server.cpp
+main: $(obj)
+	$(CXX) -o $@ $^
 
-main: game_server.o main.cpp
-	$(CXX) $(CXX_FLAGS) -o main game_server.o main.cpp 
+-include $(dep)   # include all dep files in the makefile
+
+# rule to generate a dep file by using the C preprocessor
+# (see `man g++` for details on the -MM and -MT options)
+%.d: %.cpp
+	$(CXX) $< -MM -MT $(@:.d=.o) > $@
 
 .PHONY: clean
 clean:
-	rm *.o main
+	rm -f $(obj) main
+
+.PHONY: cleandep
+cleandep:
+	rm -f $(dep)
+

@@ -19,7 +19,7 @@ class Room {
         std::string getTitle() const;
         std::string getDesc() const;
         void setAdjacent(std::string, Room*);
-        Room *getAdjacent(std::string) const;
+        Room *getAdjacent(std::string);
         std::map<std::string, Room*> getExits() const;
         void addItemToFloor(Item*);
         std::set<Item*> getFloor() const;

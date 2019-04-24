@@ -18,7 +18,7 @@ class Item
     Database * d;
 
     public:
-	Item(std::string, std::string);
+	Item(std::string, std::string, std::string, ITEM_TYPE);
 	std::string getName() const;
 	std::string getDesc() const;
 	std::string getOwner() const;
