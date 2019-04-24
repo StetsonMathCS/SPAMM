@@ -17,7 +17,7 @@ void Item::save(int id)
     //d->write(this,s); 
     //Database d * = new Database();
 
-    //d->write(this->getName(),to_string(id)); 
+    //d->write(getName(),to_string(id)); 
 
     //delete d;
 
