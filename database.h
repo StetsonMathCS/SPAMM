@@ -7,7 +7,7 @@
 #define DATABASE_H_
 #include <string>
 #include <iostream>
-#include "hiredis.h"
+#include <hiredis/hiredis.h>
 class Database{
     private:
         redisContext *context;

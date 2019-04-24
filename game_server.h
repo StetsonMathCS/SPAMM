@@ -21,13 +21,14 @@ struct user_data{
 	char *name;
 	//ID of the user, will only be set on a sucessful log on
 	int id;
+    //Stores the state of the player log on sequence
+    int state;
 	//Each user has a socket that is their network connection
 	SOCKET sock;
 	//Telnet struct that is the connection of the user, essentially an object, it helps abstract the details of telnet functionality
 	telnet_t *telnet;
 	//Libtelnet sends and recieves messages as chars using a buffer
 	char linebuffer[256];
-	//
 	int linepos;
 };
 class GameServer {
@@ -56,5 +57,6 @@ class GameServer {
 		int getPortNumber() const;
 		void start();
 		void printToUser(int, std::string);
+        void printToUsers(std::vector<int>, std::string);
 };
 #endif

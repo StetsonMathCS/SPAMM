@@ -13,9 +13,13 @@ Item::Item(string n, string d, string o, ITEM_TYPE t) : name(n), desc(d), owner(
 void Item::save(int id)
 {
     string s;
-    s = to_string(id);
 
-    d->write(this,s); 
+    //d->write(this,s); 
+    //Database d * = new Database();
+
+    //d->write(this->getName(),to_string(id)); 
+
+    //delete d;
 
     //should write to database   
 }

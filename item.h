@@ -15,10 +15,9 @@ class Item
 	std::string owner;
 	ITEM_TYPE type;
     int itemId;
-    Database * d;
 
     public:
-	Item(std::string, std::string);
+	Item(std::string, std::string, std::string, ITEM_TYPE);
 	std::string getName() const;
 	std::string getDesc() const;
 	std::string getOwner() const;
