@@ -3,16 +3,18 @@
 #define ACTION_PARSER_H
 
 
+#include <string>
 #include "player.h"
 
 #include "room.h"
 
+class GameServer;
 
 class ActionParser {
 
     public:
 
-        bool handleInput(Player*);
+        static void handleInput(GameServer*, int, std::string);
 
 };
 

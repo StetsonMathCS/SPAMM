@@ -12,9 +12,10 @@ Player::Player() {
     
 }
 
-Player::Player(string name, string desc) {
+Player::Player(string name, string desc, int id) {
     username = name;
     description = desc;
+    playerID = id;
 }
 
 void Player::setRoom(Room* r) {
@@ -95,3 +96,16 @@ void Player::setDescription(string desc) {
 string Player::getDescription() const {
     return description;
 }
+
+void Player::setID(int id) {
+    playerID = id;
+}
+
+int Player::getID() {
+    return playerID;
+}
+
+/*bool Player::connected() const {
+    return true;
+    //not needed as there is similar functionality in gameserver
+}*/

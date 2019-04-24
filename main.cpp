@@ -1,17 +1,26 @@
 #include "game_server.h"
+#include "action_parser.h"
+#include "player.h"
 
 #include<iostream>
 
 using namespace std;
 
 //Functions that will be called when user enters information
-void string_from_user(int, string);
 int logOnFunction(string,string);
 
 //Global Refrence so the two functions can refrence it
 GameServer *server;
 
 int main() {
+    // TODO: REMOVE
+    //
+    Player *p1 = new Player;
+    //parser.handleInput(p1);
+    delete p1;
+    
+
+
 	
 	//Instantiate a Game server on the defualt port 2323
 	server = new GameServer();
@@ -22,21 +31,12 @@ int main() {
 	//When a user enters their credentials, they are checked with this function, the function returns a unique id
 	server->setLogOnFunction(logOnFunction);
 	//When a user enters a line, this function is called to handle the parsing and response generation
-	server->setCallBackFunction(string_from_user);
+	server->setCallBackFunction(ActionParser::handleInput);
 
 	//Start the server
 	server->start();
 	
 return 0;
-}
-
-
-void string_from_user(int id, string input){
-	//When the user enters information, it will be passed as a parameter to this function
-	string output = "User with id: ";
-	output += std::to_string(id) + " entered \"" + input + "\"";
-	cout << output << endl;
-	server->printToUser(id, output);
 }
 
 int logOnFunction(string username, string password) {
