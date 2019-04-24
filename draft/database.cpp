@@ -20,10 +20,10 @@ string Database::read(string key) const{
 }
 
 //This looks like it does nothing now, but it should interact with item ids.
-void read_lastid(int id) const{
+/*void read_lastid(int id) const{
     read(toString(id));
 } 
 
 void increment_lastid(){
     lastid++; 
-}
+}*/
