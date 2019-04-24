@@ -42,7 +42,7 @@ class Player {
         std::string getDescription() const;
 	void setID(int);
 	int getID() const;
-	bool connected() const;
+	//bool connected() const;
 };
 
 #endif
