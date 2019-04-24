@@ -1,4 +1,4 @@
-#include "redisdemo.h"
+#include "database.h"
 #include <string>
 #include <iostream>
 using namespace std;
