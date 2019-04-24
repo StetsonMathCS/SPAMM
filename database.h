@@ -1,20 +1,20 @@
-/*
- * redisdemo.h
+/**
+ *Database class that uses Hiredis library. It conceals the more technical aspects about the Hiredis library.
  *
- *  Created on: Apr 18, 2019
- *      Author: SMING
  */
-
 
 #ifndef DATABASE_H_
 #define DATABASE_H_
 #include <string>
 #include <iostream>
 #include "hiredis.h"
-	class Database{
-	public:
-		Database(){ context = redisConnect("localhost",6379); }
-		    void write(std::string key, std::string value){
+class Database{
+    private:
+        redisContext *context;
+
+    public:
+        Database(){ context = redisConnect("localhost",6379); } //default constructor
+        void write(std::string key, std::string value){
             redisReply *reply;
             reply = (redisReply*) redisCommand(context,"SET %s %s", key.c_str(), value.c_str());
             freeReplyObject(reply);
@@ -28,10 +28,9 @@
             return s;
 
         }
-		redisContext *context;
-	};
+        int lastid;
+        void read_lastid(int id);
 
-
-
+};
 
 #endif 
