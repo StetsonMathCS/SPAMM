@@ -68,7 +68,7 @@ void Player::setLastLoginIp(string ip) {
     lastLoginIp = ip;
 }
 
-string Player::getLstLoginIp() const {
+string Player::getLastLoginIp() const {
     return lastLoginIp;
 }
 

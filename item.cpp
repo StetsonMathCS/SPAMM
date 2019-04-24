@@ -14,11 +14,12 @@ void Item::save(int id)
 {
     string s;
 
-    Database d * = new Database();
+    //d->write(this,s); 
+    //Database d * = new Database();
 
-    d->write(this->getName(),to_string(id)); 
+    //d->write(getName(),to_string(id)); 
 
-    delete d;
+    //delete d;
 
     //should write to database   
 }
