@@ -1,9 +1,9 @@
-#include "parser.h"
+#include "action_parser.h"
 
 #include <iostream>
 using namespace std;
 
-bool Parser::handleInput(Player* player, GameMap* gm)
+bool ActionParser::handleInput(Player* player)
 {
     cout << "-> ";
     string command;
@@ -23,7 +23,7 @@ bool Parser::handleInput(Player* player, GameMap* gm)
         return false;
     } else if(command == "items")
     {
-        if()
+        if(false)
         {
             //check if player has items in their container
             cout << "It looks like your backpack is empty :(" << endl;
@@ -32,7 +32,7 @@ bool Parser::handleInput(Player* player, GameMap* gm)
         {
             cout << "Your items: " << endl;
             //loop through items in the player's container
-            for()
+            for(int i = -1; i > 0;)
             {
                 cout << "- "<< "get items" << endl;
             }
@@ -43,10 +43,10 @@ bool Parser::handleInput(Player* player, GameMap* gm)
         string direction;
         cin >> direction;
         //check direction
-        if()
+        if(false)
         {
             //get the container and if the container is empty
-            if()
+            if(false)
             {
                 cout << "That's a dead end" << endl;
                 cout << endl;
@@ -67,7 +67,7 @@ bool Parser::handleInput(Player* player, GameMap* gm)
         cout << "In " << "container" << endl;
         cout << "    " << "conatiner description" << endl;
         //check if there are items in container
-        if()
+        if(false)
         {
             cout << "There are no items in here " << endl;
             cout << endl;
@@ -75,7 +75,7 @@ bool Parser::handleInput(Player* player, GameMap* gm)
         {
             cout << "Items in this room: " << endl;
             //loop through items in the room
-            for()
+            for(int i = -1; i > 0;)
             {
                 cout << "- "<< "names of items in room" << endl;
             }
@@ -86,10 +86,10 @@ bool Parser::handleInput(Player* player, GameMap* gm)
         string object;
         cin >> object;
         //loop through items in room
-        for()
+        for(int i = -1; i > 0;)
         {
             //if the object entered matches an object in the container
-            if()
+            if(false)
             {
                 cout << "You grabbed a " << object << endl;
                 //call the method used to pickup
@@ -103,17 +103,17 @@ bool Parser::handleInput(Player* player, GameMap* gm)
         cin >> object;
         bool in = false;
         //check if that object is in the player container
-        if()
+        if(false)
         {
             cout << "There is no " << object << " in your inventory" << endl;
             cout << endl;
         } else
         {
             //loop through items in player's container
-            for()
+            for(int i = -1; i > 0;)
             {
                 //if object name matches an item name in container
-                if()
+                if(false)
                 {
                     cout << "You dropped a " << object << endl;
                     //add that item to current container
