@@ -139,7 +139,7 @@ bool Build_speak_parser::activities(string command)
 
 			//TODO: Display the message
 
-			cout << "User_name said: " << message << endl;
+			cout << myPlayer->getUsername() <<" said: " << message << endl;
 			return true;
 		}
 
@@ -151,35 +151,10 @@ bool Build_speak_parser::activities(string command)
 
 			//TODO: Display the message to sent user
 
-			cout << "User_name sent a message to "<<m[1]<<": " << endl;
+			cout <<myPlayer->getUsername() <<" sent a message to "<<m[1]<<": " << endl;
 			cout << messages << endl;
 			return true;
 		}
 		return false;
 }
-
-/*
-Simple execution example
-*/
-int main()
-{
-	Player *p = new Player("Yuki", "Female");
-	p->setCanBuild(false);
-	Room *r = new Room("Lobby", "A lobby");
-	p->setRoom(r);
-	Build_speak_parser * test = new Build_speak_parser(p);
-	string input;
-	while (true) {
-		cout << "> ";
-		getline(cin, input);
-		if (input == "quit") break;
-		if (test->activities(input) == false) {
-			cout << "Type a vaild input!" << endl;
-		}
-	}
-
-	delete test;
-
-}
-
 
