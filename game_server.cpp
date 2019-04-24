@@ -1,6 +1,7 @@
 #include "game_server.h"
 
 #include <iostream>
+#include <cstring>
 
 using namespace std;
 
@@ -53,40 +54,76 @@ static void _online(const char *line, size_t overflow, void *ud) {
 	//int i;
 	(void)overflow;
 
-	//If the user has no name then they are entering their username
-	if (user->name == 0) {
-		/* must not be empty */
-		if (strlen(line) == 0 ) {
-			telnet_printf(user->telnet, "Invalid username.\nEnter username: ");
-			return;
+	//If the user has a state of -1 then they are selecting whether they want to log on or create an account
+	if (user->state == -1) {
+		 if(strcmp(line, "n") == 0) {
+            cout << "THEY WANT A NEW ACCOUNT" << endl;
+            user->state = 0;
+		} else if(strcmp(line, "l") == 0) {
+            cout << "THEY WANT TO LOG ON" << endl;
+            user->state = 1;
+            telnet_printf(user->telnet, "Enter your username : ");
+        }else{
+			telnet_printf(user->telnet, "Invalid option \nPlease enter an option (n for new account, l for log on) > ");
 		}
-
-		/* keep name */
-		user->name = strdup(line);
-		telnet_printf(user->telnet, "Enter password: ");
-		//Do not show user's password
-		telnet_negotiate(user->telnet, TELNET_WILL, TELNET_TELOPT_ECHO);
 		return;
-	}
-	//If the user has a name but no id, they have not been authenticated, this line is their password
-	if (user->id == -1) {
-		int userId = logOnCheck(user->name, line);
-
-		//Print newline so any message is not on the same line as the "Enter Password:" prompt
-		telnet_printf(user->telnet, "\n");
-
-		if(userId != -1){
-			telnet_negotiate(user->telnet, TELNET_WONT, TELNET_TELOPT_ECHO);
+    //The user is logging on
+	} else if(user->state == 1) {
+        if(user->name == NULL){
+            if(strlen(line) == 0){
+                telnet_printf(user->telnet, "Invalid username, please enter a valid username\nEnter your username : ");
+                return;
+            }
+            user->name = strdup(line);
+            telnet_printf(user->telnet, "Enter your password : ");
+			telnet_negotiate(user->telnet, TELNET_WILL, TELNET_TELOPT_ECHO);
+            return;
+        }
+        else {
+            //Password was entered, display newline to put new messges on the next line
+            telnet_printf(user->telnet, "\n");
+            if(strlen(line) == 0){
+                telnet_printf(user->telnet, "Please enter a password\n: ");
+                return;
+            }
+            int userId = logOnCheck(user->name, line);
+            if (userId == -1){
+                telnet_printf(user->telnet, "Invalid username or password. Try again\nEnter Username: ");
+                free(user->name);
+                user->name = NULL;
+			    telnet_negotiate(user->telnet, TELNET_WONT, TELNET_TELOPT_ECHO);
+                return;
+            } else {
+                user->id = userId;
+                //User is logged on, out of authentication state
+                user->state = 2;
+                //Display Welcome Message
+            telnet_printf(user->telnet,"//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////\n//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////\n//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////\n/////////#&@@@&(///////////////////&@@@@%%///////////////////#&@@@@%%//////////////////#%%#(////////(##////////////////(%%#(////////(#%%(//////\n///////@@&/////@@&//////////////(@@(////#@@///////////////@@%%/////#@@///////////////@@%%#@@/////&@&(@@///////////////@@(@@/////(@@(@@//////\n///////@@///////@@//////////////@@(//////%%@%%/////////////#@&///////#@&//////////////@@//&@(////@@//@@///////////////@@/(@&////@@//@@//////\n///////@@///////////////////////@@(//////%%@%%/////////////#@&///////#@&//////////////@@///@@///&@(//@@///////////////@@//@@///(@&//@@//////\n///////@@&//////////////////////@@(//////%%@%%/////////////#@&///////#@&//////////////@@///&@(//@@///@@///////////////@@//(@&//@@///@@//////\n/////////#@@@@@@%%///////////////@@(((((%%@@@//////////////#@@%%%%%%%%%%%%%%%%%%%%%%%%%%%%&@&//////////////@@////@@/%%@(///@@///////////////@@///@@/(@&///@@//////\n////////////////@@//////////////@@((###(/////////////////#@&(((((((%%@&//////////////@@////%%@(@@////@@///////////////@@///(@&@@////@@//////\n//////(&(///////@@(/////////////@@(//////////////////////#@&///////#@&//////////////@@/////@@@(////@@///////////////@@////@@@&////@@//////\n//////%%@%%///////@@(/////////////@@(//////////////////////#@&///////#@&//////////////@@/////%%@@/////@@///////////////@@////(@@/////@@//////\n///////&@@@@@@@@@#//////////////@@(//////////////////////#@&///////#@&//////////////@@/////////////@@///////////////@@////////////@@//////\n//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////\n//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////\n//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////\n");
 			telnet_printf(user->telnet, "Welcome To SPAMM\n> ");
-			user->id = userId;
-			return;
-		} else {
-			telnet_negotiate(user->telnet, TELNET_WONT, TELNET_TELOPT_ECHO);
-			telnet_printf(user->telnet, "Invalid Username or Password, Try again \nEnter Username: ");
-			user->name = 0;
-			return;
-		}
-	}
+            return;
+            }
+        }
+    }
+	//If the user has a name but no id, they have not been authenticated, this line is their password
+//	if (user->id == -1) {
+//		int userId = logOnCheck(user->name, line);
+//
+		//Print newline so any message is not on the same line as the "Enter Password:" prompt
+//		telnet_printf(user->telnet, "\n");
+
+	// 	if(userId != -1){
+      // 	telnet_negotiate(user->telnet, TELNET_WONT, TELNET_TELOPT_ECHO);
+      //      telnet_printf(user->telnet,"//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////\n//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////\n//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////\n/////////#&@@@&(///////////////////&@@@@%///////////////////#&@@@@%//////////////////#%#(////////(##////////////////(%#(////////(#%(//////\n///////@@&/////@@&//////////////(@@(////#@@///////////////@@%/////#@@///////////////@@%#@@/////&@&(@@///////////////@@(@@/////(@@(@@//////\n///////@@///////@@//////////////@@(//////%@%/////////////#@&///////#@&//////////////@@//&@(////@@//@@///////////////@@/(@&////@@//@@//////\n///////@@///////////////////////@@(//////%@%/////////////#@&///////#@&//////////////@@///@@///&@(//@@///////////////@@//@@///(@&//@@//////\n///////@@&//////////////////////@@(//////%@%/////////////#@&///////#@&//////////////@@///&@(//@@///@@///////////////@@//(@&//@@///@@//////\n/////////#@@@@@@%///////////////@@(((((%@@@//////////////#@@%%%%%%%%%%%%%%&@&//////////////@@////@@/%@(///@@///////////////@@///@@/(@&///@@//////\n////////////////@@//////////////@@((###(/////////////////#@&(((((((%@&//////////////@@////%@(@@////@@///////////////@@///(@&@@////@@//////\n//////(&(///////@@(/////////////@@(//////////////////////#@&///////#@&//////////////@@/////@@@(////@@///////////////@@////@@@&////@@//////\n//////%@%///////@@(/////////////@@(//////////////////////#@&///////#@&//////////////@@/////%@@/////@@///////////////@@////(@@/////@@//////\n///////&@@@@@@@@@#//////////////@@(//////////////////////#@&///////#@&//////////////@@/////////////@@///////////////@@////////////@@//////\n//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////\n//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////\n//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////\n");
+	//		telnet_printf(user->telnet, "Welcome To SPAMM\n> ");
+	//		user->id = userId;
+	//		return;
+	//	} else {
+	//		telnet_negotiate(user->telnet, TELNET_WONT, TELNET_TELOPT_ECHO);
+	//		telnet_printf(user->telnet, "Invalid Username or Password, Try again \nEnter Username: ");
+	//		user->name = 0;
+	//		return;
+	//	}
+	//}
 
 	/* if line is "quit" then, well, quit */
 	if (strcmp(line, "quit") == 0) {
@@ -96,6 +133,7 @@ static void _online(const char *line, size_t overflow, void *ud) {
 		free(user->name);
 		user->name = 0;
 		user->id   = -1;
+        user->state = -1;
 		return;
 	}
 	//If its not a log on or a quit command, pass it to the callback function for the game to figure out how to process it
@@ -103,7 +141,6 @@ static void _online(const char *line, size_t overflow, void *ud) {
 	cbs(user->id, line);
 }
 
-//Callback functionality??
 static void linebuffer_push(char *buffer, size_t size, int *linepos,
 		char ch, void (*cb)(const char *line, size_t overflow, void *ud),
 		void *ud) {
@@ -214,7 +251,7 @@ GameServer::GameServer(int portNumber) : portNum(portNumber) {
 	//Set the speficiations of the network socket
 	addr.sin_family = AF_INET;
 	addr.sin_addr.s_addr = INADDR_ANY;
-	//Set tje desired port number for the socket
+	//Set the desired port number for the socket
 	addr.sin_port = htons(portNum);
 	//Attempt to bind the socket to the port
 	if (bind(listen_sock, (struct sockaddr *)&addr, sizeof(addr)) == -1) {
@@ -230,7 +267,6 @@ GameServer::GameServer(int portNumber) : portNum(portNumber) {
 		return;
 	}
 	
-	//TODO - Figure out where output is going
 	std::cout << "Listening successful" << std::endl;
 	//Initalize arrays
 	users = new user_data[MAX_PLAYERS];
@@ -240,7 +276,19 @@ GameServer::GameServer(int portNumber) : portNum(portNumber) {
 
 GameServer::GameServer() : GameServer(DEFAULT_TELNET_PORT){}
 
+
+#include "action_parser.h"
+#include "player.h"
 void GameServer::start() {
+    // TODO: REMOVE
+    //
+    Player *p1 = new Player;
+    ActionParser parser;
+    parser.handleInput(p1);
+    delete p1;
+    
+
+
 	int returnStatus;
 	socklen_t addrlen;
 	int i;
@@ -251,8 +299,9 @@ void GameServer::start() {
 	pfd[MAX_PLAYERS].events = POLLIN;
 	//Loop through and set all users sockets to -1 and their id to -1
 	for(i = 0; i != MAX_PLAYERS; ++i){
-		users[i].sock = -1;
-		users[i].id   = -1;
+		users[i].sock  = -1;
+		users[i].id    = -1;
+        users[i].state = -1;
 	}
 
 	//Loop forever and handle input
@@ -305,7 +354,7 @@ void GameServer::start() {
 					&users[i]);
 			telnet_negotiate(users[i].telnet, TELNET_WILL, TELNET_TELOPT_COMPRESS2);
 			telnet_negotiate(users[i].telnet, TELNET_WONT, TELNET_TELOPT_ECHO);
-			telnet_printf(users[i].telnet, "Enter username: ");
+			telnet_printf(users[i].telnet, "Enter option (n for new account, l for log on)\n>  ");
 		}	
 			/* read from client */
 		for (i = 0; i != MAX_PLAYERS; ++i) {
@@ -351,4 +400,8 @@ void GameServer::printToUser(int userId, string message){
 		if(users[i].id == userId)
 			break;
 	telnet_printf(users[i].telnet, message.c_str());
+}
+void GameServer::printToUsers(vector<int> players, string message){
+    for(unsigned int i = 0; i < players.size(); ++i)
+       printToUser(players[i], message);
 }

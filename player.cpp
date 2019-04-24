@@ -1,7 +1,10 @@
 #include "player.h"
 #include "room.h"
+#include "game_server.h"
 #include <iterator>
 #include <iostream>
+
+class GameServer;
 
 using namespace std;
 
@@ -65,7 +68,7 @@ void Player::setLastLoginIp(string ip) {
     lastLoginIp = ip;
 }
 
-string Player::getLstLoginIp() const {
+string Player::getLastLoginIp() const {
     return lastLoginIp;
 }
 
@@ -92,4 +95,3 @@ void Player::setDescription(string desc) {
 string Player::getDescription() const {
     return description;
 }
-

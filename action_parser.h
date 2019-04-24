@@ -1,6 +1,6 @@
-#ifndef PARSER_H
+#ifndef ACTION_PARSER_H
 
-#define PARSER_H
+#define ACTION_PARSER_H
 
 
 #include "player.h"
@@ -8,11 +8,11 @@
 #include "room.h"
 
 
-class Parser {
+class ActionParser {
 
     public:
 
-        bool readInput(Player*, GameMap*);
+        bool handleInput(Player*);
 
 };
 
