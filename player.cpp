@@ -101,7 +101,7 @@ void Player::setID(int id) {
     playerID = id;
 }
 
-int Player::getID() {
+int Player::getID() const {
     return playerID;
 }
 

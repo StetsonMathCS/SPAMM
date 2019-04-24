@@ -15,7 +15,7 @@ class Player {
         std::string username;
         std::string password;
         std::string description;
-	std::string id;
+	    int playerID;
         std::string lastLoginIp;
         std::string lastLoginTime;
         std::set<Item*> inventory; 
@@ -40,9 +40,9 @@ class Player {
         std::string getPassword() const;
         void setDescription(std::string);
         std::string getDescription() const;
-	void setID(int);
-	int getID() const;
-	//bool connected() const;
+	    void setID(int);
+	    int getID() const;
+	    //bool connected() const;
 };
 
 #endif
