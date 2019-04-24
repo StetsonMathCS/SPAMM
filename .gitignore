@@ -3,3 +3,4 @@ main
 *.d
 *.swp
 demogame/QuantumLeap
+*.gch

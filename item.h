@@ -15,7 +15,6 @@ class Item
 	std::string owner;
 	ITEM_TYPE type;
     int itemId;
-    Database * d;
 
     public:
 	Item(std::string, std::string, std::string, ITEM_TYPE);
