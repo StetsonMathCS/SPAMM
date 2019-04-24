@@ -12,7 +12,12 @@ Item::Item(string n, string d, string o, ITEM_TYPE t) : name(n), desc(d), owner(
 
 void Item::save(int id)
 {
-//should write to database   
+    string s;
+    s = to_string(id);
+
+    d->write(this,s); 
+
+    //should write to database   
 }
 
 string Item::getName() const
