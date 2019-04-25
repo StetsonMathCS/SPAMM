@@ -1,160 +1,163 @@
 #include<iostream>
+#include<sstream>
 #include "build_speak_parser.h"
 using namespace std;
 
-Build_speak_parser::Build_speak_parser(Player* p)
-{
-	myPlayer = p;
-	createPattern1 = ("create (.+) called (.+) and described by (.*)");
-	createPattern2 = ("create (.+) (.+)");
-	connectPattern = ("connect room (.+) to (.+) via (.+)");
-	sayPattern = ("say (.*)");
-	tellPattern = ("tell user (.+): (.*)");
-	putPattern = ("put item (.+) in room (.+)");
-}
 
 /*
 Pass in a command to realize(Only print for now).
 */
-bool Build_speak_parser::activities(string command)
-{
-		input = command;
-		smatch m;
+void Build_speak_parser::handleInput(GameServer* server, int id, string command)
+{	
+    createPattern1 = ("create (.+) called (.+) and described by (.*)");
+    createPattern2 = ("create (.+) (.+)");
+    connectPattern = ("connect room (.+) to (.+) via (.+)");
+    sayPattern = ("say (.*)");
+    tellPattern = ("tell user (.+): (.*)");
+    putPattern = ("put item (.+) in room (.+)");
 
-		//Creation commands(items and rooms):
-		//Format 1: create room/item called X and described by Y
-		//Format 2: create room/item X (describtion will be typed later)
-		if (regex_match(input, m ,createPattern1)) {
+   
+    input = command;
+    smatch m;
 
-			string name = m[2];
-			string description = m[3];
+    //Creation commands(items and rooms):
+    //Format 1: create room/item called X and described by Y
+    //Format 2: create room/item X (describtion will be typed later)
+    if (regex_match(input, m ,createPattern1)) {
 
-			if (m[1] == "room") {
+        string name = m[2];
+        string description = m[3];
 
-				// TODO: Create a room 
-				tempRoom = new Room(name, description);
+        if (m[1] == "room") {
 
+            // TODO: Create a room 
+            tempRoom = new Room(name, description);
+            ostringstream os1;
+            os1 << "You created a room: " << name;
+            server->printToUser (id, os1.str());
 
-				cout << "You created a room: " << name << endl;
-				cout << "Description for this room: " << description << endl;
-				return true;
-			}
-			else if (m[1] == "item") {
+            ostringstream os2;
+            os2 << "Description for this room: " << description;
+            server->printToUser (is, os2.str());
+        }
+        else if (m[1] == "item") {
 
-				tempItem = new Item(name, description);
-				//TODO: Put item in player's inventory. 
-				//		When reaching the limit, drop item to the player's room.
-				if (myPlayer->getCanBuild() != false) {
-					myPlayer->addItemToInventory(tempItem);
-					cout << "You created an Item: " << name << endl;
-					cout << "Description for this item: " << description << endl;
-					cout << "Item added to player: " << myPlayer->getUsername() << endl;
-				}
-				else {
-					myPlayer->getRoom()->addItemToFloor(tempItem);
-					cout << "Your bag is full! Item will be droped to the floor." << endl;
-					cout << "You created an Item: " << name << endl;
-					cout << "Description for this item: " << description << endl;
-				}
-				return true;
-			}
+            tempItem = new Item(name, description);
+            //TODO: Put item in player's inventory. 
+            //		When reaching the limit, drop item to the player's room.
+            if (myPlayer->getCanBuild() != false) {
+                myPlayer->addItemToInventory(tempItem);
+                ostringstream os1, os2;
+                os1 << "You created an Item: " <<  name;
+                os2 <<  "Description for this item: " << description;
 
-		}
-		else if (regex_match(input, m, createPattern2)) {
-			string name = m[2];
-			string description;
+                server->printToUser(id, os1.str());
+                server->printToUser(id, os2,str());
+            }
+            else {
+                server->printToUser(id, "Your bag is full!");
+            }
+        }
 
-			if (m[1] == "room") {
-				cout << "You are going to creat a room: " << name << endl;
-				cout << "Please describe it: " << endl;
-				cout << "> ";
-				getline(cin, description);
+    }
+    /*
+    else if (regex_match(input, m, createPattern2)) {
+        string name = m[2];
+        string description;
 
-				//TODO: create a room
-				tempRoom = new Room(name, description);
+        if (m[1] == "room") {
+            server->printToUser   "You are going to creat a room: "   name   endl;
+            server->printToUser   "Please describe it: "   endl;
+            server->printToUser   "> ";
+            getline(cin, description);
 
-
-				cout << "You created a room: " << name << endl;
-				cout << "Description: " << description << endl;
-				return true;
-			}
-			else if (m[1] == "item") {
-				cout << "You are going to creat an item: " << name << endl;
-				cout << "Please describe it: " << endl;
-				cout << "> " ;
-				getline(cin, description);
-
-				//TODO: Put item in player's inventory. 
-				//		When reaching the limit, drop item to the player's room.
-				tempItem = new Item(name, description);
-				if (myPlayer->getCanBuild() != false) {
-					myPlayer->addItemToInventory(tempItem);
-					cout << "You created an Item: " << name << endl;
-					cout << "Description for this item: " << description << endl;
-					cout << "Item added to player: " << myPlayer->getUsername() << endl;
-				}
-				else {
-					myPlayer->getRoom()->addItemToFloor(tempItem);
-					cout << "Your bag is full! Item will be droped to the floor." << endl;
-					cout << "You created an Item: " << name << endl;
-					cout << "Description for this item: " << description << endl;
-				}
-				return true;
-			}
-		}
-
-		//Put item command
-		//Format: put item X in room Y
-		if (regex_match(input, m, putPattern)) {
-
-			string item = m[1];
-			string room = m[2];
-
-			//TODO: Put the item into the room
+            //TODO: create a room
+            tempRoom = new Room(name, description);
 
 
-			cout << "You put item " << item << " into room " << room << endl;
-			return true;
-		}
+            server->printToUser   "You created a room: "   name   endl;
+            server->printToUser   "Description: "   description   endl;
+            return true;
+        }
+        else if (m[1] == "item") {
+            server->printToUser   "You are going to creat an item: "   name   endl;
+            server->printToUser   "Please describe it: "   endl;
+            server->printToUser   "> " ;
+            getline(cin, description);
 
-		//Connect command
-		//Format: connect room X to Y via DIR
-		if (regex_match(input, m, connectPattern)) {
+            //TODO: Put item in player's inventory. 
+            //		When reaching the limit, drop item to the player's room.
+            tempItem = new Item(name, description);
+            if (myPlayer->getCanBuild() != false) {
+                myPlayer->addItemToInventory(tempItem);
+                server->printToUser   "You created an Item: "   name   endl;
+                server->printToUser   "Description for this item: "   description   endl;
+                server->printToUser   "Item added to player: "   myPlayer->getUsername()   endl;
+            }
+            else {
+                myPlayer->getRoom()->addItemToFloor(tempItem);
+                server->printToUser   "Your bag is full! Item will be droped to the floor."   endl;
+                server->printToUser   "You created an Item: "   name   endl;
+                server->printToUser   "Description for this item: "   description   endl;
+            }
+            return true;
+        }
+    }*/
 
-			string room1 = m[1];
-			string room2 = m[2];
-			string DIR = m[3];
+    //Put item command
+    //Format: put item X in room Y
+    if (regex_match(input, m, putPattern)) {
 
-			//TODO: connect the rooms
+        string item = m[1];
+        string room = m[2];
 
-			cout << "You connected room " << room1 << " and room " << room2 << " via " << DIR << endl;
-			return true;
-		}
+        //TODO: Put the item into the room
+        ostringstream os;
+        os << "You put item " <<  item <<  " into room " <<  room; 
 
-		//Say command
-		//Format: say X
-		if (regex_match(input, m, sayPattern)) {
+        server->printToUser(id, os.str());
+    }
 
-			string message = m[1];
+    //Connect command
+    //Format: connect room X to Y via DIR
+    if (regex_match(input, m, connectPattern)) {
 
-			//TODO: Display the message
+        string room1 = m[1];
+        string room2 = m[2];
+        string Dir = m[3];
 
-			cout << myPlayer->getUsername() <<" said: " << message << endl;
-			return true;
-		}
+        //TODO: connect the rooms
+        
+        ostringstream os;
+        os <<"You connected room " <<  room1 <<  " and room " <<  room2 <<  " via " <<  dir;
 
-		//tell command
-		//Format: tell user NAME: XYZ
-		if (regex_match(input, m, tellPattern)) {
-			string user = m[1];
-			string messages = m[2];
+        server->printToUser(id, os.str());
+    }
 
-			//TODO: Display the message to sent user
+    //Say command
+    //Format: say X
+    if (regex_match(input, m, sayPattern)) {
 
-			cout <<myPlayer->getUsername() <<" sent a message to "<<m[1]<<": " << endl;
-			cout << messages << endl;
-			return true;
-		}
-		return false;
+        string message = m[1];
+
+        //TODO: Display the message
+        ostringstream os;
+        os<<  "Player: " << id << " said: " <<  message; 
+        server->printToUser(id, os.str());
+    }
+
+    //tell command
+    //Format: tell user NAME: XYZ
+    if (regex_match(input, m, tellPattern)) {
+        string user = m[1];
+        string messages = m[2];
+
+        //TODO: Display the message to sent user
+        ostringstream os1,os2;
+        os1<< "Player: "<< id << " sent a message to " << m[1] << ": "; 
+
+        server->printToUser(id, os1.str());
+        server->printToUser(id, messages);
+    }
 }
 

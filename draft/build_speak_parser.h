@@ -5,23 +5,12 @@
 #include "room.h"
 #include "player.h"
 
+class GameServer;
 class Build_speak_parser {
 	public:
-		Build_speak_parser(Player*);
-		bool activities(string);
+//		Build_speak_parser(Player*);
+		static void handleInput(GameServer*, int, std::string);
 
-
-	private:
-		string input;
-		Player * myPlayer;
-		Room *tempRoom;
-		Item *tempItem;
-		regex sayPattern;
-		regex tellPattern;
-		regex createPattern1;
-		regex createPattern2;
-		regex connectPattern;
-		regex putPattern;
 
 
 };
