@@ -10,7 +10,7 @@ using namespace std;
 
 Database::Database(){ 
     context = redisConnect("localhost",6379); 
-    lastid=0;
+    lastid=read(to_string(-100));
     // TODO: load all items, players, and rooms into vectors
 } 
 
@@ -65,7 +65,7 @@ Item *Database::read_lastid_item(int id){
 
 void Database::increment_lastid(){
     lastid++;
-    write(to_string(-1),to_string(lastid));
+    write(to_string(-100),to_string(lastid));
 }
 
 Player* Database::findPlayerByName(string name) {
