@@ -1,6 +1,7 @@
 /**
  *Database class that uses Hiredis library. It conceals the more technical aspects about the Hiredis library.
  *-Stephen Mingolelli
+ *-Nicola Mingolelli
  */
 
 #ifndef DATABASE_H_
