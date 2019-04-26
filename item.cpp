@@ -14,8 +14,8 @@ Item::Item(string n, string d, string o, ITEM_TYPE t) : name(n), desc(d), owner(
 void Item::save(int id)
 {
     //Have a list of the data, new lines should make it easier to read and load later
-    string temp = "name:"+getName()+"\n"+"desc:"+getDesc()+"\n"+"owner:"+getOwner+"\n"+"type:"+to_string(getType());
-    Database d * = new Database();
+    string temp = "name:"+getName()+"\n"+"desc:"+getDesc()+"\n"+"owner:"+getOwner()+"\n"+"type:"+to_string(getType());
+    Database *d = new Database();
     d->write(to_string(id),temp); 
     //increment here, but I want to hold off on that for now
     delete d;
