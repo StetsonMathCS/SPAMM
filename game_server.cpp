@@ -11,6 +11,7 @@ extern GameServer *server;
 //TODO - Is there a better way to do the call back function?
 static void (*cbs)(GameServer*, int, string);
 static int (*logOnCheck)(string,string);
+static int (*createNewUser)(string,string);
 /* The ststic type in C tells the compiler that the function should not be accesible outside of this .cpp file
  * This function takes an integer repersenting the socket, the buffer of characters to send, and the amount of 
  * characters in the buffer to send
@@ -59,16 +60,47 @@ static void _online(const char *line, size_t overflow, void *ud) {
 	//If the user has a state of -1 then they are selecting whether they want to log on or create an account
 	if (user->state == -1) {
 		 if(strcmp(line, "n") == 0) {
-            cout << "THEY WANT A NEW ACCOUNT" << endl;
+            telnet_printf(user->telnet, "Enter your username: ");
             user->state = 0;
 		} else if(strcmp(line, "l") == 0) {
-            cout << "THEY WANT TO LOG ON" << endl;
             user->state = 1;
             telnet_printf(user->telnet, "Enter your username : ");
         }else{
 			telnet_printf(user->telnet, "Invalid option \nPlease enter an option (n for new account, l for log on) > ");
 		}
 		return;
+    //User is traing to create an account
+	} else if(user->state == 0) {
+        if(user->name == NULL) {
+            if(strcmp(line, "") == 0){
+                telnet_printf(user->telnet, "Invalid Username, please try again\nEnter your username: ");
+                return;
+            }
+            user->name = strdup(line);
+            telnet_printf(user->telnet, "Enter your password: ");
+			telnet_negotiate(user->telnet, TELNET_WILL, TELNET_TELOPT_ECHO);
+            return;
+        }
+        else {
+            if(strcmp(line, "") == 0){
+                telnet_printf(user->telnet, "Invalid Passowrd, please try again\nEnter your password: ");
+                return;
+            }
+            int userId = createNewUser(user->name, line);
+            if(userId == -1) {
+                telnet_printf(user->telnet, "\nA user already exists with this username, please enter a different one\nEnter your username: ");
+			    telnet_negotiate(user->telnet, TELNET_WONT, TELNET_TELOPT_ECHO);
+                free(user->name);
+                user->name = NULL;
+                return;
+            } else {
+                user->id = userId;
+                user->state = 2;
+			    telnet_negotiate(user->telnet, TELNET_WONT, TELNET_TELOPT_ECHO);
+            telnet_printf(user->telnet,"\n//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////\n//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////\n//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////\n/////////#&@@@&(///////////////////&@@@@%%///////////////////#&@@@@%%//////////////////#%%#(////////(##////////////////(%%#(////////(#%%(//////\n///////@@&/////@@&//////////////(@@(////#@@///////////////@@%%/////#@@///////////////@@%%#@@/////&@&(@@///////////////@@(@@/////(@@(@@//////\n///////@@///////@@//////////////@@(//////%%@%%/////////////#@&///////#@&//////////////@@//&@(////@@//@@///////////////@@/(@&////@@//@@//////\n///////@@///////////////////////@@(//////%%@%%/////////////#@&///////#@&//////////////@@///@@///&@(//@@///////////////@@//@@///(@&//@@//////\n///////@@&//////////////////////@@(//////%%@%%/////////////#@&///////#@&//////////////@@///&@(//@@///@@///////////////@@//(@&//@@///@@//////\n/////////#@@@@@@%%///////////////@@(((((%%@@@//////////////#@@%%%%%%%%%%%%%%&@&//////////////@@////@@/%%@(///@@///////////////@@///@@/(@&///@@//////\n////////////////@@//////////////@@((###(/////////////////#@&(((((((%%@&//////////////@@////%%@(@@////@@///////////////@@///(@&@@////@@//////\n//////(&(///////@@(/////////////@@(//////////////////////#@&///////#@&//////////////@@/////@@@(////@@///////////////@@////@@@&////@@//////\n//////%%@%%///////@@(/////////////@@(//////////////////////#@&///////#@&//////////////@@/////%%@@/////@@///////////////@@////(@@/////@@//////\n///////&@@@@@@@@@#//////////////@@(//////////////////////#@&///////#@&//////////////@@/////////////@@///////////////@@////////////@@//////\n//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////\n//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////\n//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////\n");
+			telnet_printf(user->telnet, "Welcome To SPAMM\n");
+            }
+        }
     //The user is logging on
 	} else if(user->state == 1) {
         if(user->name == NULL){
@@ -142,6 +174,8 @@ static void _online(const char *line, size_t overflow, void *ud) {
 	//If its not a log on or a quit command, pass it to the callback function for the game to figure out how to process it
 
 	cbs(server, user->id, line);
+    //Print the prompt for user input
+    telnet_printf(user->telnet, "> ");
 }
 
 static void linebuffer_push(char *buffer, size_t size, int *linepos,
@@ -387,7 +421,7 @@ void GameServer::setLogOnFunction(int (*f) (string,string)){
 }
 void GameServer::printToUser(int userId, string message){
 	int i ;
-	message +=  "\n> ";
+	message +=  "\n";
 	for(i = 0; i != MAX_PLAYERS; ++i)
 		if(users[i].id == userId)
 			break;
@@ -396,4 +430,12 @@ void GameServer::printToUser(int userId, string message){
 void GameServer::printToUsers(vector<int> players, string message){
     for(unsigned int i = 0; i < players.size(); ++i)
        printToUser(players[i], message);
+}
+void GameServer::broadcast(std::string message) {
+    for(int i = 0; i != MAX_PLAYERS; ++i)
+        if(users[i].id != -1)
+            telnet_printf(users[i].telnet, message.c_str());
+}
+void GameServer::setCreateNewUserFunction(int (*f)(string,string)) {
+    createNewUser = f;
 }

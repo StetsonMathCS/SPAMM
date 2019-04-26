@@ -8,7 +8,7 @@ using namespace std;
 
 //Functions that will be called when user enters information
 int logOnFunction(string,string);
-
+int newUserFunction(string,string);
 //Global Refrence so the two functions can refrence it
 GameServer *server;
 
@@ -33,6 +33,7 @@ int main() {
 	server->setLogOnFunction(logOnFunction);
 	//When a user enters a line, this function is called to handle the parsing and response generation
 	server->setCallBackFunction(ActionParser::handleInput);
+    server->setCreateNewUserFunction(newUserFunction);
 
 	//Start the server
 	server->start();
@@ -49,3 +50,14 @@ int logOnFunction(string username, string password) {
 	else
 		return -1;
 }	
+
+int newUserFunction(string username, string password) {
+    //If the username is already taken then return -1 to indicate that there wasn't a new account created, else return a userId for the new user
+    
+    //Example that a username has been taken
+    if(username == "alreadyTaken")
+        return -1;
+    else
+        return 100;
+
+}
