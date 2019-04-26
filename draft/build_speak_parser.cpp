@@ -9,6 +9,8 @@ Pass in a command to realize(Only print for now).
 */
 void Build_speak_parser::handleInput(GameServer* server, int id, string command)
 {	
+
+    //command patterns
     createPattern1 = ("create (.+) called (.+) and described by (.*)");
     createPattern2 = ("create (.+) (.+)");
     connectPattern = ("connect room (.+) to (.+) via (.+)");
@@ -16,14 +18,13 @@ void Build_speak_parser::handleInput(GameServer* server, int id, string command)
     tellPattern = ("tell user (.+): (.*)");
     putPattern = ("put item (.+) in room (.+)");
 
-   
-    input = command;
     smatch m;
+    
 
     //Creation commands(items and rooms):
     //Format 1: create room/item called X and described by Y
     //Format 2: create room/item X (describtion will be typed later)
-    if (regex_match(input, m ,createPattern1)) {
+    if (regex_match(command, m ,createPattern1)) {
 
         string name = m[2];
         string description = m[3];
@@ -38,7 +39,7 @@ void Build_speak_parser::handleInput(GameServer* server, int id, string command)
 
             ostringstream os2;
             os2 << "Description for this room: " << description;
-            server->printToUser (is, os2.str());
+            server->printToUser (id, os2.str());
         }
         else if (m[1] == "item") {
 
@@ -61,7 +62,7 @@ void Build_speak_parser::handleInput(GameServer* server, int id, string command)
 
     }
     /*
-    else if (regex_match(input, m, createPattern2)) {
+    else if (regex_match(command, m, createPattern2)) {
         string name = m[2];
         string description;
 
@@ -106,7 +107,7 @@ void Build_speak_parser::handleInput(GameServer* server, int id, string command)
 
     //Put item command
     //Format: put item X in room Y
-    if (regex_match(input, m, putPattern)) {
+    if (regex_match(command, m, putPattern)) {
 
         string item = m[1];
         string room = m[2];
@@ -120,7 +121,7 @@ void Build_speak_parser::handleInput(GameServer* server, int id, string command)
 
     //Connect command
     //Format: connect room X to Y via DIR
-    if (regex_match(input, m, connectPattern)) {
+    if (regex_match(command, m, connectPattern)) {
 
         string room1 = m[1];
         string room2 = m[2];
@@ -136,7 +137,7 @@ void Build_speak_parser::handleInput(GameServer* server, int id, string command)
 
     //Say command
     //Format: say X
-    if (regex_match(input, m, sayPattern)) {
+    if (regex_match(command, m, sayPattern)) {
 
         string message = m[1];
 
@@ -148,7 +149,7 @@ void Build_speak_parser::handleInput(GameServer* server, int id, string command)
 
     //tell command
     //Format: tell user NAME: XYZ
-    if (regex_match(input, m, tellPattern)) {
+    if (regex_match(command, m, tellPattern)) {
         string user = m[1];
         string messages = m[2];
 
