@@ -63,19 +63,19 @@ void Room::listItemsOnFloor() const {
         }
         */
 }
-void Room::setReq(Item* req, Room* room)
+void Room::setReq(string req, string room)
+{
+    
+}
+void Room::setDesc(string room, string description)
+{
+    
+}
+void Room::setreqMove(string oldroom, string req, string newroom)
 {
 
 }
-void Room::setDesc(Room* room, string description)
-{
-
-}
-void Room::setreqMove(Room* oldroom, Item* req, Room* newroom)
-{
-
-}
-void Room::setChance(Room* oldRoom, double chance, Room* newroom)
+void Room::setChance(string oldRoom, double chance, string newroom)
 {
 
 }

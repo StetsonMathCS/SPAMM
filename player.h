@@ -28,6 +28,7 @@ class Player {
         void listInventory() const;
         void addItemToInventory(Item*);
         Item* findItemInInventory(std::string) const;
+        bool isItemInInventory(std::string);
         void setCanBuild(bool);
         bool getCanBuild() const;
         void setUsername(std::string);

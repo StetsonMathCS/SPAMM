@@ -2,6 +2,7 @@
 #include "game_server.h"
 #include <iostream>
 
+
 using namespace std;
 
 void EditParser::handleeditInput(GameServer *server, int id,  string command)
@@ -76,14 +77,12 @@ void EditParser::handleeditInput(GameServer *server, int id,  string command)
                     
                     input.erase(0, input.find(delimiterQuote) + delimiterQuote.length());
                     string description = input.substr(0, input.find(delimiterQuote));
-                    input.erase(0, input.find(delimiterQuote) + delimiterQuote.length());
+                    input.erase(0, input.find(delimiterQuote) + delimiterQuote.length());  
                     
+                    //this->setDesc(roomname, description);
+                    //server->printToUser(id, "\n -- The Room " + roomname +"'s description was set to "); 
 
-                    //function setDesc(roomname, description);
-    
-                    // TODO FIX PRINT USER
-             //        server->printToUser(id, "\n -- The Room " << roomname << "'s description was set to "); 
-
+                    server->printToUser(id, "WIP");
 
                 }
             }
@@ -112,8 +111,9 @@ void EditParser::handleeditInput(GameServer *server, int id,  string command)
                     }
                     else
                     {
-                        //FIX PRINT USER
-             //           server->printToUser(id, "Required item: " << itemname << " set for room: ");
+                        //setReq(itemname, roomname);
+                        //server->printToUser(id, "Required item: " + itemname + " set for room: ");
+                        server->printToUser(id, "WIP");
                     }
                     
                 }
@@ -122,10 +122,10 @@ void EditParser::handleeditInput(GameServer *server, int id,  string command)
             { 
         
                     input.erase(0, input.find(delimiterLess) + delimiterLess.length());
-                    string roomname = input.substr(0, input.find(delimiterMore));
+                    string oldroom = input.substr(0, input.find(delimiterMore));
                     input.erase(0, input.find(delimiterMore) + delimiterMore.length());
                 
-                    if(rooms.find(roomname) == rooms.end())
+                    if(rooms.find(oldroom) == rooms.end())
                     {
                         server->printToUser(id, "Room not found");
                         break;
@@ -145,23 +145,25 @@ void EditParser::handleeditInput(GameServer *server, int id,  string command)
                         {
 
                             input.erase(0, input.find(delimiterLess) + delimiterLess.length());
-                            string newroomname = input.substr(0, input.find(delimiterMore));
+                            string newroom = input.substr(0, input.find(delimiterMore));
                             input.erase(0, input.find(delimiterMore) + delimiterMore.length());
                         
-                            if(rooms.find(roomname) == rooms.end())
+                            if(rooms.find(newroom) == rooms.end())
                             {
                                 server->printToUser(id, "Room not found");
                                 break;
                             }
                             else
                             {
-             //                    server->printToUser(id, "Item: " << itemname << " requirement was set to " << roomname << " and will teleport you to " << newroomname);
+                                //setreqMove(oldroom, itemname, newroom)
+                                //server->printToUser(id, "Item: " + itemname + " requirement was set to " + roomname + " and will teleport you to " + newroomname);
+                            
+                                server->printToUser(id, "WIP");
                             }
                         }
                                    
                     }
 
-                    //Function setreqmove(oldRoom, item, newRoom)
             }
             else if(command == "/setchance")
             {
@@ -199,7 +201,11 @@ void EditParser::handleeditInput(GameServer *server, int id,  string command)
                             }
                             else
                             {
-                                // server->printToUser(id, "Item: " << itemname << " requirement was set to " << roomname << " and will teleport you to " << newroomname);
+                                //setChance(roomname, chance, newroomname) 
+                               
+                                server->printToUser(id, "WIP");
+                                
+                                //server->printToUser(id, ("In the room " + roomname + " There is now a " + chance + " % that a player will be teleported to " + newroomname + " if entered");
                             }
                         }
                                    

@@ -48,7 +48,15 @@ Item* Player::findItemInInventory(string name) const {
     cout << "ERROR: Item not found." << endl;
     return NULL;
 }
-
+bool Player::isItemInInventory(string name) {
+    set<Item*>::const_iterator p;
+    for(p = inventory.begin(); p != inventory.end(); p++) {
+        if ((*p)->getName() == name) {
+            return true;
+        }
+    }
+    return false;
+}
 void Player::setCanBuild(bool permission) {
     canBuild = permission;
 } 

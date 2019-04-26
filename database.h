@@ -1,24 +1,26 @@
 /**
  *Database class that uses Hiredis library. It conceals the more technical aspects about the Hiredis library.
- *
+ *-Stephen Mingolelli
  */
 
 #ifndef DATABASE_H_
 #define DATABASE_H_
 #include <string>
+#include "item.h"
 #include <iostream>
-#include <hiredis/hiredis.h>
+#include "hiredis.h"
+class Item;
 class Database{
     private:
         redisContext *context;
     public:
         //values
-        int lastid=0;
-        Database(){ context = redisConnect("localhost",6379); } //default constructor
+        int lastid;
+        Database(); //default constructor
         //methods
-        void write(std::string key, std::string value); 
-        std::string read(std::string key) const;
-        void read_lastid(int id) const;
+        void write(std::string, std::string);
+        std::string read(std::string) const;
+        Item *read_lastid(int);
         void increment_lastid();
 };
 

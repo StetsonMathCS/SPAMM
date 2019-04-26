@@ -10,7 +10,7 @@
 #include "room.h"
 
 class GameServer;
-
+class Room;
 class EditParser {
     
     public:

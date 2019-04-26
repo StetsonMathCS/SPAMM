@@ -25,10 +25,10 @@ class Room {
         std::set<Item*> getFloor() const;
         Item* findItemOnFloor(std::string) const;
         void listItemsOnFloor() const;
-        void setReq(Item*, Room*);
-        void setDesc(Room*, std::string);
-        void setreqMove(Room*, Item*, Room*);
-        void setChance(Room*, double, Room*);
+        void setReq(std::string, std::string);
+        void setDesc(std::string, std::string);
+        void setreqMove(std::string, std::string, std::string);
+        void setChance(std::string, double, std::string);
 };
 
 #endif
