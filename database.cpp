@@ -10,7 +10,7 @@ using namespace std;
 
 Database::Database(){ 
     context = redisConnect("localhost",6379); 
-    lastid=read(to_string(-100));
+    lastid=stoi(read(to_string(-100)));
     // TODO: load all items, players, and rooms into vectors
 } 
 
