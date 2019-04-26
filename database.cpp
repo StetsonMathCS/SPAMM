@@ -69,11 +69,23 @@ void Database::increment_lastid(){
 }
 
 Player* Database::findPlayerByName(string name) {
-    return NULL;
+    for(int i = 0; i < players.size(); i++) {
+        if(players[i]->getUsername() == name) {
+            return players[i];
+        }
+
+        return NULL;
+    }
 }
 
 Item* Database::findItemByName(string name) {
-    return NULL;
+    for(int i = 0; i < items.size(); i++) {
+        if(items[i]->getName() == name) {
+            return items[i];
+        }
+
+        return NULL;
+    }
 }
 
 Room* Database::findRoomByName(string name) {
@@ -84,5 +96,4 @@ Room* Database::findRoomByName(string name) {
     }
     return NULL;
 }
-
 
