@@ -9,13 +9,12 @@
 #include "player.h"
 #include "room.h"
 
-class GameServer;
 class Room;
 class EditParser {
     
     public:
         
-        static void handleeditInput(GameServer*, int, std::string);
+        static void handleeditInput(int, std::string);
 
 };
 

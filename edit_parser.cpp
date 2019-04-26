@@ -1,11 +1,12 @@
 #include "edit_parser.h"
 #include "game_server.h"
 #include <iostream>
+#include "common.h"
 
 
 using namespace std;
 
-void EditParser::handleeditInput(GameServer *server, int id,  string command)
+void EditParser::handleeditInput(int id,  string command)
 {
     //
     //    /setdesc <roomname> "description"

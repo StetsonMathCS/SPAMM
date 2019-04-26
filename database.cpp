@@ -1,13 +1,17 @@
 #include "database.h"
+#include "common.h"
 #include <string>
 #include <iostream>
 #include <sstream>
 #include "item.h"
+#include "room.h"
+#include "player.h"
 using namespace std;
 
 Database::Database(){ 
     context = redisConnect("localhost",6379); 
     lastid=0;
+    // TODO: load all items, players, and rooms into vectors
 } 
 
 //Sets/writes a value to an assigned KEY using redisContext
@@ -63,3 +67,22 @@ void Database::increment_lastid(){
     lastid++;
     write(to_string(-1),to_string(lastid));
 }
+
+Player* Database::findPlayerByName(string name) {
+    return NULL;
+}
+
+Item* Database::findItemByName(string name) {
+    return NULL;
+}
+
+Room* Database::findRoomByName(string name) {
+    for(int i = 0; i < rooms.size(); i++) {
+        if(rooms[i]->getTitle() == name) {
+            return rooms[i];
+        }
+    }
+    return NULL;
+}
+
+

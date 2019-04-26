@@ -1,9 +1,11 @@
 #include "action_parser.h"
+#include "database.h"
 #include "game_server.h"
+#include "common.h"
 #include <iostream>
 using namespace std;
 
-void ActionParser::handleInput(GameServer *server, int id, string command)
+void ActionParser::handleInput(int id, string command)
 {
     if(command == "help")
     {

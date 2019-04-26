@@ -1,6 +1,7 @@
 #include <sstream>
 #include "item.h"
 #include "database.h"
+#include "common.h"
 using namespace std;
 
 Item::Item(string n, string d, string o, ITEM_TYPE t) : name(n), desc(d), owner(o), type(t)
@@ -15,10 +16,8 @@ void Item::save(int id)
 {
     //Have a list of the data, new lines should make it easier to read and load later
     string temp = "name:"+getName()+"\n"+"desc:"+getDesc()+"\n"+"owner:"+getOwner()+"\n"+"type:"+to_string(getType());
-    Database *d = new Database();
-    d->write(to_string(id),temp); 
-    d->increment_lastid();
-    delete d;
+    db->write(to_string(id),temp); 
+    db->increment_lastid();
 }
 
 string Item::getName() const

@@ -10,10 +10,17 @@
 #include "item.h"
 #include <iostream>
 #include "hiredis.h"
+#include <vector>
 class Item;
+class Room;
+class Player;
+
 class Database{
     private:
         redisContext *context;
+        vector<Item*> items;
+        vector<Room*> rooms;
+        vector<Player*> players;
     public:
         //values
         int lastid;
@@ -23,6 +30,9 @@ class Database{
         std::string read(std::string) const;
         Item *read_lastid(int);
         void increment_lastid();
+        Player* findPlayerByName(std::string);
+        Item* findItemByName(std::string);
+        Room* findRoomByName(std::string);
 };
 
 #endif 

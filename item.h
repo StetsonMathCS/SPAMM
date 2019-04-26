@@ -2,7 +2,6 @@
 #define ITEM_H
 using namespace std;
 #include <string>
-#include "database.h"
 class Room;
 
 enum ITEM_TYPE {UNIQUE, PERPLAYER};

@@ -1,18 +1,21 @@
 #include "game_server.h"
 #include "action_parser.h"
 #include "player.h"
-
+#include "common.h"
+#include "database.h"
 #include<iostream>
+
+GameServer *server;
+Database *db;
 
 using namespace std;
 
 //Functions that will be called when user enters information
 int logOnFunction(string,string);
 int newUserFunction(string,string);
-//Global Refrence so the two functions can refrence it
-GameServer *server;
 
 int main() {
+    db = new Database();
     // TODO: REMOVE
     //
     Player *p1 = new Player;
@@ -38,7 +41,8 @@ int main() {
 	//Start the server
 	server->start();
 	
-return 0;
+    delete db;
+    return 0;
 }
 
 int logOnFunction(string username, string password) {

@@ -1,15 +1,13 @@
 #include "game_server.h"
-
+#include "common.h"
 #include <iostream>
 #include <cstring>
 
 using namespace std;
 
-extern GameServer *server;
-
 
 //TODO - Is there a better way to do the call back function?
-static void (*cbs)(GameServer*, int, string);
+static void (*cbs)(int, string);
 static int (*logOnCheck)(string,string);
 static int (*createNewUser)(string,string);
 /* The ststic type in C tells the compiler that the function should not be accesible outside of this .cpp file
@@ -173,7 +171,7 @@ static void _online(const char *line, size_t overflow, void *ud) {
 	}
 	//If its not a log on or a quit command, pass it to the callback function for the game to figure out how to process it
 
-	cbs(server, user->id, line);
+	cbs(user->id, line);
     //Print the prompt for user input
     telnet_printf(user->telnet, "> ");
 }
@@ -413,7 +411,7 @@ void GameServer::start() {
 	}
 }
 
-void GameServer::setCallBackFunction(void (*f)(GameServer*,int,string)){
+void GameServer::setCallBackFunction(void (*f)(int,string)){
 	cbs = f; 
 }
 void GameServer::setLogOnFunction(int (*f) (string,string)){
