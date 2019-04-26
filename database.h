@@ -28,7 +28,7 @@ class Database{
         //methods
         void write(std::string, std::string);
         std::string read(std::string) const;
-        Item *read_lastid(int);
+        Item *read_lastid_item(int);
         void increment_lastid();
         Player* findPlayerByName(std::string);
         Item* findItemByName(std::string);

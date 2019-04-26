@@ -30,7 +30,7 @@ string Database::read(string key) const{
     return s;
 }
 
-Item *Database::read_lastid(int id){
+Item *Database::read_lastid_item(int id){
     Item *i = new Item("","","",UNIQUE);
     string temp = read(to_string(id));
     istringstream data(temp);
