@@ -17,11 +17,7 @@ void Item::save(int id)
     string temp = "name:"+getName()+"\n"+"desc:"+getDesc()+"\n"+"owner:"+getOwner()+"\n"+"type:"+to_string(getType());
     Database *d = new Database();
     d->write(to_string(id),temp); 
-    
     imcrement_lastid();
-
-    //increment here, but I want to hold off on that for now
-
     delete d;
 }
 
