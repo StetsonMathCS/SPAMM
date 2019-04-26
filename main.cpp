@@ -16,8 +16,8 @@ int logOnFunction(string,string);
 int newUserFunction(string,string);
 
 void parseInput(int playerId, string input) {
-    ActionParser::handleInput(server, playerId, input);
-    BuildParser::handleInput(server, playerId, input);
+    ActionParser::handleInput(playerId, input);
+    BuildParser::handleInput(playerId, input);
 }
 
 int main() {

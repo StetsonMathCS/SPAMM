@@ -1,5 +1,7 @@
 #include<iostream>
 #include<sstream>
+#include "common.h"
+#include "game_server.h"
 #include "build_speak_parser.h"
 using namespace std;
 
@@ -7,7 +9,7 @@ using namespace std;
 /*
 Pass in a command to realize(Only print for now).
 */
-void BuildParser::handleInput(GameServer* server, int id, string command)
+void BuildParser::handleInput(int id, string command)
 {	
 
     //command patterns

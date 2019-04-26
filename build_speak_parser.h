@@ -5,9 +5,8 @@
 #include "room.h"
 #include "player.h"
 
-class GameServer;
 class BuildParser {
 	public:
-		static void handleInput(GameServer*, int, std::string);
+		static void handleInput(int, std::string);
 };
 #endif 
