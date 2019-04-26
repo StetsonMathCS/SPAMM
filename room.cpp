@@ -1,5 +1,6 @@
 #include <iostream>
 #include "room.h"
+#include "common.h"
 
 using namespace std;
 

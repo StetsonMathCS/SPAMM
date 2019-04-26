@@ -1,13 +1,17 @@
 #include "database.h"
+#include "common.h"
 #include <string>
 #include <iostream>
 #include <sstream>
 #include "item.h"
+#include "room.h"
+#include "player.h"
 using namespace std;
 
 Database::Database(){ 
     context = redisConnect("localhost",6379); 
-    lastid=0;
+    lastid=stoi(read(to_string(-100)));
+    // TODO: load all items, players, and rooms into vectors
 } 
 
 //Sets/writes a value to an assigned KEY using redisContext
@@ -26,7 +30,7 @@ string Database::read(string key) const{
     return s;
 }
 
-Item *Database::read_lastid(int id){
+Item *Database::read_lastid_item(int id){
     Item *i = new Item("","","",UNIQUE);
     string temp = read(to_string(id));
     istringstream data(temp);
@@ -61,5 +65,35 @@ Item *Database::read_lastid(int id){
 
 void Database::increment_lastid(){
     lastid++;
-    write(to_string(-1),to_string(lastid));
+    write(to_string(-100),to_string(lastid));
 }
+
+Player* Database::findPlayerByName(string name) {
+    for(int i = 0; i < players.size(); i++) {
+        if(players[i]->getUsername() == name) {
+            return players[i];
+        }
+
+        return NULL;
+    }
+}
+
+Item* Database::findItemByName(string name) {
+    for(int i = 0; i < items.size(); i++) {
+        if(items[i]->getName() == name) {
+            return items[i];
+        }
+
+        return NULL;
+    }
+}
+
+Room* Database::findRoomByName(string name) {
+    for(int i = 0; i < rooms.size(); i++) {
+        if(rooms[i]->getTitle() == name) {
+            return rooms[i];
+        }
+    }
+    return NULL;
+}
+

@@ -8,13 +8,11 @@
 
 #include "room.h"
 
-class GameServer;
-
 class ActionParser {
 
     public:
 
-        static void handleInput(GameServer*, int, std::string);
+        static void handleInput(int, std::string);
 
 };
 

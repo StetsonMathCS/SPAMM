@@ -51,12 +51,14 @@ class GameServer {
 		GameServer(int portNumber);
 		GameServer();
 		//This function is called whenever a user enters a string, the int is the users id
-		void setCallBackFunction(void (*f)(GameServer*, int, std::string));
+		void setCallBackFunction(void (*f)(int, std::string));
 		//Function that will validate the user's log on information, returns -1 if invalid, else return their id
 		void setLogOnFunction(int (*f)(std::string, std::string));
+        void setCreateNewUserFunction(int (*f)(std::string, std::string));
 		int getPortNumber() const;
 		void start();
 		void printToUser(int, std::string);
         void printToUsers(std::vector<int>, std::string);
+        void broadcast(std::string);
 };
 #endif

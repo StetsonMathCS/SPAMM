@@ -2,15 +2,18 @@
 #include "action_parser.h"
 #include "player.h"
 #include "build_speak_parser.h"
+#include "common.h"
+#include "database.h"
 #include<iostream>
+
+GameServer *server;
+Database *db;
 
 using namespace std;
 
 //Functions that will be called when user enters information
 int logOnFunction(string,string);
-
-//Global Refrence so the two functions can refrence it
-GameServer *server;
+int newUserFunction(string,string);
 
 void parseInput(int playerId, string input) {
     ActionParser::handleInput(server, playerId, input);
@@ -18,6 +21,7 @@ void parseInput(int playerId, string input) {
 }
 
 int main() {
+    db = new Database();
     // TODO: REMOVE
     //
     Player *p1 = new Player;
@@ -39,11 +43,13 @@ int main() {
 	server->setLogOnFunction(logOnFunction);
 	//When a user enters a line, this function is called to handle the parsing and response generation
 	server->setCallBackFunction(parseInput);
+    server->setCreateNewUserFunction(newUserFunction);
 
 	//Start the server
 	server->start();
 	
-return 0;
+    delete db;
+    return 0;
 }
 
 int logOnFunction(string username, string password) {
@@ -55,3 +61,14 @@ int logOnFunction(string username, string password) {
 	else
 		return -1;
 }	
+
+int newUserFunction(string username, string password) {
+    //If the username is already taken then return -1 to indicate that there wasn't a new account created, else return a userId for the new user
+    
+    //Example that a username has been taken
+    if(username == "alreadyTaken")
+        return -1;
+    else
+        return 100;
+
+}

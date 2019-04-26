@@ -3,8 +3,7 @@
 #include "game_server.h"
 #include <iterator>
 #include <iostream>
-
-class GameServer;
+#include "common.h"
 
 using namespace std;
 
