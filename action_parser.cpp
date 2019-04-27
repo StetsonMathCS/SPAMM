@@ -5,127 +5,125 @@
 #include <iostream>
 using namespace std;
 
+class Player;
+class Room;
+class Item;
+class Server;
+
+Player *player;
+Room *room;
+Item *item;
+Server *server;
+
 void ActionParser::handleInput(int id, string command)
 {
     if(command == "help")
     {
         server->printToUser(id, "Commands available:");
         server->printToUser(id, " -go [dir] (north, east, south, west)");
-        //server->printToUser(id, output) << " -check (Check what items are in the room)" << endl;
-        //server->printToUser(id, output) << " -inventory (See what items you have)" << endl;
-        //server->printToUser(id, output) << " -get [object name](Pick up items)" << endl;
-        //server->printToUser(id, output) << " -drop [object name] (Drop an item from your backpack)" << endl;
-        //server->printToUser(id, output) << " -quit" << endl;
+        server->printToUser(id, " -check (Check what items are in the room)");
+        server->printToUser(id, " -inventory (See what items you have)");
+        server->printToUser(id, " -get [object name](Pick up items)");
+        server->printToUser(id, " -drop [object name] (Drop an item from your backpack)");
+        server->printToUser(id, " -quit");
         //server->printToUser(id, output) << endl;
     } else if(command == "quit")
     {
     } else if(command == "items")
     {
-        if(false)
+        //if(false)
+        if(player->listInventory() == NULL)
         {
             //check if player has items in their container
-            //server->printToUser(id, output) << "It looks like your backpack is empty :(" << endl;
+            server->printToUser(id, "It looks like your backpack is empty :(");
             //server->printToUser(id, output) << endl;
         } else
         {
-            //server->printToUser(id, output) << "Your items: " << endl;
+            server->printToUser(id, "Your items: ");
             //loop through items in the player's container
-            for(int i = -1; i > 0;)
-            {
-                //server->printToUser(id, output) << "- "<< "get items" << endl;
-            }
-            //server->printToUser(id, output) << endl;
+            //for(int i = -1; i > 0;)
+            //server->printToUser(id, "- " + player->listInventory());
+            //server->printToUser(id, outpout);
         }
     } else if(command == "go")
     {
-        //string direction;
-        //cin >> direction;
         //check direction
         if(false)
         {
             //get the container and if the container is empty
             if(false)
             {
-                //server->printToUser(id, output) << "That's a dead end" << endl;
+                server->printToUser(id, "That's a dead end");
                 //server->printToUser(id, output) << endl;
             } else
             {
-                //server->printToUser(id, output) << "You're in " << "container name" << endl;
-                //server->printToUser(id, output) << "container description" << endl;
+                server->printToUser(id, "You're in container name");
+                server->printToUser(id, "container description");
                 //server->printToUser(id, output) << endl;
             }
         } else
         {
-            //server->printToUser(id, output) << "That's not a direction" << endl;
-            //server->printToUser(id, output) << "Type 'help' for commands" << endl;
+            server->printToUser(id, "That's not a direction");
+            server->printToUser(id, "Type 'help' for commands");
             //server->printToUser(id, output) << endl;
         }
     } else if(command == "check")
     {
-        //server->printToUser(id, output) << "In " << "container" << endl;
-        //server->printToUser(id, output) << "    " << "conatiner description" << endl;
+        server->printToUser(id, "In " + room->getTitle());
+        server->printToUser(id, room->getDesc());
         //check if there are items in container
-        if(false)
+        //if(false)
+        if(room->listItemsOnFloor().empty())
         {
-            //server->printToUser(id, output) << "There are no items in here " << endl;
+            server->printToUser(id, "There are no items in here ");
             //server->printToUser(id, output) << endl;
         } else
         {
-            //server->printToUser(id, output) << "Items in this room: " << endl;
+            server->printToUser(id, "Items in this room: ");
             //loop through items in the room
-            for(int i = -1; i > 0;)
-            {
-                //server->printToUser(id, output) << "- "<< "names of items in room" << endl;
-            }
-            //server->printToUser(id, output) << endl;
+            //for(int i = -1; i > 0;)
+            //server->printToUser(id, "- " + room->listItemsOnFloor());
+            //server->printTouser(id, output);
         }
     } else if(command == "get")
     {
-        //string object;
-        //cin >> object;
         //loop through items in room
-        for(int i = -1; i > 0;)
+        //for(int i = -1; i > 0;)
+        for(room->listItemsOnFloor())
         {
             //if the object entered matches an object in the container
-            if(false)
-            {
-                //server->printToUser(id, output) << "You grabbed a " << object << endl;
+            //if(false)
+                server->printToUser(id, "You grabbed a " + item->getName());
                 //call the method used to pickup
                 //remove from container
                 //server->printToUser(id, output) << endl;
-            }
         }
     } else if(command == "drop")
     {
-        //string object;
-        //cin >> object;
         bool in = false;
         //check if that object is in the player container
-        if(false)
+        //if(false)
+        if(player->isItemInInventory() == false)
         {
-            //server->printToUser(id, output) << "There is no " << object << " in your inventory" << endl;
+            server->printToUser(id, "There is no " + item->getName() + " in your inventory");
             //server->printToUser(id, output) << endl;
         } else
         {
+            player->listInventory();
             //loop through items in player's container
-            for(int i = -1; i > 0;)
-            {
-                //if object name matches an item name in container
-                if(false)
-                {
-                    //server->printToUser(id, output) << "You dropped a " << object << endl;
-                    //add that item to current container
-                    //remove from player container
-                }
-            }
+            //for(int i = -1; i > 0;)
+            //if object name matches an item name in container
+            server->printToUser(id, "You dropped a " + item->getName());
+            //add that item to current container
+            //remove from player container
             in = true;
         }
         if(!in)
         {
-            //server->printToUser(id, output) << "You don't have a "<< object << " in your backpack." << endl;
+            server->printToUser(id, "You don't have a " + item->getName() " in your backpack.");
         }
     } else
     {
-        //server->printToUser(id, output) << "INCORRECT COMMAND, type 'help'" << endl;
+        server->printToUser(id, "INCORRECT COMMAND, type 'help'");
     }
 }
