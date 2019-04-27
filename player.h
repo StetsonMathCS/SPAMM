@@ -43,6 +43,7 @@ class Player {
         std::string getDescription() const;
 	    void setID(int);
 	    int getID() const;
+        std::set< Item*> dropItem(std::string);
 	    //bool connected() const;
 };
 

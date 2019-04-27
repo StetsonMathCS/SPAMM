@@ -17,6 +17,17 @@ Player::Player(string name, string desc, int id) {
     playerID = id;
 }
 
+set<Item*> Player::dropItem(string name) {
+    set<Item*>::const_iterator p;
+    set<Item*> newInventoryState;
+    for (p = inventory.begin(); *p != NULL; p++){
+        if (!((*p)->getName() == name)) {
+            newInventoryState.insert(*p);    
+        }
+    }
+    return newInventoryState;
+}
+
 void Player::setRoom(Room* r) {
     room = r;
 }
