@@ -1,5 +1,6 @@
 #include "game_server.h"
 //#include "action_parser.h"
+#include "edit_parser.h"
 #include "player.h"
 #include "build_speak_parser.h"
 #include "common.h"
@@ -16,8 +17,9 @@ int logOnFunction(string,string);
 int newUserFunction(string,string);
 
 void parseInput(int playerId, string input) {
-//    ActionParser::handleInput(playerId, input);
+//  ActionParser::handleInput(playerId, input);
     BuildParser::handleInput(playerId, input);
+    EditParser::handleeditInput(playerId, input);
 }
 
 int main() {

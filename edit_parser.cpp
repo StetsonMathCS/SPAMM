@@ -38,10 +38,6 @@ void EditParser::handleeditInput(int id,  string command)
     bool running = true;
     while(running == true)
     {
-
-
-        getline( cin, input);
-
         if(input == "commands")
         {
             // HELP
@@ -217,6 +213,7 @@ void EditParser::handleeditInput(int id,  string command)
             else
             {
                  server->printToUser(id, "command not recognized try again");
+                 break;
             }
         }
     }
