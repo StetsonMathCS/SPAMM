@@ -12,7 +12,7 @@ class ActionParser {
 
     public:
 
-        static void handleInput(int, std::string);
+        static void handleInput(Player*, std::string);
 
 };
 

@@ -1,5 +1,6 @@
 #include<iostream>
 #include<sstream>
+#include "database.h"
 #include "common.h"
 #include "game_server.h"
 #include "build_speak_parser.h"
@@ -9,7 +10,7 @@ using namespace std;
 /*
 Pass in a command to realize(Only print for now).
 */
-void BuildParser::handleInput(int id, string command)
+void BuildParser::handleInput(Player *p, string command)
 {	
 
     //command patterns
@@ -39,11 +40,11 @@ void BuildParser::handleInput(int id, string command)
 
             ostringstream os1;
             os1 << "You created a room: " << name;
-            server->printToUser (id, os1.str());
+            server->printToUser (p, os1.str());
 
             ostringstream os2;
             os2 << "Description for this room: " << description;
-            server->printToUser (id, os2.str());
+            server->printToUser (p, os2.str());
         }
         else if (m[1] == "item") {
 
@@ -61,11 +62,11 @@ void BuildParser::handleInput(int id, string command)
                 os1 << "You created an Item: " <<  name;
                 os2 <<  "Description for this item: " << description;
 
-                server->printToUser(id, os1.str());
-                server->printToUser(id, os2.str());
+                server->printToUser(p, os1.str());
+                server->printToUser(p, os2.str());
             }
             else {
-                server->printToUser(id, "Your bag is full!");
+                server->printToUser(p, "Your bag is full!");
             }
         }
 
@@ -84,10 +85,10 @@ void BuildParser::handleInput(int id, string command)
             db->findRoomByName(room)->addItemToFloor(db->findItemByName(item));
             ostringstream os;
             os << "You put item " <<  item <<  " into room " <<  room; 
-            server->printToUser(id, os.str());
+            server->printToUser(p, os.str());
 
         }else{
-            server->printToUser(id, "There is no such item or room");
+            server->printToUser(p, "There is no such item or room");
         }
     }
 
@@ -100,17 +101,17 @@ void BuildParser::handleInput(int id, string command)
         string dir = m[3];
         
         if(dir != "north" || dir != "south" || dir != "east" || dir != "west"){
-            server->printToUser(id, "Please enter a valid direction(north, east, south, west)");
+            server->printToUser(p, "Please enter a valid direction(north, east, south, west)");
         }else{
             if(db->findRoomByName(room1) != NULL && db->findRoomByName(room2) != NULL){
-                db->findRoomByName(room1)->setAdjacent(dir, room2);
+                db->findRoomByName(room1)->setAdjacent(dir, db->findRoomByName(room2));
                 ostringstream os;
                 os <<"You connected room " <<  room1 <<  " and room " <<  room2 <<  " via " <<  dir;
 
-                server->printToUser(id, os.str());
+                server->printToUser(p, os.str());
 
             }else{
-                server->printToUser(id, "Room doesn't exit!");   
+                server->printToUser(p, "Room doesn't exit!");   
             }
 
         }
@@ -126,7 +127,7 @@ void BuildParser::handleInput(int id, string command)
         //TODO: Display the message
         ostringstream os;
         os<<  "Player: " << id << " said: " <<  message; 
-        server->printToUser(id, os.str());
+        server->printToUser(p, os.str());
     }
 
     //tell command
@@ -139,8 +140,8 @@ void BuildParser::handleInput(int id, string command)
         ostringstream os1,os2;
         os1<< "Player: "<< id << " sent a message to " << m[1] << ": "; 
 
-        server->printToUser(id, os1.str());
-        server->printToUser(id, messages);
+        server->printToUser(p, os1.str());
+        server->printToUser(p, messages);
     }
 
     */

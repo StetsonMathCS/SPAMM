@@ -1,5 +1,5 @@
 #include "game_server.h"
-//#include "action_parser.h"
+#include "action_parser.h"
 #include "edit_parser.h"
 #include "player.h"
 #include "build_speak_parser.h"
@@ -16,24 +16,14 @@ using namespace std;
 int logOnFunction(string,string);
 int newUserFunction(string,string);
 
-void parseInput(int playerId, string input) {
-//  ActionParser::handleInput(playerId, input);
-    BuildParser::handleInput(playerId, input);
-    EditParser::handleeditInput(playerId, input);
+void parseInput(Player *p, string input) {
+    ActionParser::handleInput(p, input);
+    BuildParser::handleInput(p, input);
+    EditParser::handleeditInput(p, input);
 }
 
 int main() {
-//    db = new Database();
-    // TODO: REMOVE
-    //
-    Player *p1 = new Player;
-    Player *p2 = new Player;
-    //parser.handleInput(p1);
-    delete p1;
-    
-
-
-	
+    db = new Database();
 	//Instantiate a Game server on the defualt port 2323
 	server = new GameServer();
 	//Instantiate a Game server on a specific port 

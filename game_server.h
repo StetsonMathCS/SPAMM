@@ -16,11 +16,14 @@
 #include <cstring>
 #include <unistd.h>
 #include <string>
+class Player;
 struct user_data{
 	// Name of the user
 	char *name;
 	//ID of the user, will only be set on a sucessful log on
 	int id;
+    //Player pointer
+    Player *player;
     //Stores the state of the player log on sequence
     int state;
 	//Each user has a socket that is their network connection
@@ -51,14 +54,14 @@ class GameServer {
 		GameServer(int portNumber);
 		GameServer();
 		//This function is called whenever a user enters a string, the int is the users id
-		void setCallBackFunction(void (*f)(int, std::string));
+		void setCallBackFunction(void (*f)(Player*, std::string));
 		//Function that will validate the user's log on information, returns -1 if invalid, else return their id
 		void setLogOnFunction(int (*f)(std::string, std::string));
         void setCreateNewUserFunction(int (*f)(std::string, std::string));
 		int getPortNumber() const;
 		void start();
-		void printToUser(int, std::string);
-        void printToUsers(std::vector<int>, std::string);
+		void printToUser(Player*, std::string);
+        void printToUsers(std::vector<Player*>, std::string);
         void broadcast(std::string);
 };
 #endif

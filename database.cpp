@@ -10,7 +10,8 @@ using namespace std;
 
 Database::Database(){ 
     context = redisConnect("localhost",6379); 
-    lastid=stoi(read(to_string(-100)));
+    //lastid=read("lastid");
+    lastid = -1;
     // TODO: load all items, players, and rooms into vectors
 } 
 
@@ -73,9 +74,8 @@ Player* Database::findPlayerByName(string name) {
         if(players[i]->getUsername() == name) {
             return players[i];
         }
-
-        return NULL;
     }
+    return NULL;
 }
 
 Item* Database::findItemByName(string name) {
@@ -83,9 +83,8 @@ Item* Database::findItemByName(string name) {
         if(items[i]->getName() == name) {
             return items[i];
         }
-
-        return NULL;
     }
+    return NULL;
 }
 
 Room* Database::findRoomByName(string name) {

@@ -6,7 +6,7 @@
 
 using namespace std;
 
-void EditParser::handleeditInput(int id,  string command)
+void EditParser::handleeditInput(Player *p,  string command)
 {
     //
     //    /setdesc <roomname> "description"
@@ -41,11 +41,11 @@ void EditParser::handleeditInput(int id,  string command)
         if(input == "commands")
         {
             // HELP
-             server->printToUser(id,  "Avalible commands: \n \n");
-             server->printToUser(id,  "To set/change room description - /setdesc <roomname> \"description\"");
-             server->printToUser(id,  "To require an item to enter a room - /setreq <itemname> <roomname>");
-             server->printToUser(id,  "To requre an item to stay in room otherwise moved - /setreqmove <roomname> <itemname> <newroomname>");
-             server->printToUser(id,  "To set a chance teleportation - /setchance <roomname> <chance%> <newroomname> \n \n");
+             server->printToUser(p,  "Avalible commands: \n \n");
+             server->printToUser(p,  "To set/change room description - /setdesc <roomname> \"description\"");
+             server->printToUser(p,  "To require an item to enter a room - /setreq <itemname> <roomname>");
+             server->printToUser(p,  "To requre an item to stay in room otherwise moved - /setreqmove <roomname> <itemname> <newroomname>");
+             server->printToUser(p,  "To set a chance teleportation - /setchance <roomname> <chance%> <newroomname> \n \n");
         }
         else if(input == "quit")
         {
@@ -65,7 +65,7 @@ void EditParser::handleeditInput(int id,  string command)
             
                 if(rooms.find(roomname) == rooms.end())
                 {
-                    server->printToUser(id, "Room not found");
+                    server->printToUser(p, "Room not found");
                     break;
                 }
                 else
@@ -77,9 +77,9 @@ void EditParser::handleeditInput(int id,  string command)
                     input.erase(0, input.find(delimiterQuote) + delimiterQuote.length());  
                     
                     //this->setDesc(roomname, description);
-                    //server->printToUser(id, "\n -- The Room " + roomname +"'s description was set to "); 
+                    //server->printToUser(p, "\n -- The Room " + roomname +"'s description was set to "); 
 
-                    server->printToUser(id, "WIP");
+                    server->printToUser(p, "WIP");
 
                 }
             }
@@ -92,7 +92,7 @@ void EditParser::handleeditInput(int id,  string command)
                 
                 if(items.find(itemname) == items.end())
                 {
-                    server->printToUser(id, "Item not found");
+                    server->printToUser(p, "Item not found");
                     break;
                 }
                 else
@@ -103,14 +103,14 @@ void EditParser::handleeditInput(int id,  string command)
                 
                     if(rooms.find(roomname) == rooms.end())
                     {
-                        server->printToUser(id, "Room not found");
+                        server->printToUser(p, "Room not found");
                         break;
                     }
                     else
                     {
                         //setReq(itemname, roomname);
-                        //server->printToUser(id, "Required item: " + itemname + " set for room: ");
-                        server->printToUser(id, "WIP");
+                        //server->printToUser(p, "Required item: " + itemname + " set for room: ");
+                        server->printToUser(p, "WIP");
                     }
                     
                 }
@@ -124,7 +124,7 @@ void EditParser::handleeditInput(int id,  string command)
                 
                     if(rooms.find(oldroom) == rooms.end())
                     {
-                        server->printToUser(id, "Room not found");
+                        server->printToUser(p, "Room not found");
                         break;
                     }
                     else
@@ -135,7 +135,7 @@ void EditParser::handleeditInput(int id,  string command)
                         
                         if(items.find(itemname) == items.end())
                         {
-                            server->printToUser(id, "Item not found");
+                            server->printToUser(p, "Item not found");
                             break;
                         }
                         else
@@ -147,15 +147,15 @@ void EditParser::handleeditInput(int id,  string command)
                         
                             if(rooms.find(newroom) == rooms.end())
                             {
-                                server->printToUser(id, "Room not found");
+                                server->printToUser(p, "Room not found");
                                 break;
                             }
                             else
                             {
                                 //setreqMove(oldroom, itemname, newroom)
-                                //server->printToUser(id, "Item: " + itemname + " requirement was set to " + roomname + " and will teleport you to " + newroomname);
+                                //server->printToUser(p, "Item: " + itemname + " requirement was set to " + roomname + " and will teleport you to " + newroomname);
                             
-                                server->printToUser(id, "WIP");
+                                server->printToUser(p, "WIP");
                             }
                         }
                                    
@@ -171,7 +171,7 @@ void EditParser::handleeditInput(int id,  string command)
                 
                     if(rooms.find(roomname) == rooms.end())
                     {
-                        server->printToUser(id, "Room not found");
+                        server->printToUser(p, "Room not found");
                         break;
                     }
                     else
@@ -181,7 +181,7 @@ void EditParser::handleeditInput(int id,  string command)
                         double chance = stod(percentchance);
                         if(chance < 0 && chance > 100)
                         {
-                            server->printToUser(id, "Chance not within parameters");
+                            server->printToUser(p, "Chance not within parameters");
                             break;
                         }
                         else
@@ -193,16 +193,16 @@ void EditParser::handleeditInput(int id,  string command)
                         
                             if(rooms.find(roomname) == rooms.end())
                             {
-                                server->printToUser(id, "Room not found");
+                                server->printToUser(p, "Room not found");
                                 break;
                             }
                             else
                             {
                                 //setChance(roomname, chance, newroomname) 
                                
-                                server->printToUser(id, "WIP");
+                                server->printToUser(p, "WIP");
                                 
-                                //server->printToUser(id, ("In the room " + roomname + " There is now a " + chance + " % that a player will be teleported to " + newroomname + " if entered");
+                                //server->printToUser(p, ("In the room " + roomname + " There is now a " + chance + " % that a player will be teleported to " + newroomname + " if entered");
                             }
                         }
                                    
@@ -212,7 +212,7 @@ void EditParser::handleeditInput(int id,  string command)
             }
             else
             {
-                 server->printToUser(id, "command not recognized try again");
+                 server->printToUser(p, "command not recognized try again");
                  break;
             }
         }

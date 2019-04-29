@@ -1,13 +1,14 @@
 #include "game_server.h"
 #include "common.h"
+#include "player.h"
+#include "database.h"
 #include <iostream>
 #include <cstring>
 
 using namespace std;
 
-
 //TODO - Is there a better way to do the call back function?
-static void (*cbs)(int, string);
+static void (*cbs)(Player*, string);
 static int (*logOnCheck)(string,string);
 static int (*createNewUser)(string,string);
 /* The ststic type in C tells the compiler that the function should not be accesible outside of this .cpp file
@@ -67,7 +68,7 @@ static void _online(const char *line, size_t overflow, void *ud) {
 			telnet_printf(user->telnet, "Invalid option \nPlease enter an option (n for new account, l for log on) > ");
 		}
 		return;
-    //User is traing to create an account
+    //User is trying to create an account
 	} else if(user->state == 0) {
         if(user->name == NULL) {
             if(strcmp(line, "") == 0){
@@ -128,6 +129,13 @@ static void _online(const char *line, size_t overflow, void *ud) {
             } else {
                 user->id = userId;
                 //User is logged on, out of authentication state
+                //Get Player*
+                user->player = db->findPlayerByName(string(user->name));
+                if(user->player == NULL) {
+                    telnet_printf(user->telnet, "This shouldn't happen. Consult your system administrator.");
+                    return;
+                }
+                    
                 user->state = 2;
                 //Display Welcome Message
             telnet_printf(user->telnet,"//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////\n//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////\n//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////\n/////////#&@@@&(///////////////////&@@@@%%///////////////////#&@@@@%%//////////////////#%%#(////////(##////////////////(%%#(////////(#%%(//////\n///////@@&/////@@&//////////////(@@(////#@@///////////////@@%%/////#@@///////////////@@%%#@@/////&@&(@@///////////////@@(@@/////(@@(@@//////\n///////@@///////@@//////////////@@(//////%%@%%/////////////#@&///////#@&//////////////@@//&@(////@@//@@///////////////@@/(@&////@@//@@//////\n///////@@///////////////////////@@(//////%%@%%/////////////#@&///////#@&//////////////@@///@@///&@(//@@///////////////@@//@@///(@&//@@//////\n///////@@&//////////////////////@@(//////%%@%%/////////////#@&///////#@&//////////////@@///&@(//@@///@@///////////////@@//(@&//@@///@@//////\n/////////#@@@@@@%%///////////////@@(((((%%@@@//////////////#@@%%%%%%%%%%%%%%&@&//////////////@@////@@/%%@(///@@///////////////@@///@@/(@&///@@//////\n////////////////@@//////////////@@((###(/////////////////#@&(((((((%%@&//////////////@@////%%@(@@////@@///////////////@@///(@&@@////@@//////\n//////(&(///////@@(/////////////@@(//////////////////////#@&///////#@&//////////////@@/////@@@(////@@///////////////@@////@@@&////@@//////\n//////%%@%%///////@@(/////////////@@(//////////////////////#@&///////#@&//////////////@@/////%%@@/////@@///////////////@@////(@@/////@@//////\n///////&@@@@@@@@@#//////////////@@(//////////////////////#@&///////#@&//////////////@@/////////////@@///////////////@@////////////@@//////\n//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////\n//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////\n//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////\n");
@@ -171,7 +179,7 @@ static void _online(const char *line, size_t overflow, void *ud) {
 	}
 	//If its not a log on or a quit command, pass it to the callback function for the game to figure out how to process it
 
-	cbs(user->id, line);
+	cbs(user->player, line);
     //Print the prompt for user input
     telnet_printf(user->telnet, "> ");
 }
@@ -323,9 +331,10 @@ void GameServer::start() {
 	pfd[MAX_PLAYERS].events = POLLIN;
 	//Loop through and set all users sockets to -1 and their id to -1
 	for(i = 0; i != MAX_PLAYERS; ++i){
-		users[i].sock  = -1;
-		users[i].id    = -1;
-        users[i].state = -1;
+		users[i].sock   = -1;
+		users[i].id     = -1;
+        users[i].player = NULL;
+        users[i].state  = -1;
 	}
 
 	//Loop forever and handle input
@@ -411,21 +420,21 @@ void GameServer::start() {
 	}
 }
 
-void GameServer::setCallBackFunction(void (*f)(int,string)){
+void GameServer::setCallBackFunction(void (*f)(Player*,string)){
 	cbs = f; 
 }
 void GameServer::setLogOnFunction(int (*f) (string,string)){
 	logOnCheck = f; 
 }
-void GameServer::printToUser(int userId, string message){
+void GameServer::printToUser(Player *p, string message){
 	int i ;
 	message +=  "\n";
 	for(i = 0; i != MAX_PLAYERS; ++i)
-		if(users[i].id == userId)
+		if(users[i].player == p)
 			break;
 	telnet_printf(users[i].telnet, message.c_str());
 }
-void GameServer::printToUsers(vector<int> players, string message){
+void GameServer::printToUsers(vector<Player*> players, string message){
     for(unsigned int i = 0; i < players.size(); ++i)
        printToUser(players[i], message);
 }
