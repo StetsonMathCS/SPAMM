@@ -1,4 +1,4 @@
-CXX=g++ -Wall -std=c++11 -ltelnet -lhiredis -ljsoncpp -I/usr/include/hiredis
+CXX=g++ -Wall -g -std=c++11 -ltelnet -lhiredis -ljsoncpp -I/usr/include/hiredis
 
 src = $(wildcard *.cpp)
 obj = $(src:.cpp=.o)
