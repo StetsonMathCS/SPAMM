@@ -1,6 +1,7 @@
 #include <iostream>
 #include "room.h"
 #include "common.h"
+#include "database.h"
 
 using namespace std;
 
@@ -8,6 +9,15 @@ Room::Room(string t, string d){
     title = t;
     desc = d;
     roomId = -1;
+}
+
+void Room::save(){
+    string temp;
+    if(roomId == -1){
+        roomId == db->lastid;
+        db->write(to_string(roomId),temp);
+        db->increment_lastid();
+    }
 }
 
 string Room::getTitle() const {

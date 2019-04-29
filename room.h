@@ -16,6 +16,7 @@ class Room {
         std::set<Item*> floor;
         int roomId;
     public:
+        void save();
         Room(std::string, std::string);
         std::string getTitle() const;
         std::string getDesc() const;

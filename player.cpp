@@ -4,6 +4,7 @@
 #include <iterator>
 #include <iostream>
 #include "common.h"
+#include "database.h"
 
 using namespace std;
 
@@ -16,6 +17,15 @@ Player::Player(string name, string desc, int id) {
     username = name;
     description = desc;
     playerID = id;
+}
+
+void Player::save(){
+    string temp;
+    if(playerID == -1){
+        playerID == db->lastid;
+        db->write(to_string(playerID),temp);
+        db->increment_lastid();
+    }
 }
 
 set<Item*> Player::dropItem(string name) {

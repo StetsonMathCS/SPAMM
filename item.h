@@ -27,6 +27,6 @@ class Item
 	void setOwner(string);
 	void setType(ITEM_TYPE);
     void setItemId(int);
-    void save(int id); //writes item to redis
+    void save(); //writes item to redis
 };
 #endif

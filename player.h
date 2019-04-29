@@ -21,6 +21,7 @@ class Player {
         std::set<Item*> inventory; 
         bool canBuild;
     public:
+        void save();
         Player();
         Player(std::string, std::string, int);
         void setRoom(Room*);

@@ -13,12 +13,16 @@ Item::Item(string n, string d, string o, ITEM_TYPE t) : name(n), desc(d), owner(
     itemId = -1;
 }
 
-void Item::save(int id)
+void Item::save()
 {
     //Have a list of the data, new lines should make it easier to read and load later
+    
+    if(itemId == -1){
+    itemId == db->lastid;
     string temp = "name:"+getName()+"\n"+"desc:"+getDesc()+"\n"+"owner:"+getOwner()+"\n"+"type:"+to_string(getType());
-    db->write(to_string(id),temp); 
+    db->write(to_string(itemId),temp); 
     db->increment_lastid();
+    }
 }
 
 string Item::getName() const
