@@ -4,8 +4,11 @@
 
 using namespace std;
 
-Room::Room(string t, string d)
-    : title(t), desc(d) {}
+Room::Room(string t, string d){
+    title = t;
+    desc = d;
+    roomId = -1;
+}
 
 string Room::getTitle() const {
     return title;

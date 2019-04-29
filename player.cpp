@@ -12,6 +12,7 @@ Player::Player() {
 }
 
 Player::Player(string name, string desc, int id) {
+    id = -1;
     username = name;
     description = desc;
     playerID = id;

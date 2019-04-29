@@ -10,6 +10,7 @@ Item::Item(string n, string d, string o, ITEM_TYPE t) : name(n), desc(d), owner(
     desc = d;
     owner = o;
     type = t;
+    itemId = -1;
 }
 
 void Item::save(int id)
