@@ -14,10 +14,10 @@ void BuildParser::handleInput(int id, string command)
 
     //command patterns
     regex createPattern1 ("create (.+) called (.+) and described by (.*)");
-    regex createPattern2 ("create (.+) (.+)");
+    //regex createPattern2 ("create (.+) (.+)");
     regex connectPattern  ("connect room (.+) to (.+) via (.+)");
-    regex sayPattern  ("say (.*)");
-    regex tellPattern  ("tell user (.+): (.*)");
+    //regex sayPattern  ("say (.*)");
+    //regex tellPattern  ("tell user (.+): (.*)");
     regex putPattern  ("put item (.+) in room (.+)");
 
     smatch m;
@@ -33,8 +33,10 @@ void BuildParser::handleInput(int id, string command)
 
         if (m[1] == "room") {
 
-            // TODO: Create a room 
-           // tempRoom = new Room(name, description);
+             
+            Room* tempR = new Room(name, description);
+            //tempR->save();
+
             ostringstream os1;
             os1 << "You created a room: " << name;
             server->printToUser (id, os1.str());
@@ -45,10 +47,16 @@ void BuildParser::handleInput(int id, string command)
         }
         else if (m[1] == "item") {
 
-         //   tempItem = new Item(name, description);
             //TODO: Put item in player's inventory. 
             //		When reaching the limit, drop item to the player's room.
+           
+           //Build condition should be check before creating
+           //Need findPlayerById Funtion
             if (true) {
+                //Need Owner
+                //Item* tempI = new Item(name, description);
+                //tempI.save();
+
                 ostringstream os1, os2;
                 os1 << "You created an Item: " <<  name;
                 os2 <<  "Description for this item: " << description;
@@ -62,49 +70,7 @@ void BuildParser::handleInput(int id, string command)
         }
 
     }
-    /*
-    else if (regex_match(command, m, createPattern2)) {
-        string name = m[2];
-        string description;
-
-        if (m[1] == "room") {
-            server->printToUser   "You are going to creat a room: "   name   endl;
-            server->printToUser   "Please describe it: "   endl;
-            server->printToUser   "> ";
-            getline(cin, description);
-
-            //TODO: create a room
-            tempRoom = new Room(name, description);
-
-
-            server->printToUser   "You created a room: "   name   endl;
-            server->printToUser   "Description: "   description   endl;
-            return true;
-        }
-        else if (m[1] == "item") {
-            server->printToUser   "You are going to creat an item: "   name   endl;
-            server->printToUser   "Please describe it: "   endl;
-            server->printToUser   "> " ;
-            getline(cin, description);
-
-            //TODO: Put item in player's inventory. 
-            //		When reaching the limit, drop item to the player's room.
-            tempItem = new Item(name, description);
-            if (myPlayer->getCanBuild() != false) {
-                myPlayer->addItemToInventory(tempItem);
-                server->printToUser   "You created an Item: "   name   endl;
-                server->printToUser   "Description for this item: "   description   endl;
-                server->printToUser   "Item added to player: "   myPlayer->getUsername()   endl;
-            }
-            else {
-                myPlayer->getRoom()->addItemToFloor(tempItem);
-                server->printToUser   "Your bag is full! Item will be droped to the floor."   endl;
-                server->printToUser   "You created an Item: "   name   endl;
-                server->printToUser   "Description for this item: "   description   endl;
-            }
-            return true;
-        }
-    }*/
+   
 
     //Put item command
     //Format: put item X in room Y
@@ -113,11 +79,16 @@ void BuildParser::handleInput(int id, string command)
         string item = m[1];
         string room = m[2];
 
-        //TODO: Put the item into the room
-        ostringstream os;
-        os << "You put item " <<  item <<  " into room " <<  room; 
+        //Add item to room and print
+        if(db->findItemByName(item) != NULL && db->findRoomByName(room) != NULL){
+            db->findRoomByName(room)->addItemToFloor(db->findItemByName(item));
+            ostringstream os;
+            os << "You put item " <<  item <<  " into room " <<  room; 
+            server->printToUser(id, os.str());
 
-        server->printToUser(id, os.str());
+        }else{
+            server->printToUser(id, "There is no such item or room");
+        }
     }
 
     //Connect command
@@ -127,15 +98,25 @@ void BuildParser::handleInput(int id, string command)
         string room1 = m[1];
         string room2 = m[2];
         string dir = m[3];
-
-        //TODO: connect the rooms
         
-        ostringstream os;
-        os <<"You connected room " <<  room1 <<  " and room " <<  room2 <<  " via " <<  dir;
+        if(dir != "north" || dir != "south" || dir != "east" || dir != "west"){
+            server->printToUser(id, "Please enter a valid direction(north, east, south, west)");
+        }else{
+            if(db->findRoomByName(room1) != NULL && db->findRoomByName(room2) != NULL){
+                db->findRoomByName(room1)->setAdjacent(dir, room2);
+                ostringstream os;
+                os <<"You connected room " <<  room1 <<  " and room " <<  room2 <<  " via " <<  dir;
 
-        server->printToUser(id, os.str());
+                server->printToUser(id, os.str());
+
+            }else{
+                server->printToUser(id, "Room doesn't exit!");   
+            }
+
+        }
     }
-
+    
+    /*
     //Say command
     //Format: say X
     if (regex_match(command, m, sayPattern)) {
@@ -161,5 +142,7 @@ void BuildParser::handleInput(int id, string command)
         server->printToUser(id, os1.str());
         server->printToUser(id, messages);
     }
+
+    */
 }
 
