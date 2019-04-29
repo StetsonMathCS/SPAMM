@@ -15,18 +15,24 @@ void BuildParser::handleInput(Player *p, string command)
 
     //command patterns
     regex createPattern1 ("create (.+) called (.+) and described by (.*)");
-    //regex createPattern2 ("create (.+) (.+)");
     regex connectPattern  ("connect room (.+) to (.+) via (.+)");
-    //regex sayPattern  ("say (.*)");
-    //regex tellPattern  ("tell user (.+): (.*)");
     regex putPattern  ("put item (.+) in room (.+)");
+    regex setItemTypePattern ("set item (.+) (.+)");
+    
 
     smatch m;
     
+    if(command == "help"){
+        server->printToUser(p,  "Avalible commands: \n \n");
+        server->printToUser(p,  "To create a room/item(will be unique by default) - create room/item called <name> and described by <description>");
+        server->printToUser(p,  "To connect rooms - connect room <roomname> to <roomname> via (south, north, west, east)");
+        server->printToUser(p,  "To put item - put item <itemname> in room <roomname>");
+        server->printToUser(p,  "To set item type - set item <itemname> (unique, perplayer)");
+    }
+
 
     //Creation commands(items and rooms):
     //Format 1: create room/item called X and described by Y
-    //Format 2: create room/item X (describtion will be typed later)
     if (regex_match(command, m ,createPattern1)) {
 
         string name = m[2];
@@ -34,9 +40,9 @@ void BuildParser::handleInput(Player *p, string command)
 
         if (m[1] == "room") {
 
-             
+
             Room* tempR = new Room(name, description);
-            //tempR->save();
+            tempR->save();
 
             ostringstream os1;
             os1 << "You created a room: " << name;
@@ -50,13 +56,10 @@ void BuildParser::handleInput(Player *p, string command)
 
             //TODO: Put item in player's inventory. 
             //		When reaching the limit, drop item to the player's room.
-           
-           //Build condition should be check before creating
-           //Need findPlayerById Funtion
-            if (true) {
-                //Need Owner
-                //Item* tempI = new Item(name, description);
-                //tempI.save();
+
+            if (p->getCanBuild()== true) {
+                Item* tempI = new Item(name, description, p->getUsername(), UNIQUE);
+                tempI->save();
 
                 ostringstream os1, os2;
                 os1 << "You created an Item: " <<  name;
@@ -66,12 +69,12 @@ void BuildParser::handleInput(Player *p, string command)
                 server->printToUser(p, os2.str());
             }
             else {
-                server->printToUser(p, "Your bag is full!");
+                server->printToUser(p, "You cannot build for now!");
             }
         }
 
     }
-   
+
 
     //Put item command
     //Format: put item X in room Y
@@ -99,7 +102,7 @@ void BuildParser::handleInput(Player *p, string command)
         string room1 = m[1];
         string room2 = m[2];
         string dir = m[3];
-        
+
         if(dir != "north" || dir != "south" || dir != "east" || dir != "west"){
             server->printToUser(p, "Please enter a valid direction(north, east, south, west)");
         }else{
@@ -111,39 +114,41 @@ void BuildParser::handleInput(Player *p, string command)
                 server->printToUser(p, os.str());
 
             }else{
-                server->printToUser(p, "Room doesn't exit!");   
+                server->printToUser(p, "Room doesn't exist!");   
             }
 
         }
     }
-    
-    /*
-    //Say command
-    //Format: say X
-    if (regex_match(command, m, sayPattern)) {
 
-        string message = m[1];
+    if(regex_match(command, m, setItemTypePattern)){
+        string item = m[1];
+        string type = m[2];
+        ITEM_TYPE t;
 
-        //TODO: Display the message
-        ostringstream os;
-        os<<  "Player: " << id << " said: " <<  message; 
-        server->printToUser(p, os.str());
+        if(type == "unique"){
+            t = UNIQUE;
+        }else if(type == "perplayer"){
+            t = PERPLAYER;
+        }else{
+            server->printToUser(p, "Please enter a valid item type(unique,perplayer)");
+            return;
+        }
+
+        if(db->findItemByName(item) != NULL){
+            if(db->findItemByName(item)->getType() == t){
+                ostringstream os;
+                os << "It's already "<< type << "!";
+                server->printToUser(p, os.str());
+            }else{
+                db->findItemByName(item)->setType(t);
+                ostringstream os;
+                os << "You set the type: " << type;
+                server->printToUser(p,os.str()); 
+            } 
+        }else{
+            server->printToUser(p,"No such item!");
+        }
     }
 
-    //tell command
-    //Format: tell user NAME: XYZ
-    if (regex_match(command, m, tellPattern)) {
-        string user = m[1];
-        string messages = m[2];
-
-        //TODO: Display the message to sent user
-        ostringstream os1,os2;
-        os1<< "Player: "<< id << " sent a message to " << m[1] << ": "; 
-
-        server->printToUser(p, os1.str());
-        server->printToUser(p, messages);
-    }
-
-    */
 }
 
