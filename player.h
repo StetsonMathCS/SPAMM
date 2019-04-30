@@ -26,7 +26,7 @@ class Player {
         Player(std::string, std::string, int);
         void setRoom(Room*);
         Room* getRoom() const;
-        void listInventory() const;
+        set<Item*> getInventory() const;
         void addItemToInventory(Item*);
         Item* findItemInInventory(std::string) const;
         bool isItemInInventory(std::string);
@@ -42,10 +42,10 @@ class Player {
         std::string getPassword() const;
         void setDescription(std::string);
         std::string getDescription() const;
-	    void setID(int);
-	    int getID() const;
+	void setID(int);
+	int getID() const;
         std::set< Item*> dropItem(std::string);
-	    //bool connected() const;
+	//bool connected() const;
 };
 
 #endif

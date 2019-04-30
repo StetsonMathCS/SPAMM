@@ -47,12 +47,13 @@ Room* Player::getRoom() const {
      return room;
 }
 
-void Player::listInventory() const {
-    set<Item*>::const_iterator p;
+set<Item*> Player::getInventory() const {
+    /*set<Item*>::const_iterator p;
     cout << "\nInventory: " << endl;
     for (p = inventory.begin(); *p != NULL; p++){
         cout << (*p)->getName() << endl;
-    }
+    }*/
+    return inventory;
 }
 
 void Player::addItemToInventory(Item* item) {
