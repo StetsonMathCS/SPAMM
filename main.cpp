@@ -5,7 +5,8 @@
 #include "build_speak_parser.h"
 #include "common.h"
 #include "database.h"
-#include<iostream>
+#include <iostream>
+#include <csignal>
 
 GameServer *server;
 Database *db;
@@ -15,6 +16,9 @@ using namespace std;
 //Functions that will be called when user enters information
 int logOnFunction(string,string);
 int newUserFunction(string,string);
+
+//Signal handling
+void exitHandler(int);
 
 void parseInput(Player *p, string input) {
     ActionParser::handleInput(p, input);
@@ -36,14 +40,22 @@ int main() {
 	//When a user enters a line, this function is called to handle the parsing and response generation
 	server->setCallBackFunction(parseInput);
     server->setCreateNewUserFunction(newUserFunction);
+    //Register signal handling
+    signal(SIGINT, exitHandler);
 
 	//Start the server
 	server->start();
-	
     delete db;
     return 0;
 }
 
+void exitHandler(int signal) {
+    cout << "A signal has been raised" << endl;
+    //Close connections and free memory
+
+    //exit sucessfully
+   exit(0);
+}
 int logOnFunction(string username, string password) {
 	bool isCorrect = (username == "Username" && password == "Password");
 
