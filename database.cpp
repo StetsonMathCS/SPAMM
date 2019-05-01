@@ -115,7 +115,7 @@ Room * Database::read_lastid_room(int id){
    return r;
 }
 
-Player * Databse::read_lastid_player(int id){
+Player * Database::read_lastid_player(int id){
     Player * p = new Player("","",-1);
     string temp = read(to_string(id));
     istringstream data(temp);
