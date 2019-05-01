@@ -23,7 +23,7 @@ void Player::save(){
     string temp;
     if(playerID == -1){
         playerID = db->lastid;
-        temp = "username:"+getUsername()+"\n"+"desc:"+getDescription()+"\n";
+        temp = "player \n username:"+getUsername()+"\n"+"desc:"+getDescription()+"\n";
         db->write(to_string(playerID),temp);
         db->increment_lastid();
     }
