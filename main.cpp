@@ -54,6 +54,7 @@ void exitHandler(int signal) {
 	//Close connections and free memory
 
 	//exit sucessfully
+	exit(0);
 }
 int logOnFunction(string username, string password) {
 	bool isCorrect = (username == "Username" && password == "Password");
