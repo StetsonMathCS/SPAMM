@@ -30,6 +30,7 @@ class Database{
         std::string read(std::string) const;
         Item * read_lastid_item(int);
         Room * read_lastid_room(int);
+        Player * read_lastid_player(int);        
         void increment_lastid();
         Player * findPlayerByName(std::string);
         Item * findItemByName(std::string);

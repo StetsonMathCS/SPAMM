@@ -115,6 +115,32 @@ Room * Database::read_lastid_room(int id){
    return r;
 }
 
+Player * Databse::read_lastid_player(int id){
+    Player * p = new Player("","",-1);
+    string temp = read(to_string(id));
+    istringstream data(temp);
+    string username;
+    string description;
+    string password;
+    string line;
+
+    getline(data,line);
+    username = line;
+    cout << username << endl;
+    p->setUsername(username);
+    
+    getline(data,line);
+    description = line;
+    cout << description << endl;
+    p->setDescription(description);
+
+    getline(data,line);
+    password = line;
+    p->setPassword(password);
+
+    return p;
+}
+
 void Database::increment_lastid(){
     lastid++;
     write("lastid",to_string(lastid));
