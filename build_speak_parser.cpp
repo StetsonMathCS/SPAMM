@@ -14,7 +14,7 @@ void BuildParser::handleInput(Player *p, string command)
 {	
 
     //command patterns
-    regex createPattern1 ("create (.+) called (.+) and described by (.*)");
+    regex createPattern1 ("create (.+) (.+) desc (.*)");
     regex connectPattern  ("connect room (.+) to (.+) via (.+)");
     regex putPattern  ("put item (.+) in room (.+)");
     regex setItemTypePattern ("set item (.+) (.+)");
@@ -23,8 +23,8 @@ void BuildParser::handleInput(Player *p, string command)
     smatch m;
     
     if(command == "help"){
-        server->printToUser(p,  "Room building commands: \n \n");
-        server->printToUser(p,  "To create a room/item(will be unique by default) - create room/item called <name> and described by <description>");
+        server->printToUser(p,  "Room building commands: \n");
+        server->printToUser(p,  "To create a room/item(will be unique by default) - create (room/item) <name> desc <description>");
         server->printToUser(p,  "To connect rooms - connect room <roomname> to <roomname> via (south, north, west, east)");
         server->printToUser(p,  "To put item - put item <itemname> in room <roomname>");
         server->printToUser(p,  "To set item type - set item <itemname> (unique, perplayer)");
@@ -54,11 +54,9 @@ void BuildParser::handleInput(Player *p, string command)
         }
         else if (m[1] == "item") {
 
-            //TODO: Put item in player's inventory. 
-            //		When reaching the limit, drop item to the player's room.
-
-            if (p->getCanBuild()== true) {
-                Item* tempI = new Item(name, description, p->getUsername(), UNIQUE);
+           // need getCanBuild() working
+           // if (p->getCanBuild()== true) {
+                Item* tempI = new Item(name, description,"need getUsername() fixed", UNIQUE);
                 tempI->save();
 
                 ostringstream os1, os2;
@@ -67,10 +65,10 @@ void BuildParser::handleInput(Player *p, string command)
 
                 server->printToUser(p, os1.str());
                 server->printToUser(p, os2.str());
-            }
-            else {
-                server->printToUser(p, "You cannot build for now!");
-            }
+          //  }
+          //  else {
+          //      server->printToUser(p, "You cannot build for now!");
+          //  }
         }
 
     }
@@ -103,7 +101,7 @@ void BuildParser::handleInput(Player *p, string command)
         string room2 = m[2];
         string dir = m[3];
 
-        if(dir != "north" || dir != "south" || dir != "east" || dir != "west"){
+        if(dir != "north" && dir != "south" && dir != "east" && dir != "west"){
             server->printToUser(p, "Please enter a valid direction(north, east, south, west)");
         }else{
             if(db->findRoomByName(room1) != NULL && db->findRoomByName(room2) != NULL){
