@@ -42,10 +42,12 @@ class Player {
         std::string getPassword() const;
         void setDescription(std::string);
         std::string getDescription() const;
-	void setID(int);
-	int getID() const;
+	    void setID(int);
+    	int getID() const;
         std::set< Item*> dropItem(std::string);
 	//bool connected() const;
+        bool reqisPassed();
+
 };
 
 #endif

@@ -48,10 +48,14 @@ void ActionParser::handleInput(Player *p, string command)
                 //server->printToUser(p, output) << endl;
             } else
             {
+                if(p->getRoom()->roomhaveReq() && p->reqisPassed())
+                {
                 server->printToUser(p, "You're in container name");
                 server->printToUser(p, "container description");
                 //server->printToUser(p, output) << endl;
+                }       
             }
+
         } else
         {
             server->printToUser(p, "That's not a direction");

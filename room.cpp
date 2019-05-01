@@ -93,3 +93,8 @@ void Room::setChance(string oldRoom, double chance, string newroom)
 {
 
 }
+
+bool Room::roomhaveReq()
+{
+    return true;
+}

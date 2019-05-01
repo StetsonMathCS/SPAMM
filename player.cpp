@@ -135,6 +135,10 @@ int Player::getID() const {
     return playerID;
 }
 
+bool Player::reqisPassed()
+{
+    return true;
+}
 /*bool Player::connected() const {
     return true;
     //not needed as there is similar functionality in gameserver

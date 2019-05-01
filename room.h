@@ -31,6 +31,7 @@ class Room {
         void setDesc(std::string, std::string);
         void setreqMove(std::string, std::string, std::string);
         void setChance(std::string, double, std::string);
+        bool roomhaveReq();
 };
 
 #endif
