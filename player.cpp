@@ -22,10 +22,10 @@ Player::Player(string name, string desc, int id) {
 void Player::save(){
     string temp;
     if(playerID == -1){
+        db->increment_lastid();
         playerID = db->lastid;
         temp = "player \n username:"+getUsername()+"\n"+"desc:"+getDescription()+"\n";
         db->write(to_string(playerID),temp);
-        db->increment_lastid();
     }
 }
 

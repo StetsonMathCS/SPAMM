@@ -72,7 +72,9 @@ int newUserFunction(string username, string password) {
 	//Example that a username has been taken
 	if(username == "alreadyTaken")
 		return -1;
-	else
-		return 100;
-
+	else {
+        Player *p = new Player(username, password, -1);
+        p->save();
+        return p->getID();
+    }
 }

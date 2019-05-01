@@ -10,8 +10,12 @@ using namespace std;
 
 Database::Database(){ 
     context = redisConnect("localhost",6379); 
-    //lastid=read("lastid");
-    lastid = -1;
+    string lastid_str = read("lastid");
+    if(lastid_str == "")
+        lastid = -1;
+    else
+        lastid = stoi(lastid_str);
+    cout << "DB lastid = " << lastid << endl;
     // TODO: load all items, players, and rooms into vectors
 } 
 
@@ -26,6 +30,10 @@ void Database::write(string key, string value){
 string Database::read(string key) const{
     redisReply *reply;
     reply = (redisReply*) redisCommand(context,"GET %s", key.c_str());
+    if(reply->type == 4) {
+        return "";
+        freeReplyObject(reply);
+    }
     string s(reply->str);
     freeReplyObject(reply);
     return s;
@@ -66,7 +74,7 @@ Item *Database::read_lastid_item(int id){
 
 void Database::increment_lastid(){
     lastid++;
-    write(to_string(-100),to_string(lastid));
+    write("lastid",to_string(lastid));
 }
 
 Player* Database::findPlayerByName(string name) {
