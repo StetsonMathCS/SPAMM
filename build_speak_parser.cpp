@@ -23,7 +23,7 @@ void BuildParser::handleInput(Player *p, string command)
     smatch m;
     
     if(command == "help"){
-        server->printToUser(p,  "Avalible commands: \n \n");
+        server->printToUser(p,  "Room building commands: \n \n");
         server->printToUser(p,  "To create a room/item(will be unique by default) - create room/item called <name> and described by <description>");
         server->printToUser(p,  "To connect rooms - connect room <roomname> to <roomname> via (south, north, west, east)");
         server->printToUser(p,  "To put item - put item <itemname> in room <roomname>");
