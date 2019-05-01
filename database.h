@@ -28,11 +28,12 @@ class Database{
         //methods
         void write(std::string, std::string);
         std::string read(std::string) const;
-        Item *read_lastid_item(int);
+        Item * read_lastid_item(int);
+        Room * read_lastid_room(int);
         void increment_lastid();
-        Player* findPlayerByName(std::string);
-        Item* findItemByName(std::string);
-        Room* findRoomByName(std::string);
+        Player * findPlayerByName(std::string);
+        Item * findItemByName(std::string);
+        Room * findRoomByName(std::string);
 };
 
 #endif 

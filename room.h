@@ -17,6 +17,7 @@ class Room {
         int roomId;
     public:
         void save();
+        void setTitle(std::string t){title = t;}
         Room(std::string, std::string);
         std::string getTitle() const;
         std::string getDesc() const;

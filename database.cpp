@@ -39,7 +39,7 @@ string Database::read(string key) const{
     return s;
 }
 
-Item *Database::read_lastid_item(int id){
+Item * Database::read_lastid_item(int id){
     Item *i = new Item("","","",UNIQUE);
     string temp = read(to_string(id));
     istringstream data(temp);
@@ -71,6 +71,27 @@ Item *Database::read_lastid_item(int id){
     i->setType(PERPLAYER);
     return i;
 } 
+
+Room * Database::read_lastid_room(int id){
+    Room * r = new Room("","");
+    string temp = read(to_string(id));
+    istringstream data(temp);
+    string title;
+    string desc;
+    string line;
+
+    getline(data,line);
+    title = line;
+    cout << title << endl;
+    r->setTitle(title);
+   
+    getline(data,line);
+    desc = line;
+    cout << desc << endl;
+    r->setDesc(title,desc); 
+    
+   return r;
+}
 
 void Database::increment_lastid(){
     lastid++;
