@@ -335,6 +335,7 @@ void GameServer::start() {
 		users[i].id     = -1;
         users[i].player = NULL;
         users[i].state  = -1;
+        users[i].name   = NULL;
 	}
 
 	//Loop forever and handle input
