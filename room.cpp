@@ -14,7 +14,8 @@ Room::Room(string t, string d){
 void Room::save(){
     string temp;
     if(roomId == -1){
-        roomId == db->lastid;
+        roomId = db->lastid;
+        temp = "title:"+getTitle()+"\n"+"desc:"+getDesc()+"\n";
         db->write(to_string(roomId),temp);
         db->increment_lastid();
     }
