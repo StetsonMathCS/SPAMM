@@ -50,29 +50,36 @@ int main() {
 }
 
 void exitHandler(int signal) {
-	cout << "A signal has been raised" << endl;
+	cout << "\n Exiting..." << endl;
 	//Close connections and free memory
 
 	//exit sucessfully
 	exit(0);
 }
 int logOnFunction(string username, string password) {
-	bool isCorrect = (username == "Username" && password == "Password");
+    //The database stores a list of players in memory
+    //This functions loops through them and comapres the username and "desrcriptions" (passwords) of them
+	vector<Player*> players = db->getPlayers();
 
-	if(isCorrect)
-		//Example userID
-		return 100;
-	else
-		return -1;
+    for(int i = 0; i < players.size(); i++)
+        if(players[i]->getUsername() == username && players[i]->getDescription() == password) {
+            cout << "User " << username << " logged on " << endl;
+            return players[i]->getID();
+}
+    //If there was no sucessful log on return -1
+    return -1;
 }	
 
 int newUserFunction(string username, string password) {
 	//If the username is already taken then return -1 to indicate that there wasn't a new account created, else return a userId for the new user
 
 	//Example that a username has been taken
-	if(username == "alreadyTaken")
+	if(db->findPlayerByName(username) != NULL) {
+        cout << "User tried to create an account with username of " << username <<". It already exists" << endl;
 		return -1;
+    }
 	else {
+        cout << "User create account with name " << username << endl;
         Player *p = new Player(username, password, -1);
         p->save();
         return p->getID();

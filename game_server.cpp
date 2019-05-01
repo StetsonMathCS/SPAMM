@@ -168,6 +168,7 @@ static void _online(const char *line, size_t overflow, void *ud) {
 
 	/* if line is "quit" then, well, quit */
 	if (strcmp(line, "quit") == 0) {
+        cout << user->name << " logged off " << endl;
 		close(user->sock);
 		user->sock = -1;
 		//_message(user->name, "** HAS QUIT **");

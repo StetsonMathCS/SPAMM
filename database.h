@@ -34,6 +34,7 @@ class Database{
         Player * findPlayerByName(std::string);
         Item * findItemByName(std::string);
         Room * findRoomByName(std::string);
+        vector<Player*> getPlayers();
 };
 
 #endif 
