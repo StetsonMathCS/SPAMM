@@ -17,6 +17,28 @@ Database::Database(){
         lastid = stoi(lastid_str);
     cout << "DB lastid = " << lastid << endl;
     // TODO: load all items, players, and rooms into vectors
+    for(int i = 0; i <= lastid; ++i) {
+        string dataFromRedis = read(to_string(i));
+        //cout << "At index " << i << endl;
+        //If the first part of the string is player, then the object stored at that index is a player, parse and load a player
+        if(dataFromRedis.substr(0,6) == "player") {
+            string name, desc;
+            //WARNING -- If the way a player is stored gets change, this code will break
+            string descMarker = "\ndesc:";
+            
+            //The first char of the username is at index 18
+            //The last character is right before the "\ndesc:" part
+            name = dataFromRedis.substr(18, dataFromRedis.find(descMarker) - 18);
+            //cout << "LOADING DATA AND FOUND THIS NAME " << name << endl;
+            //The description is from the end of "\ndesc:" to 2 from the end of the string
+            desc = dataFromRedis.substr(dataFromRedis.find(descMarker) + descMarker.length());
+            desc = desc.substr(0, desc.length() - 1);
+            //cout << "LOADING THIS AS DESC " << desc << endl;
+            Player *tempPlayer = new Player(name, desc, i);
+            players.push_back(tempPlayer);
+        }
+        
+    }
 } 
 
 //Sets/writes a value to an assigned KEY using redisContext
