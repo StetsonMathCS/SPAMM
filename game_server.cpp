@@ -446,3 +446,6 @@ void GameServer::broadcast(std::string message) {
 void GameServer::setCreateNewUserFunction(int (*f)(string,string)) {
     createNewUser = f;
 }
+void GameServer::stop() {
+      
+}
