@@ -28,6 +28,14 @@ void parseInput(Player *p, string input) {
 
 int main() {
 	db = new Database();
+    
+    //DATABASE TEST CODE DELETE ME ----
+    string userKeys = db->getKeys("*");
+    string result = db->read("users:2");
+    cout << "userKeys " << userKeys << endl;
+    cout << "result" << result << endl;
+    return 0;
+    //----------------------------------
 	//Instantiate a Game server on the defualt port 2323
 	server = new GameServer();
 	//Instantiate a Game server on a specific port 
@@ -52,8 +60,9 @@ int main() {
 void exitHandler(int signal) {
 	cout << "A signal has been raised" << endl;
 	//Close connections and free memory
-
+	server->stop();
 	//exit sucessfully
+	exit(0);
 }
 int logOnFunction(string username, string password) {
 	bool isCorrect = (username == "Username" && password == "Password");

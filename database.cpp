@@ -30,6 +30,18 @@ string Database::read(string key) const{
     freeReplyObject(reply);
     return s;
 }
+//Find the keys that match the string
+string Database::getKeys(string key) const {
+    redisReply *reply;
+    string s;
+    reply = (redisReply*) redisCommand(context,"KEYS %s", key.c_str());
+    if(reply->str != NULL) {
+        s = *new string(reply->str);
+    }
+    cout << "reply" << reply->str << endl;
+    freeReplyObject(reply);
+    return s;
+}
 
 Item *Database::read_lastid_item(int id){
     Item *i = new Item("","","",UNIQUE);
@@ -75,7 +87,12 @@ Player* Database::findPlayerByName(string name) {
             return players[i];
         }
     }
-    return NULL;
+    //TODO - Implement player loading form database
+    Player* defaultPlayer = new Player("DefaultUser", "Description?", 1);
+    return defaultPlayer;
+    
+    //TODO - Delete bogus default player return
+    //return NULL;
 }
 
 Item* Database::findItemByName(string name) {
@@ -95,4 +112,3 @@ Room* Database::findRoomByName(string name) {
     }
     return NULL;
 }
-

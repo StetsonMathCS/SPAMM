@@ -168,10 +168,12 @@ static void _online(const char *line, size_t overflow, void *ud) {
 
 	/* if line is "quit" then, well, quit */
 	if (strcmp(line, "quit") == 0) {
+    cout <<"User id: " << user->id << " entered \"quit\"" << endl;
 		close(user->sock);
 		user->sock = -1;
 		//_message(user->name, "** HAS QUIT **");
 		free(user->name);
+       delete user->player;
 		user->name = 0;
 		user->id   = -1;
         user->state = -1;
@@ -180,6 +182,8 @@ static void _online(const char *line, size_t overflow, void *ud) {
 	//If its not a log on or a quit command, pass it to the callback function for the game to figure out how to process it
 
 	cbs(user->player, line);
+    //DEBUGGING MESSAGE
+    cout <<"User id: " << user->id << " entered \"" << line << "\"" << endl;
     //Print the prompt for user input
     telnet_printf(user->telnet, "> ");
 }
@@ -447,5 +451,10 @@ void GameServer::setCreateNewUserFunction(int (*f)(string,string)) {
     createNewUser = f;
 }
 void GameServer::stop() {
-      
+    //Tell the users the server is shutting down
+    for(int i = 0; i != MAX_PLAYERS; ++i) {
+        if(users[i].id != -1) {
+            telnet_printf(users[i].telnet, "Server is shutting down \n");
+        }
+    }
 }
