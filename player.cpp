@@ -16,6 +16,7 @@ Player::Player(string name, string desc, int id) {
     username = name;
     description = desc;
     playerID = id;
+    canBuild = true;
 }
 
 void Player::save(){
