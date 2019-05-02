@@ -10,6 +10,7 @@ class Item;
 
 class Room {
     private:
+        std::string requirement;
         std::string title;
         std::string desc;
         std::map<std::string, Room*> exits;
@@ -19,6 +20,8 @@ class Room {
         void save();
         void setTitle(std::string t){title = t;}
         Room(std::string, std::string);
+        Room(std::string, std::string, std::string);
+        std::string getRequirement() const;
         std::string getTitle() const;
         std::string getDesc() const;
         void setAdjacent(std::string, Room*);

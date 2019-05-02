@@ -136,8 +136,7 @@ int Player::getID() const {
 }
 
 bool Player::reqisPassed()
-{
-    return true;
+{   
 }
 /*bool Player::connected() const {
     return true;

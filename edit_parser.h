@@ -8,6 +8,7 @@
 
 #include "player.h"
 #include "room.h"
+#include "item.h"
 
 class EditParser {
     

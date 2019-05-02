@@ -51,7 +51,7 @@ void ActionParser::handleInput(Player *p, string command)
                 //server->printToUser(p, output) << endl;
             } else
             {
-                cout << "SUCESS" << endl;
+                cout << "SUCCESS" << endl;
                 if(p->getRoom()->roomhaveReq() && p->reqisPassed())
                 {
                 server->printToUser(p, p->getRoom()->getTitle()); 

@@ -10,7 +10,12 @@ Room::Room(string t, string d){
     desc = d;
     roomId = -1;
 }
-
+Room::Room(string t, string d, string r){
+    title = t;
+    desc = d;
+    roomId = -1;
+    requirement = r;
+}
 void Room::save(){
     string temp;
     if(roomId == -1){
@@ -20,7 +25,9 @@ void Room::save(){
         db->increment_lastid();
     }
 }
-
+string Room::getRequirement() const {
+    return requirement;
+}
 string Room::getTitle() const {
     return title;
 }
@@ -80,11 +87,15 @@ void Room::listItemsOnFloor() const {
 }
 void Room::setReq(string req, string room)
 {
-    
+    string title = this->getTitle();
+    string description = this->getDesc();
+
+    Room(title, description, req);
 }
 void Room::setDesc(string room, string description)
 {
-    
+    string title = this->getTitle();
+    Room(title, description);
 }
 void Room::setreqMove(string oldroom, string req, string newroom)
 {

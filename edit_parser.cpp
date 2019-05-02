@@ -2,7 +2,7 @@
 #include "game_server.h"
 #include <iostream>
 #include "common.h"
-
+#include "database.h"
 
 using namespace std;
 
@@ -24,15 +24,6 @@ void EditParser::handleeditInput(Player *p,  string command)
     string delimiterMore = ">";
     string delimiterPercent = "%";
 
-    // DECLARING TEST MAPS
-    map<string, string> rooms;
-    map<string, string> items;
-    //ADDED ROOMS
-    rooms.insert( make_pair("Lobby", "a white room"));
-    rooms.insert( make_pair("New Lobby", "a black room"));
-
-    //ADDED ITEMS
-    items.insert( make_pair("Staff", "a white staff"));
 
     if(input == "commands")
     {
@@ -55,7 +46,7 @@ void EditParser::handleeditInput(Player *p,  string command)
             string roomname = input.substr(0, input.find(delimiterMore));
             input.erase(0, input.find(delimiterMore) + delimiterMore.length());
         
-            if(rooms.find(roomname) == rooms.end())
+            if(db->findRoomByName(roomname) == NULL)
             {
                 server->printToUser(p, "Room not found");
             }
@@ -81,7 +72,7 @@ void EditParser::handleeditInput(Player *p,  string command)
              string itemname = input.substr(0, input.find(delimiterMore));
             input.erase(0, input.find(delimiterMore) + delimiterMore.length());
             
-            if(items.find(itemname) == items.end())
+            if(db->findItemByName(itemname) == NULL)
             {
                 server->printToUser(p, "Item not found");
             }
@@ -91,7 +82,7 @@ void EditParser::handleeditInput(Player *p,  string command)
                 string roomname = input.substr(0, input.find(delimiterMore));
                 input.erase(0, input.find(delimiterMore) + delimiterMore.length());
             
-                if(rooms.find(roomname) == rooms.end())
+                if(db->findRoomByName(roomname) == NULL)
                 {
                     server->printToUser(p, "Room not found");
                 }
@@ -111,9 +102,9 @@ void EditParser::handleeditInput(Player *p,  string command)
                 string oldroom = input.substr(0, input.find(delimiterMore));
                 input.erase(0, input.find(delimiterMore) + delimiterMore.length());
             
-                if(rooms.find(oldroom) == rooms.end())
+                if(db->findRoomByName(oldroom) == NULL)
                 {
-                    server->printToUser(p, "Room not found");
+                    server->printToUser(p, "First Room Parameter not found");
                 }
                 else
                 { 
@@ -121,7 +112,7 @@ void EditParser::handleeditInput(Player *p,  string command)
                     string itemname = input.substr(0, input.find(delimiterMore));
                     input.erase(0, input.find(delimiterMore) + delimiterMore.length());
                     
-                    if(items.find(itemname) == items.end())
+                    if(db->findItemByName(itemname) == NULL)
                     {
                         server->printToUser(p, "Item not found");
                     }
@@ -132,7 +123,7 @@ void EditParser::handleeditInput(Player *p,  string command)
                         string newroom = input.substr(0, input.find(delimiterMore));
                         input.erase(0, input.find(delimiterMore) + delimiterMore.length());
                     
-                        if(rooms.find(newroom) == rooms.end())
+                        if(db->findRoomByName(newroom) == NULL)
                         {
                             server->printToUser(p, "Room not found");
                         }
@@ -155,7 +146,7 @@ void EditParser::handleeditInput(Player *p,  string command)
                 string roomname = input.substr(0, input.find(delimiterMore));
                 input.erase(0, input.find(delimiterMore) + delimiterMore.length());
             
-                if(rooms.find(roomname) == rooms.end())
+                if(db->findRoomByName(roomname) == NULL)
                 {
                     server->printToUser(p, "Room not found");
                 }
@@ -175,7 +166,7 @@ void EditParser::handleeditInput(Player *p,  string command)
                         string newroomname = input.substr(0, input.find(delimiterMore));
                         input.erase(0, input.find(delimiterMore) + delimiterMore.length());
                     
-                        if(rooms.find(roomname) == rooms.end())
+                        if(db->findRoomByName(newroomname) == NULL)
                         {
                             server->printToUser(p, "Room not found");
                         }
