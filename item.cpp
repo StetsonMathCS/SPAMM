@@ -19,7 +19,7 @@ void Item::save()
     
     if(itemId == -1){
     itemId = db->lastid;
-    string temp = "room\n name:"+getName()+"\n"+"desc:"+getDesc()+"\n"+"owner:"+getOwner()+"\n"+"type:"+to_string(getType());
+    string temp = "item\n name:"+getName()+"\n"+"desc:"+getDesc()+"\n"+"owner:"+getOwner()+"\n"+"type:"+to_string(getType());
     db->write(to_string(itemId),temp); 
     db->increment_lastid();
     }

@@ -37,6 +37,10 @@ Database::Database(){
             Player *tempPlayer = new Player(name, desc, i);
             players.push_back(tempPlayer);
         }
+
+        if(dataFromRedis.substr(0,4) == "item"){
+            items.push_back(read_lastid_item(lastid));          
+        }
         
     }
 } 
