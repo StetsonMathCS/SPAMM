@@ -36,22 +36,26 @@ void ActionParser::handleInput(Player *p, string command)
             //server->printToUser(p, "- " + player->listInventory());
             //server->printToUser(p, outpout);
         }
-    } else if(command == "go")
+    } else if(command.find("go ") == 0)
     {
+        cout << "Direction to go: " << command.substr(3) << endl;
         //check direction
-        if(false)
+        if(p->getRoom() != NULL) 
         {
+            Room *adj = p->getRoom()->getAdjacent(command.substr(3)); 
             //get the container and if the container is empty
-            if(false)
-            {
+            if(adj == NULL)
+            {   
+                cout << p->getUsername() << " tried to go a dead end in dir " << command.substr(3) << endl;
                 server->printToUser(p, "That's a dead end");
                 //server->printToUser(p, output) << endl;
             } else
             {
+                cout << "SUCESS" << endl;
                 if(p->getRoom()->roomhaveReq() && p->reqisPassed())
                 {
-                server->printToUser(p, "You're in container name");
-                server->printToUser(p, "container description");
+                server->printToUser(p, p->getRoom()->getTitle()); 
+                server->printToUser(p, p->getRoom()->getDesc()); 
                 //server->printToUser(p, output) << endl;
                 }       
             }

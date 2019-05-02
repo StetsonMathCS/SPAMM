@@ -5,6 +5,7 @@
 #include "build_speak_parser.h"
 #include "common.h"
 #include "database.h"
+#include "player.h"
 #include <iostream>
 #include <csignal>
 
@@ -20,6 +21,8 @@ int newUserFunction(string,string);
 //Signal handling
 void exitHandler(int);
 
+//Default starting room
+Room *startingRoom;
 void parseInput(Player *p, string input) {
 	ActionParser::handleInput(p, input);
 	BuildParser::handleInput(p, input);
@@ -27,6 +30,11 @@ void parseInput(Player *p, string input) {
 }
 
 int main() {
+    //Default starting room
+    startingRoom = new Room("Living Room", "Living room with a nice couch");
+    Room *adjacent = new Room("Dining Room", "Large table and plenty of chairs");
+    startingRoom->setAdjacent("East", adjacent);
+    //
 	db = new Database();
 	//Instantiate a Game server on the defualt port 2323
 	server = new GameServer();
@@ -64,6 +72,7 @@ int logOnFunction(string username, string password) {
     for(int i = 0; i < players.size(); i++)
         if(players[i]->getUsername() == username && players[i]->getDescription() == password) {
             cout << "User " << username << " logged on " << endl;
+            players[i]->setRoom(startingRoom);
             return players[i]->getID();
 }
     //If there was no sucessful log on return -1
