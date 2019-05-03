@@ -79,12 +79,12 @@ Item * Database::read_lastid_item(int id){
     i->setOwner(owner);
     getline(data,line);
     type = line;
+    //The type of the item is either PERPLAYER or UNIQUE.
     if(line=="PERLAYER"){
-        i->setType((ITEM_TYPE)1);
+        i->setType((ITEM_TYPE)0);
     }else{
-        i->setType((ITEM_TYPE)2);
+        i->setType((ITEM_TYPE)1);
     }
-    i->setType(PERPLAYER);
     return i;
 } 
 
