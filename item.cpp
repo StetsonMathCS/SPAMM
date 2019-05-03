@@ -17,11 +17,12 @@ void Item::save()
 {
     //Have a list of the data, new lines should make it easier to read and load later
     
-    if(itemId == -1){
-    itemId = db->lastid;
-    string temp = "item\n name:"+getName()+"\n"+"desc:"+getDesc()+"\n"+"owner:"+getOwner()+"\n"+"type:"+to_string(getType());
-    db->write(to_string(itemId),temp); 
-    db->increment_lastid();
+    if(itemId == -1) {
+        itemId = db->lastid;
+        string temp = "item\n name:"+getName()+"\n"+"desc:"+getDesc()+"\n"+"owner:"+getOwner()+"\n"+"type:"+to_string(getType());
+        db->write(to_string(itemId),temp); 
+        db->increment_lastid();
+        db->addItem(this);
     }
 }
 

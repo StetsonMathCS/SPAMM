@@ -23,6 +23,7 @@ void Room::save(){
         temp = "room \n title:"+getTitle()+"\n"+"desc:"+getDesc()+"\n";
         db->write(to_string(roomId),temp);
         db->increment_lastid();
+        db->addRoom(this);
     }
 }
 string Room::getRequirement() const {

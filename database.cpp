@@ -150,8 +150,28 @@ void Database::increment_lastid(){
     write("lastid",to_string(lastid));
 }
 
+void Database::addPlayer(Player *p) {
+    // possibly replace known player by this id
+    for(unsigned int i = 0; i < players.size(); i++) {
+        if(players[i]->getID() == p->getID()) {
+            players[i] = p;
+            return;
+        }
+    }
+    players.push_back(p);
+}
+
+Player* Database::findPlayerById(int id) {
+    for(unsigned int i = 0; i < players.size(); i++) {
+        if(players[i]->getID() == id) {
+            return players[i];
+        }
+    }
+    return NULL;
+}
+
 Player* Database::findPlayerByName(string name) {
-    for(int i = 0; i < players.size(); i++) {
+    for(unsigned int i = 0; i < players.size(); i++) {
         if(players[i]->getUsername() == name) {
             return players[i];
         }
@@ -159,8 +179,19 @@ Player* Database::findPlayerByName(string name) {
     return NULL;
 }
 
+void Database::addItem(Item *it) {
+    // possibly replace known item by this name
+    for(unsigned int i = 0; i < items.size(); i++) {
+        if(items[i]->getName() == it->getName()) {
+            items[i] = it;
+            return;
+        }
+    }
+    items.push_back(it);
+}
+
 Item* Database::findItemByName(string name) {
-    for(int i = 0; i < items.size(); i++) {
+    for(unsigned int i = 0; i < items.size(); i++) {
         if(items[i]->getName() == name) {
             return items[i];
         }
@@ -168,8 +199,19 @@ Item* Database::findItemByName(string name) {
     return NULL;
 }
 
+void Database::addRoom(Room *r) {
+    // possibly replace known room by this title
+    for(unsigned int i = 0; i < rooms.size(); i++) {
+        if(rooms[i]->getTitle() == r->getTitle()) {
+            rooms[i] = r;
+            return;
+        }
+    }
+    rooms.push_back(r);
+}
+
 Room* Database::findRoomByName(string name) {
-    for(int i = 0; i < rooms.size(); i++) {
+    for(unsigned int i = 0; i < rooms.size(); i++) {
         if(rooms[i]->getTitle() == name) {
             return rooms[i];
         }

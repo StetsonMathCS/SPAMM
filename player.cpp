@@ -26,6 +26,7 @@ void Player::save(){
         playerID = db->lastid;
         temp = "player \n username:"+getUsername()+"\n"+"desc:"+getDescription()+"\n";
         db->write(to_string(playerID),temp);
+        db->addPlayer(this);
     }
 }
 

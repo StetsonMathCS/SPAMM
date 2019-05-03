@@ -32,8 +32,12 @@ class Database{
         Room * read_lastid_room(int);
         Player * read_lastid_player(int);        
         void increment_lastid();
+        void addPlayer(Player*);
+        Player * findPlayerById(int);
         Player * findPlayerByName(std::string);
+        void addItem(Item*);
         Item * findItemByName(std::string);
+        void addRoom(Room*);
         Room * findRoomByName(std::string);
         vector<Player*> getPlayers();
 };
