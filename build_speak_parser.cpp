@@ -30,7 +30,7 @@ void BuildParser::handleInput(Player *p, string command)
     //Creation commands(items and rooms):
     //Format 1: create room/item called X and described by Y
     if (regex_match(command, m ,createPattern1)) {
-
+        cout << "CREATING ROOM " << endl;
         string name = m[2];
         string description = m[3];
         if (p->getCanBuild()) {

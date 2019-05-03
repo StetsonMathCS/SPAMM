@@ -16,7 +16,7 @@ Database *db;
 using namespace std;
 
 //Functions that will be called when user enters information
-int logOnFunction(string,string);
+Player* logOnFunction(string,string);
 int newUserFunction(string,string);
 
 //Signal handling
@@ -33,7 +33,7 @@ void parseInput(Player *p, string input) {
 
 int main() {
     //Default starting room
-    startingRoom = new Room("Living Room", "Living room with a nice couch");
+    startingRoom = new Room("LRoom", "Living room with a nice couch");
     Room *adjacent = new Room("Dining Room", "Large table and plenty of chairs");
     startingRoom->setAdjacent("East", adjacent);
     //
@@ -66,19 +66,19 @@ void exitHandler(int signal) {
 	//exit sucessfully
 	exit(0);
 }
-int logOnFunction(string username, string password) {
+Player* logOnFunction(string username, string password) {
     //The database stores a list of players in memory
     //This functions loops through them and comapres the username and "desrcriptions" (passwords) of them
-	vector<Player*> players = db->getPlayers();
 
-    for(int i = 0; i < players.size(); i++)
-        if(players[i]->getUsername() == username && players[i]->getDescription() == password) {
+        Player *possibleUser = db->findPlayerByName(username);
+
+        if(possibleUser != NULL  && possibleUser->getDescription() == password) {
             cout << "User " << username << " logged on " << endl;
-            players[i]->setRoom(startingRoom);
-            return players[i]->getID();
+            possibleUser->setRoom(startingRoom);
+            return possibleUser;
 }
     //If there was no sucessful log on return -1
-    return -1;
+    return NULL;
 }	
 
 int newUserFunction(string username, string password) {
