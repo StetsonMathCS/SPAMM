@@ -5,6 +5,7 @@
 #include <string>
 #include <map>
 #include <utility>
+#include <regex>
 
 #include "player.h"
 #include "room.h"

@@ -18,12 +18,11 @@ void EditParser::handleeditInput(Player *p,  string command)
     
     // STRING DELIMITERS
     string input = command;
-    string delimiterSpace = " ";
-    string delimiterQuote = "\"";
-    string delimiterLess = "<";
-    string delimiterMore = ">";
-    string delimiterPercent = "%";
-
+    regex setdescPattern ("/setdesc (.+) (\"([^\"]*)\")");
+    regex setreqPattern ("/setreq (.+) (.+)");
+    regex setreqmovePattern ("/setreqmove (.+) (.+) (.+)");
+    regex setchancePattern ("/setchance (.+) ([0-99]%) (.+)");
+    smatch m;
 
     if(input == "commands")
     {
@@ -34,30 +33,20 @@ void EditParser::handleeditInput(Player *p,  string command)
          server->printToUser(p,  "To requre an item to stay in room otherwise moved - /setreqmove <roomname> <itemname> <newroomname>");
          server->printToUser(p,  "To set a chance teleportation - /setchance <roomname> <chance%> <newroomname> \n \n");
     }
-    else
-    {
-            
-        string command = input.substr(0, input.find(delimiterSpace));
-        input.erase(0, input.find(delimiterSpace) + delimiterSpace.length());
+    
 
-        if(command == "/setdesc")
+        if(regex_match(command, m, setdescPattern)){
         {
-            input.erase(0, input.find(delimiterLess) + delimiterLess.length());
-            string roomname = input.substr(0, input.find(delimiterMore));
-            input.erase(0, input.find(delimiterMore) + delimiterMore.length());
-        
-            if(db->findRoomByName(roomname) == NULL)
+            server->printToUser(p, m[1]);
+            server->printToUser(p, m[3]);
+            
+            if(db->findRoomByName(m[1]) == NULL)
             {
                 server->printToUser(p, "Room not found");
             }
             else
             {
              
-                
-                input.erase(0, input.find(delimiterQuote) + delimiterQuote.length());
-                string description = input.substr(0, input.find(delimiterQuote));
-                input.erase(0, input.find(delimiterQuote) + delimiterQuote.length());  
-                
                 //this->setDesc(roomname, description);
                 //server->printToUser(p, "\n -- The Room " + roomname +"'s description was set to "); 
 
@@ -65,24 +54,15 @@ void EditParser::handleeditInput(Player *p,  string command)
 
             }
         }
-        else if(command == "/setreq")
+        if(regex_match(command, m, setreqPattern))
         {
-           
-            input.erase(0, input.find(delimiterLess) + delimiterLess.length());
-             string itemname = input.substr(0, input.find(delimiterMore));
-            input.erase(0, input.find(delimiterMore) + delimiterMore.length());
-            
-            if(db->findItemByName(itemname) == NULL)
+            if(db->findItemByName(m[1]) == NULL)
             {
                 server->printToUser(p, "Item not found");
             }
             else
             {
-                input.erase(0, input.find(delimiterLess) + delimiterLess.length());
-                string roomname = input.substr(0, input.find(delimiterMore));
-                input.erase(0, input.find(delimiterMore) + delimiterMore.length());
-            
-                if(db->findRoomByName(roomname) == NULL)
+                if(db->findRoomByName(m[2]) == NULL)
                 {
                     server->printToUser(p, "Room not found");
                 }
@@ -95,35 +75,21 @@ void EditParser::handleeditInput(Player *p,  string command)
                 
             }
         }
-        else if(command == "/setreqmove")
-        { 
-    
-                input.erase(0, input.find(delimiterLess) + delimiterLess.length());
-                string oldroom = input.substr(0, input.find(delimiterMore));
-                input.erase(0, input.find(delimiterMore) + delimiterMore.length());
-            
-                if(db->findRoomByName(oldroom) == NULL)
+        if(regex_match(command, m, setreqmovePattern))
+        {  
+                if(db->findRoomByName(m[1]) == NULL)
                 {
                     server->printToUser(p, "First Room Parameter not found");
                 }
                 else
                 { 
-                    input.erase(0, input.find(delimiterLess) + delimiterLess.length());
-                    string itemname = input.substr(0, input.find(delimiterMore));
-                    input.erase(0, input.find(delimiterMore) + delimiterMore.length());
-                    
-                    if(db->findItemByName(itemname) == NULL)
+                    if(db->findItemByName(m[2]) == NULL)
                     {
                         server->printToUser(p, "Item not found");
                     }
                     else
                     {
-
-                        input.erase(0, input.find(delimiterLess) + delimiterLess.length());
-                        string newroom = input.substr(0, input.find(delimiterMore));
-                        input.erase(0, input.find(delimiterMore) + delimiterMore.length());
-                    
-                        if(db->findRoomByName(newroom) == NULL)
+                        if(db->findRoomByName(m[3]) == NULL)
                         {
                             server->printToUser(p, "Room not found");
                         }
@@ -139,34 +105,22 @@ void EditParser::handleeditInput(Player *p,  string command)
                 }
 
         }
-        else if(command == "/setchance")
+        if(regex_match(command, m, setchancePattern))
         {
-    
-                input.erase(0, input.find(delimiterLess) + delimiterLess.length());
-                string roomname = input.substr(0, input.find(delimiterMore));
-                input.erase(0, input.find(delimiterMore) + delimiterMore.length());
-            
-                if(db->findRoomByName(roomname) == NULL)
+                if(db->findRoomByName(m[1]) == NULL)
                 {
                     server->printToUser(p, "Room not found");
                 }
                 else
-                { 
-                    string percentchance = input.substr(0, input.find(delimiterMore));
-                    input.erase(0, input.find(delimiterPercent) + delimiterPercent.length());
-                    double chance = stod(percentchance);
+                {
+                    double chance = stod(m[2]);
                     if(chance < 0 && chance > 100)
                     {
                         server->printToUser(p, "Chance not within parameters");
                     }
                     else
                     {
-                        
-                        input.erase(0, input.find(delimiterLess) + delimiterLess.length());
-                        string newroomname = input.substr(0, input.find(delimiterMore));
-                        input.erase(0, input.find(delimiterMore) + delimiterMore.length());
-                    
-                        if(db->findRoomByName(newroomname) == NULL)
+                        if(db->findRoomByName(m[3]) == NULL)
                         {
                             server->printToUser(p, "Room not found");
                         }
