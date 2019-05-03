@@ -17,7 +17,7 @@ void EditParser::handleeditInput(Player *p,  string command)
     
     
     // STRING DELIMITERS
-    string input;
+    string input = command;
     string delimiterSpace = " ";
     string delimiterQuote = "\"";
     string delimiterLess = "<";
