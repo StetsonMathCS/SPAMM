@@ -6,10 +6,6 @@
 #include "build_speak_parser.h"
 using namespace std;
 
-
-/*
-Pass in a command to realize(Only print for now).
-*/
 void BuildParser::handleInput(Player *p, string command)
 {	
 
@@ -37,26 +33,25 @@ void BuildParser::handleInput(Player *p, string command)
 
         string name = m[2];
         string description = m[3];
+        if (p->getCanBuild()) {
 
-        if (m[1] == "room") {
+            if (m[1] == "room") {
 
 
-            Room* tempR = new Room(name, description);
-            tempR->save();
+                Room* tempR = new Room(name, description);
+                tempR->save();
 
-            ostringstream os1;
-            os1 << "You created a room: " << name;
-            server->printToUser (p, os1.str());
+                ostringstream os1;
+                os1 << "You created a room: " << name;
+                server->printToUser (p, os1.str());
 
-            ostringstream os2;
-            os2 << "Description for this room: " << description;
-            server->printToUser (p, os2.str());
-        }
-        else if (m[1] == "item") {
+                ostringstream os2;
+                os2 << "Description for this room: " << description;
+                server->printToUser (p, os2.str());
+            }
+            else if (m[1] == "item") {
 
-           // need getCanBuild() working
-           // if (p->getCanBuild()== true) {
-                Item* tempI = new Item(name, description,"need getUsername() fixed", UNIQUE);
+                Item* tempI = new Item(name, description,p->getUsername(), UNIQUE);
                 tempI->save();
 
                 ostringstream os1, os2;
@@ -65,11 +60,11 @@ void BuildParser::handleInput(Player *p, string command)
 
                 server->printToUser(p, os1.str());
                 server->printToUser(p, os2.str());
-          //  }
-          //  else {
-          //      server->printToUser(p, "You cannot build for now!");
-          //  }
+            }
         }
+            else {
+                server->printToUser(p, "You cannot build for now!");
+            }
 
     }
 
