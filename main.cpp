@@ -25,6 +25,9 @@ void exitHandler(int);
 //Default starting room
 Room *startingRoom;
 void parseInput(Player *p, string input) {
+    //Print the users input so it can be used for debugging purposes
+    cout << p->getUsername() << " said : " << input << endl;
+
 	ActionParser::handleInput(p, input);
 	BuildParser::handleInput(p, input);
 	EditParser::handleeditInput(p, input);

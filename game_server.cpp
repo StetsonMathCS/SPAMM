@@ -130,6 +130,7 @@ static void _online(const char *line, size_t overflow, void *ud) {
                 return;
             } else {
                 user->id = loggedOnUser->getID();
+                user->player = loggedOnUser;
                 //User is logged on, out of authentication state
                 //Get Player*
                 user->state = 2;
