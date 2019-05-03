@@ -41,6 +41,10 @@ Database::Database(){
         if(dataFromRedis.substr(0,4) == "item"){
             items.push_back(read_lastid_item(lastid));          
         }
+
+        if(dataFromRedis.substr(0,4) == "room"){
+            rooms.push_back(read_lastid_room(lastid));
+        }
         
     }
 } 
