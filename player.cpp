@@ -88,7 +88,13 @@ void Player::setCanBuild(bool permission) {
 bool Player::getCanBuild() const {
    return canBuild;
 }
-
+void Player::setCanEdit(bool permission)
+{
+    canEdit = permission;
+}
+bool Player::getCanEdit() const {
+    return canEdit;
+}
 void Player::setUsername(string name) {
     username = name;
 }

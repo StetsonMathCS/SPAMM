@@ -16,13 +16,15 @@ void EditParser::handleeditInput(Player *p,  string command)
     
     
     
-    // STRING DELIMITERS
+    // REGEX PATTERNS & MORE
     string input = command;
     regex setdescPattern ("/setdesc (.+) (\"([^\"]*)\")");
     regex setreqPattern ("/setreq (.+) (.+)");
     regex setreqmovePattern ("/setreqmove (.+) (.+) (.+)");
     regex setchancePattern ("/setchance (.+) ([0-99]%) (.+)");
     smatch m;
+    
+    //ADD CAN PLAYER EDIT
 
     if(input == "commands")
     {
@@ -40,18 +42,15 @@ void EditParser::handleeditInput(Player *p,  string command)
             server->printToUser(p, m[1]);
             server->printToUser(p, m[3]);
             
-            if(db->findRoomByName(m[1]) == NULL)
-            {
-                server->printToUser(p, "Room not found");
+            if(db->findRoomByName(m[1]) != NULL)
+            { 
+                db->findRoomByName(m[1])->setDesc(m[3]);   
             }
             else
             {
              
-                //this->setDesc(roomname, description);
-                //server->printToUser(p, "\n -- The Room " + roomname +"'s description was set to "); 
-
-                server->printToUser(p, "WIP");
-
+                server->printToUser(p, "Room not found");
+              
             }
         }
         if(regex_match(command, m, setreqPattern))
@@ -68,9 +67,7 @@ void EditParser::handleeditInput(Player *p,  string command)
                 }
                 else
                 {
-                    //setReq(itemname, roomname);
-                    //server->printToUser(p, "Required item: " + itemname + " set for room: ");
-                    server->printToUser(p, "WIP");
+                    db->findRoomByName(m[2])->setReq(m[1]);
                 }
                 
             }

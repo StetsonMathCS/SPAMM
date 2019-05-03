@@ -118,7 +118,7 @@ Room * Database::read_lastid_room(int id){
     getline(data,line);
     desc = line;
     cout << desc << endl;
-    r->setDesc(title,desc); 
+    r->setDesc(desc); 
     
    return r;
 }

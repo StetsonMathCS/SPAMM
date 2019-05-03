@@ -20,6 +20,7 @@ class Player {
         std::string lastLoginTime;
         std::set<Item*> inventory; 
         bool canBuild;
+        bool canEdit;
     public:
         void save();
         Player();
@@ -32,6 +33,8 @@ class Player {
         bool isItemInInventory(std::string);
         void setCanBuild(bool);
         bool getCanBuild() const;
+        void setCanEdit(bool);
+        bool getCanEdit() const;
         void setUsername(std::string);
         std::string getUsername() const;
         void setLastLoginIp(std::string);

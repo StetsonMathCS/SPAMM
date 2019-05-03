@@ -86,14 +86,14 @@ void Room::listItemsOnFloor() const {
         }
         */
 }
-void Room::setReq(string req, string room)
+void Room::setReq(string req)
 {
     string title = this->getTitle();
     string description = this->getDesc();
 
     Room(title, description, req);
 }
-void Room::setDesc(string room, string description)
+void Room::setDesc(string description)
 {
     string title = this->getTitle();
     Room(title, description);

@@ -31,8 +31,8 @@ class Room {
         std::set<Item*> getFloor() const;
         Item* findItemOnFloor(std::string) const;
         void listItemsOnFloor() const;
-        void setReq(std::string, std::string);
-        void setDesc(std::string, std::string);
+        void setReq(std::string);
+        void setDesc(std::string);
         void setreqMove(std::string, std::string, std::string);
         void setChance(std::string, double, std::string);
         bool roomhaveReq();

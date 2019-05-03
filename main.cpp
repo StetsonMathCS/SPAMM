@@ -1,6 +1,7 @@
 #include "game_server.h"
 #include "action_parser.h"
 #include "edit_parser.h"
+#include "speak_parser.h"
 #include "player.h"
 #include "build_speak_parser.h"
 #include "common.h"
@@ -27,6 +28,7 @@ void parseInput(Player *p, string input) {
 	ActionParser::handleInput(p, input);
 	BuildParser::handleInput(p, input);
 	EditParser::handleeditInput(p, input);
+    SpeechParser::handlespeechInput(p, input);
 }
 
 int main() {
