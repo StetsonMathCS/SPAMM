@@ -29,6 +29,8 @@ class Room {
         std::map<std::string, Room*> getExits() const;
         void addItemToFloor(Item*);
         std::set<Item*> getFloor() const;
+        std::set<Item*> getItems() const;
+        void dropItemFromFloor(Item*);
         Item* findItemOnFloor(std::string) const;
         void listItemsOnFloor() const;
         void setReq(std::string);
