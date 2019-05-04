@@ -164,4 +164,5 @@ void ActionParser::handleInput(Player *p, string command)
     }else
     {
         server->printToUser(p, "INCORRECT COMMAND, type 'help'");
+    }
 }
