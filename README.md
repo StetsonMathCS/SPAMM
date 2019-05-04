@@ -22,4 +22,8 @@ Connect to londo
 `telnet localhost 2323`
 #### Create a telent proxy from PUTTY to londo and use PUTTY to telnet into the port
 
+#### Default Game Map
+Copy and paste load_game.txt into player input.
+Loads the following map structure, and adds various items.
 
+![SPAMM_default_map](readme_images/SPAMM_default_map.png)
