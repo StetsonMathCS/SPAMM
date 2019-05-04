@@ -1,4 +1,6 @@
 create room Main Hall desc You and your partner have been teleported to the main hall of an enemy ship. You are here to commandeer, but know almost nothing of this misterious enemy. You prepare to delve into the darkness ahead. Maybe you should try to find a source of light before moving ahead. 
+connect room Main Hall to Living Room via north
+connect room Living Room to Main Hall via south
 create item Gas Lantern desc A peculiar place to find such an antiquated item. You remember learning that the last Earthlings had to rely on these devices after the devistation. At least it works.
 set item Gas Lantern perplayer
 put item Gas Lantern in room Main Hall
