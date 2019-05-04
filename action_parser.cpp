@@ -24,7 +24,8 @@ void ActionParser::handleInput(Player *p, string command)
     {
     } else if(command == "items")
     {
-        if(false) {// !p->listInventory().empty())
+        //if(false) {// !p->listInventory().empty())
+        if(p->getInventory().empty()) {
             //check if player has items in their container
             server->printToUser(p, "It looks like your backpack is empty :(");
             //server->printToUser(p, output) << endl;
@@ -33,29 +34,39 @@ void ActionParser::handleInput(Player *p, string command)
             server->printToUser(p, "Your items: ");
             //loop through items in the player's container
             //for(int i = -1; i > 0;)
+            set<Item*>::iterator it;
+            for(it = p->getInventory().begin(); it != p->getInventory().end(); it++)
+            {
+                server->printToUser(p, "- " + (*it)->getName());
+            }
             //server->printToUser(p, "- " + player->listInventory());
             //server->printToUser(p, outpout);
         }
-    } else if(command.find("go ") == 0)
+    //} else if(command.find("go ") == 0)
+    } else if(command == "go")
     {
-        cout << "Direction to go: " << command.substr(3) << endl;
+        //cout << "Direction to go: " << command.substr(3) << endl;
         //check direction
-        if(p->getRoom() != NULL) 
+        //if(p->getRoom() != NULL) 
+        if(false)
         {
-            Room *adj = p->getRoom()->getAdjacent(command.substr(3)); 
+            //Room *adj = p->getRoom()->getAdjacent(command.substr(3)); 
             //get the container and if the container is empty
-            if(adj == NULL)
+            //if(adj == NULL)
+            if(false)
             {   
-                cout << p->getUsername() << " tried to go a dead end in dir " << command.substr(3) << endl;
+                //cout << p->getUsername() << " tried to go a dead end in dir " << command.substr(3) << endl;
                 server->printToUser(p, "That's a dead end");
                 //server->printToUser(p, output) << endl;
             } else
             {
-                cout << "SUCCESS" << endl;
+                //cout << "SUCCESS" << endl;
                 if(p->getRoom()->roomhaveReq() && p->reqisPassed())
                 {
-                server->printToUser(p, p->getRoom()->getTitle()); 
-                server->printToUser(p, p->getRoom()->getDesc()); 
+                    server->printToUser(p, "You're in container name");
+                    server->printToUser(p, "container description");
+                //server->printToUser(p, p->getRoom()->getTitle()); 
+                //server->printToUser(p, p->getRoom()->getDesc()); 
                 //server->printToUser(p, output) << endl;
                 }       
             }
@@ -72,7 +83,8 @@ void ActionParser::handleInput(Player *p, string command)
         server->printToUser(p, p->getRoom()->getDesc());
         //check if there are items in container
         //if(false)
-        if(false) //if(p->getRoom()->listItemsOnFloor().empty())
+        //if(false) //if(p->getRoom()->listItemsOnFloor().empty())
+        if(p->getRoom()->getItems().empty())
         {
             server->printToUser(p, "There are no items in here ");
             //server->printToUser(p, output) << endl;
@@ -80,6 +92,11 @@ void ActionParser::handleInput(Player *p, string command)
         {
             server->printToUser(p, "Items in this room: ");
             //loop through items in the room
+            set<Item*>::iterator it;
+            for(it = p->getRoom()->getItems().begin(); it != p->getRoom()->getItems().end(); it++);
+            {
+                server->printToUser(p, "- " + (*it)->getName());
+            }
             //for(int i = -1; i > 0;)
             //server->printToUser(p, "- " + room->listItemsOnFloor());
             //server->printTouser(id, output);
@@ -87,9 +104,18 @@ void ActionParser::handleInput(Player *p, string command)
     } else if(command == "get")
     {
         //loop through items in room
-        for(int i = -1; i > 0;)
+        //for(int i = -1; i > 0;)
+        set<Item*>::iterator it;
         //for(p->getRoom()->listItemsOnFloor())
+        for(it = p->getRoom()->getItems().begin(); it != p->getRoom()->getItems().end(); it++);
         {
+            //TODO change findItemOnFloor
+            if(p->getRoom()->findItemOnFloor("command") != NULL)
+            {
+                server->printToUser(p, "You grabbed a ");
+                p->addItemToInventory(*it);
+                p->getRoom()->dropItemFromFloor(*it);
+            }
             //if the object entered matches an object in the container
             //if(false)
             //    server->printToUser(p, "You grabbed a " + item->getName());
@@ -101,13 +127,27 @@ void ActionParser::handleInput(Player *p, string command)
     {
         bool in = false;
         //check if that object is in the player container
-        if(false)
+        //if(false)
         // Pass in item name: if(p->isItemInInventory() == false)
+        //TODO put something in there after user types command
+        if(p->isItemInInventory("command") == false)
         {
+            //TODO fix what the user puts in for item in command
+            server->printToUser(p, "There is no command in your inventory");
            // server->printToUser(p, "There is no " + item->getName() + " in your inventory");
             //server->printToUser(p, output) << endl;
         } else
         {
+            set<Item*>::iterator it;
+            for(it = p->getInventory().begin(); it != p->getInventory().end(); it++)
+            {
+                if((*it)->getName() == "command")
+                {
+                    server->printToUser(p, "You dropped a ");
+                    p->getRoom()->addItemToFloor(*it);
+                    p->dropItem((*it)->getName());
+                }
+            }
             //p->listInventory();
             //loop through items in player's container
             //for(int i = -1; i > 0;)
@@ -121,5 +161,7 @@ void ActionParser::handleInput(Player *p, string command)
         {
             server->printToUser(p, "You don't have a BLANK in your backpack.");
         }
-    }
+    }else
+    {
+        server->printToUser(p, "INCORRECT COMMAND, type 'help'");
 }
