@@ -57,7 +57,15 @@ void Room::addItemToFloor(Item* item) {
     floor.insert(item);
 }
 
+void Room::dropItemFromFloor(Item* item) {
+    floor.erase(item);
+}
+
 set<Item*> Room::getFloor() const {
+    return floor;
+}
+
+set<Item*> Room::getItems() const {
     return floor;
 }
 
