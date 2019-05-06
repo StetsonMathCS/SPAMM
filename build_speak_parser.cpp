@@ -14,7 +14,8 @@ void BuildParser::handleInput(Player *p, string command)
     regex connectPattern  ("connect room (.+) to (.+) via (.+)");
     regex putPattern  ("put item (.+) in room (.+)");
     regex setItemTypePattern ("set item (.+) (.+)");
-    
+    regex setStartingRoomPattern ("set room (.+) starting");
+    regex setNotStartingRoomPattern("set room (.+) not starting");
 
     smatch m;
     
@@ -24,9 +25,35 @@ void BuildParser::handleInput(Player *p, string command)
         server->printToUser(p,  "To connect rooms - connect room <roomname> to <roomname> via (south, north, west, east)");
         server->printToUser(p,  "To put item - put item <itemname> in room <roomname>");
         server->printToUser(p,  "To set item type - set item <itemname> (unique, perplayer)");
+        server->printToUser(p,  "To set starting room - set room <roomname> starting");
+        server->printToUser(p,  "To set room not starting room- set room <roomname> not starting");
     }
 
 
+    if(regex_match(command, m, setStartingRoomPattern){
+            string name = m[1];
+            if(db->findRoomByName(name)){
+                db->findRoomByName(name)->setStartingRoom(true);
+                ostringstream os;
+                os << "You set the starting room: " << name;
+                server->printToUser(p, os.str());
+            }else{
+                server->printToUser(p, "Room not found!");
+            }
+     }
+
+
+    if(regex_match(command, m, setNotStartingRoomPattern){
+            string name = m[1];
+            if(db->findRoomByName(name)){
+                db->findRoomByName(name)->setStartingRoom(false);
+                ostringstream os;
+                os << "You set the room: " << name << " not starting room";
+                server->printToUser(p, os.str());
+            }else{
+                server->printToUser(p, "Room not found!");
+            }
+     }
     //Creation commands(items and rooms):
     //Format 1: create room/item called X and described by Y
     if (regex_match(command, m ,createPattern1)) {
@@ -35,31 +62,38 @@ void BuildParser::handleInput(Player *p, string command)
         string description = m[3];
         if (p->getCanBuild()) {
 
-            if (m[1] == "room") {
+     `       if (m[1] == "room") {
+                if(db->findRoomByName(name) == NULL){
 
+                    Room* tempR = new Room(name, description);
+                    tempR->save();
 
-                Room* tempR = new Room(name, description);
-                tempR->save();
+                    ostringstream os1;
+                    os1 << "You created a room: " << name;
+                    server->printToUser (p, os1.str());
 
-                ostringstream os1;
-                os1 << "You created a room: " << name;
-                server->printToUser (p, os1.str());
-
-                ostringstream os2;
-                os2 << "Description for this room: " << description;
-                server->printToUser (p, os2.str());
+                    ostringstream os2;
+                    os2 << "Description for this room: " << description;
+                    server->printToUser (p, os2.str());
+                }else{
+                    server->printToUser(p, "Room already exists!");
+                }
             }
             else if (m[1] == "item") {
+                
+                if(db->findItemByName(name) == NULL){
+                    Item* tempI = new Item(name, description,p->getUsername(), UNIQUE);
+                    tempI->save();
 
-                Item* tempI = new Item(name, description,p->getUsername(), UNIQUE);
-                tempI->save();
+                    ostringstream os1, os2;
+                    os1 << "You created an Item: " <<  name;
+                    os2 <<  "Description for this item: " << description;
 
-                ostringstream os1, os2;
-                os1 << "You created an Item: " <<  name;
-                os2 <<  "Description for this item: " << description;
-
-                server->printToUser(p, os1.str());
-                server->printToUser(p, os2.str());
+                    server->printToUser(p, os1.str());
+                    server->printToUser(p, os2.str());
+                }else{
+                    server->printToUser(p, "Item already exists!");
+                }
             }
         }
             else {
