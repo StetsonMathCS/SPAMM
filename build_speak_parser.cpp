@@ -6,9 +6,8 @@
 #include "build_speak_parser.h"
 using namespace std;
 
-void BuildParser::handleInput(Player *p, string command)
+bool BuildParser::handleInput(Player *p, string command)
 {	
-
     //command patterns
     regex createPattern1 ("create (.+) (.+) desc (.*)");
     regex connectPattern  ("connect room (.+) to (.+) via (.+)");
@@ -27,6 +26,8 @@ void BuildParser::handleInput(Player *p, string command)
         server->printToUser(p,  "To set item type - set item <itemname> (unique, perplayer)");
         server->printToUser(p,  "To set starting room - set room <roomname> starting");
         server->printToUser(p,  "To set room not starting room- set room <roomname> not starting");
+
+        return false;
     }
 
 
@@ -37,8 +38,11 @@ void BuildParser::handleInput(Player *p, string command)
                 ostringstream os;
                 os << "You set the starting room: " << name;
                 server->printToUser(p, os.str());
+                return true;
             }else{
                 server->printToUser(p, "Room not found!");
+           
+                return true;
             }
      }
 
@@ -50,8 +54,11 @@ void BuildParser::handleInput(Player *p, string command)
                 ostringstream os;
                 os << "You set the room: " << name << " not starting room";
                 server->printToUser(p, os.str());
-            }else{
+            return true;
+            }else
+            {
                 server->printToUser(p, "Room not found!");
+                return true;
             }
      }
     //Creation commands(items and rooms):
@@ -75,8 +82,10 @@ void BuildParser::handleInput(Player *p, string command)
                     ostringstream os2;
                     os2 << "Description for this room: " << description;
                     server->printToUser (p, os2.str());
+        return true;
                 }else{
                     server->printToUser(p, "Room already exists!");
+        return true;
                 }
             }
             else if (m[1] == "item") {
@@ -91,6 +100,7 @@ void BuildParser::handleInput(Player *p, string command)
 
                     server->printToUser(p, os1.str());
                     server->printToUser(p, os2.str());
+                return true;
                 }else{
                     server->printToUser(p, "Item already exists!");
                 }
@@ -98,6 +108,7 @@ void BuildParser::handleInput(Player *p, string command)
         }
             else {
                 server->printToUser(p, "You cannot build for now!");
+                return true;
             }
 
     }
@@ -117,8 +128,10 @@ void BuildParser::handleInput(Player *p, string command)
             os << "You put item " <<  item <<  " into room " <<  room; 
             server->printToUser(p, os.str());
 
+        return true;
         }else{
             server->printToUser(p, "There is no such item or room");
+        return true;
         }
     }
 
@@ -132,6 +145,7 @@ void BuildParser::handleInput(Player *p, string command)
 
         if(dir != "north" && dir != "south" && dir != "east" && dir != "west"){
             server->printToUser(p, "Please enter a valid direction(north, east, south, west)");
+        return true;
         }else{
             if(db->findRoomByName(room1) != NULL && db->findRoomByName(room2) != NULL){
                 db->findRoomByName(room1)->setAdjacent(dir, db->findRoomByName(room2));
@@ -140,8 +154,10 @@ void BuildParser::handleInput(Player *p, string command)
 
                 server->printToUser(p, os.str());
 
+        return true;
             }else{
                 server->printToUser(p, "Room doesn't exist!");   
+        return true;
             }
 
         }
@@ -158,7 +174,7 @@ void BuildParser::handleInput(Player *p, string command)
             t = PERPLAYER;
         }else{
             server->printToUser(p, "Please enter a valid item type(unique,perplayer)");
-            return;
+        return true;
         }
 
         if(db->findItemByName(item) != NULL){
@@ -166,16 +182,19 @@ void BuildParser::handleInput(Player *p, string command)
                 ostringstream os;
                 os << "It's already "<< type << "!";
                 server->printToUser(p, os.str());
+        return true;
             }else{
                 db->findItemByName(item)->setType(t);
                 ostringstream os;
                 os << "You set the type: " << type;
                 server->printToUser(p,os.str()); 
+        return true;
             } 
         }else{
             server->printToUser(p,"No such item!");
+        return true;
         }
     }
-
+    return false;
 }
 

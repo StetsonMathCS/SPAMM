@@ -27,11 +27,23 @@ Room *startingRoom;
 void parseInput(Player *p, string input) {
     //Print the users input so it can be used for debugging purposes
     cout << p->getUsername() << " said : " << input << endl;
-
-	ActionParser::handleInput(p, input);
-	BuildParser::handleInput(p, input);
-	EditParser::handleeditInput(p, input);
-    SpeechParser::handlespeechInput(p, input);
+    if(SpeechParser::handlespeechInput(p, input))
+    {
+        return;
+    }
+    if(ActionParser::handleInput(p, input))
+    {
+        return;
+    } 
+    if(BuildParser::handleInput(p, input))
+    {
+        return;
+    }
+    if(EditParser::handleeditInput(p, input))
+    {
+        return;
+    }
+    server->printToUser(p, string("Invalid Command: " + input));
 }
 
 int main() {

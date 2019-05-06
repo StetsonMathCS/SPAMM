@@ -7,6 +7,6 @@
 
 class BuildParser {
 	public:
-		static void handleInput(Player*, std::string);
+		static bool handleInput(Player*, std::string);
 };
 #endif 

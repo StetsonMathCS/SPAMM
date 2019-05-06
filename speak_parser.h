@@ -14,7 +14,7 @@ class SpeechParser {
 
     public:
     
-        static void handlespeechInput(Player*, std::string);
+        static bool handlespeechInput(Player*, std::string);
 };
 
 #endif
