@@ -335,7 +335,7 @@ void GameServer::start() {
         users[i].player = NULL;
         users[i].state  = -1;
         users[i].name   = NULL;
-        users[i].linepos = NULL;
+        users[i].linepos = 0;
 	}
 
 	//Loop forever and handle input
