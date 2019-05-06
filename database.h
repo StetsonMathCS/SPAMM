@@ -40,6 +40,7 @@ class Database{
         void addRoom(Room*);
         Room * findRoomByName(std::string);
         vector<Player*> getPlayers();
+        void clearDatabase(); //FLUSHALL
 };
 
 #endif 
