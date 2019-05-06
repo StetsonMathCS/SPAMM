@@ -161,8 +161,5 @@ void ActionParser::handleInput(Player *p, string command)
         {
             server->printToUser(p, "You don't have a BLANK in your backpack.");
         }
-    }else
-    {
-        server->printToUser(p, "INCORRECT COMMAND, type 'help'");
     }
 }
