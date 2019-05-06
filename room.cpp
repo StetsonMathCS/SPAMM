@@ -22,11 +22,15 @@ Room::Room(string t, string d, string r){
 void Room::save(){
     string temp;
     if(roomId == -1){
+        string north = getAdjacent("north")->getTitle();
+        string south = getAdjacent("south")->getTitle();
+        string east = getAdjacent("east")->getTitle();
+        string west = getAdjacent("west")->getTitle();        
         roomId = db->lastid;
         stringstream converter;
         bool b = isStartingRoom();
         converter << boolalpha << b;
-        temp = "room \n title:"+getTitle()+"\n"+"desc:"+getDesc()+"\n"+converter.str()+"\n";
+        temp = "room \n title:"+getTitle()+"\n"+"desc:"+getDesc()+"\n"+converter.str()+"\n"+"north"+north+"\n"+"south"+south+"\n"+"east"+east+"\n"+"west"+west+"\n";
         db->write(to_string(roomId),temp);
         db->increment_lastid();
         db->addRoom(this);

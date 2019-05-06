@@ -31,7 +31,7 @@ Database::Database(){
             //There should never be anything in the database that can't be parsed, if this is printed there is an error
             cout << "ERROR: COULD NOT PARSE DATABASE ENTRY AT ID " << i << endl;
         }
-        
+
     }
 } 
 
@@ -104,7 +104,7 @@ Room * Database::read_lastid_room(int id){
     getline(data,line);
     title = line.substr(7);
     r->setTitle(title);
-   
+
     //Line with the description of the room
     getline(data,line);
     desc = line.substr(5);
@@ -115,7 +115,23 @@ Room * Database::read_lastid_room(int id){
     bool b;
     istringstream(start) >> b;
     r->setStartingRoom(b);
-   return r;
+    string north;
+    string south;
+    string east;
+    string west;
+    getline(data,line);
+    north = line;
+    getline(data,line);
+    south = line;
+    getline(data,line);
+    east = line;
+    getline(data,line);
+    west = line;
+    r->setAdjacent("north",findRoomByName(north));
+    r->setAdjacent("south",findRoomByName(south));  
+    r->setAdjacent("east",findRoomByName(east)); 
+    r->setAdjacent("west",findRoomByName(west));
+    return r;
 }
 
 Player * Database::read_lastid_player(int id){
@@ -133,7 +149,7 @@ Player * Database::read_lastid_player(int id){
     getline(data,line);
     username = line.substr(10);
     p->setUsername(username);
-    
+
     getline(data,line);
     description = line.substr(5);
     p->setDescription(description);
