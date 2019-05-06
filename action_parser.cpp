@@ -44,8 +44,8 @@ bool ActionParser::handleInput(Player *p, string command)
         }
 
         return true;
-    //} else if(command.find("go ") == 0)
-    } else if(command == "go")
+    } else if(command.find("go ") == 0)
+    //} else if(command == "go")
     {
         cout << "Direction to go: " << command.substr(3) << endl;
         //check direction
