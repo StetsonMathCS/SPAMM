@@ -95,6 +95,7 @@ Room * Database::read_lastid_room(int id){
     string title;
     string desc;
     string line;
+    string start;
 
     //The first line is just "room" disregard the line
     getline(data,line);
@@ -107,8 +108,13 @@ Room * Database::read_lastid_room(int id){
     //Line with the description of the room
     getline(data,line);
     desc = line.substr(5);
-    r->setDesc(desc); 
-    
+    r->setDesc(desc);
+    //Line that states whether or not it's the starting room 
+    getline(data,line);
+    start = line;
+    bool b;
+    istringstream(start) >> b;
+    r->setStartingRoom(b);
    return r;
 }
 
