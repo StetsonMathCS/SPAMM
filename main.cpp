@@ -12,6 +12,7 @@
 
 GameServer *server;
 Database *db;
+Room *startingRoom;
 
 using namespace std;
 
@@ -23,7 +24,6 @@ int newUserFunction(string,string);
 void exitHandler(int);
 
 //Default starting room
-Room *startingRoom;
 void parseInput(Player *p, string input) {
     //Print the users input so it can be used for debugging purposes
     cout << p->getUsername() << " said : " << input << endl;
@@ -34,16 +34,27 @@ void parseInput(Player *p, string input) {
     SpeechParser::handlespeechInput(p, input);
 }
 
-int main(int argc, char **argv) {
+int main() {
     //Default starting room
-    startingRoom = new Room("Lobby", "The starting room; Nothing much to see here.");
 	db = new Database();
-	//Instantiate a Game server on the default port 2323
-    int port = 2323;
-    if(argc == 2) {
-        port = atoi(argv[1]);
+    if(db->lastid == -1) {
+        startingRoom = new Room("Lobby", "The starting room");
+    } else {
+        auto rooms  = db->getRooms();
+        for(auto it = rooms.begin(); it != rooms.end(); ++it) {
+            if((*it)->isStartingRoom()){
+                startingRoom = *it;
+                break;
+            }
+        }
+        startingRoom = new Room("Lobby", "The starting room");
     }
-	server = new GameServer(port);
+	//Instantiate a Game server on the defualt port 2323
+	server = new GameServer(2326);
+	//Instantiate a Game server on a specific port 
+	//IT NEEDS TO BE ABOVE 1024 to not require root permissions
+	//server = new GameServer(2323);
+
 
 	//When a user enters their credentials, they are checked with this function, the function returns a unique id
 	server->setLogOnFunction(logOnFunction);
