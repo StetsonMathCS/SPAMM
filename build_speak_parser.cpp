@@ -30,7 +30,7 @@ void BuildParser::handleInput(Player *p, string command)
     }
 
 
-    if(regex_match(command, m, setStartingRoomPattern){
+    if(regex_match(command, m, setStartingRoomPattern)){
             string name = m[1];
             if(db->findRoomByName(name)){
                 db->findRoomByName(name)->setStartingRoom(true);
@@ -43,7 +43,7 @@ void BuildParser::handleInput(Player *p, string command)
      }
 
 
-    if(regex_match(command, m, setNotStartingRoomPattern){
+    if(regex_match(command, m, setNotStartingRoomPattern)){
             string name = m[1];
             if(db->findRoomByName(name)){
                 db->findRoomByName(name)->setStartingRoom(false);
@@ -62,7 +62,7 @@ void BuildParser::handleInput(Player *p, string command)
         string description = m[3];
         if (p->getCanBuild()) {
 
-     `       if (m[1] == "room") {
+            if (m[1] == "room") {
                 if(db->findRoomByName(name) == NULL){
 
                     Room* tempR = new Room(name, description);
