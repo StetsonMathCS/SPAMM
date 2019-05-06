@@ -151,9 +151,8 @@ void Database::clearDatabase(){
     lastid = 0;
 }
 
-void Database::deleteRoom(int id){
-    redisReply *reply;
-    reply = (redisReply*) redisCommand(context,"DEL ", to_string(id).c_str());
+void Database::deleteObject(int id){
+    redisCommand(context,"DEL ", to_string(id).c_str());
 }
 
 void Database::addPlayer(Player *p) {
