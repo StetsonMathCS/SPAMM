@@ -46,11 +46,12 @@ void parseInput(Player *p, string input) {
     server->printToUser(p, string("Invalid Command: " + input));
 }
 
-int main() {
+int main(int argc, char **argv) {
     //Default starting room
 	db = new Database();
     if(db->lastid == -1) {
         startingRoom = new Room("Lobby", "The starting room");
+        startingRoom->save();
     } else {
         auto rooms  = db->getRooms();
         for(auto it = rooms.begin(); it != rooms.end(); ++it) {
@@ -60,12 +61,14 @@ int main() {
             }
         }
         startingRoom = new Room("Lobby", "The starting room");
+        startingRoom->save();
     }
 	//Instantiate a Game server on the defualt port 2323
-	server = new GameServer(2326);
-	//Instantiate a Game server on a specific port 
-	//IT NEEDS TO BE ABOVE 1024 to not require root permissions
-	//server = new GameServer(2323);
+	int port = 2323;
+    if(argc == 2) {
+        port = atoi(argv[1]);
+    }
+    server = new GameServer(port);
 
 
 	//When a user enters their credentials, they are checked with this function, the function returns a unique id
