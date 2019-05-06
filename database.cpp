@@ -148,7 +148,7 @@ void Database::clearDatabase(){
     redisReply *reply;
     reply = (redisReply*) redisCommand(context,"FLUSHALL");
     freeReplyObject(reply);
-
+    lastid = 0;
 }
 
 void Database::addPlayer(Player *p) {
