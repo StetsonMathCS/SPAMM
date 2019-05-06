@@ -36,7 +36,7 @@ void parseInput(Player *p, string input) {
 
 int main() {
     //Default starting room
-    startingRoom = new Room("LivingRoom", "Living room with a nice couch");
+    startingRoom = new Room("Lobby", "The starting room; Nothing much to see here.");
 	db = new Database();
 	//Instantiate a Game server on the defualt port 2323
 	server = new GameServer();
