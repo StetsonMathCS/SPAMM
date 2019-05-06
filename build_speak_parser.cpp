@@ -16,6 +16,7 @@ void BuildParser::handleInput(Player *p, string command)
     regex setItemTypePattern ("set item (.+) (.+)");
     regex setStartingRoomPattern ("set room (.+) starting");
     regex setNotStartingRoomPattern("set room (.+) not starting");
+    regex deleteRoomPattern("delete room (.+) (.+)");
 
     smatch m;
     
@@ -176,6 +177,12 @@ void BuildParser::handleInput(Player *p, string command)
             server->printToUser(p,"No such item!");
         }
     }
-
+    if(regex_match(command, m, deleteRoomPattern)){
+        string room = m[1];
+        string roomName;
+        if(db->findRoomByName(roomName) != NULL){
+            db->deleteObject(db->findRoomByName(roomName)->getId()); 
+        }
+    }
 }
 

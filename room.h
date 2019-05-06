@@ -18,6 +18,7 @@ class Room {
         int roomId;
         bool startingRoom;
     public:
+        int getId(){return roomId;}
         void save();
         void setTitle(std::string t){title = t;}
         Room(std::string, std::string);
