@@ -63,6 +63,7 @@ bool ActionParser::handleInput(Player *p, string command)
                 cout << "SUCCESS" << endl;
                 if(p->getRoom()->roomhaveReq() && p->reqisPassed())
                 {
+		    p->setRoom(adj);
                     server->printToUser(p, "You're in room name");
                     server->printToUser(p, "room description");
                     server->printToUser(p, p->getRoom()->getTitle()); 
