@@ -35,7 +35,8 @@ void ActionParser::handleInput(Player *p, string command)
             //loop through items in the player's container
             //for(int i = -1; i > 0;)
             set<Item*>::iterator it;
-            for(it = p->getInventory().begin(); it != p->getInventory().end(); it++)
+            auto inventory = p->getInventory();
+            for(it = inventory.begin(); it != inventory.end(); it++)
             {
                 server->printToUser(p, "- " + (*it)->getName());
             }
@@ -93,7 +94,8 @@ void ActionParser::handleInput(Player *p, string command)
             server->printToUser(p, "Items in this room: ");
             //loop through items in the room
             set<Item*>::iterator it;
-            for(it = p->getRoom()->getItems().begin(); it != p->getRoom()->getItems().end(); it++);
+            auto items = p->getRoom()->getItems();
+            for(it = items.begin(); it != items.end(); it++)
             {
                 server->printToUser(p, "- " + (*it)->getName());
             }
@@ -105,9 +107,10 @@ void ActionParser::handleInput(Player *p, string command)
     {
         //loop through items in room
         //for(int i = -1; i > 0;)
+        auto items = p->getRoom()->getItems();
         set<Item*>::iterator it;
         //for(p->getRoom()->listItemsOnFloor())
-        for(it = p->getRoom()->getItems().begin(); it != p->getRoom()->getItems().end(); it++);
+        for(it = items.begin(); it != items.end(); it++)
         {
             //TODO change findItemOnFloor
             if(p->getRoom()->findItemOnFloor("command") != NULL)
@@ -139,7 +142,8 @@ void ActionParser::handleInput(Player *p, string command)
         } else
         {
             set<Item*>::iterator it;
-            for(it = p->getInventory().begin(); it != p->getInventory().end(); it++)
+            auto inventory = p->getInventory();
+            for(it = inventory.begin(); it != inventory.end(); it++)
             {
                 if((*it)->getName() == "command")
                 {
