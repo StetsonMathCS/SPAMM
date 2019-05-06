@@ -10,6 +10,7 @@ Room::Room(string t, string d){
     desc = d;
     roomId = -1;
     requirement == "No Req";
+    startingRoom = false;
 }
 Room::Room(string t, string d, string r){
     title = t;
@@ -140,3 +141,12 @@ bool Room::roomhaveReq()
         return true;
     }
 }
+
+void Room::setStartingRoom(bool b) {
+    startingRoom = b;
+}
+
+bool Room::isStartingRoom() const {
+    return startingRoom;
+}
+

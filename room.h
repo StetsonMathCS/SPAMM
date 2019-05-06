@@ -16,6 +16,7 @@ class Room {
         std::map<std::string, Room*> exits;
         std::set<Item*> floor;
         int roomId;
+        bool startingRoom;
     public:
         void save();
         void setTitle(std::string t){title = t;}
@@ -37,6 +38,8 @@ class Room {
         void setDesc(std::string);
         void setreqMove(std::string, std::string, std::string);
         void setChance(std::string, double, std::string);
+        void setStartingRoom(bool);
+        bool isStartingRoom() const;
         bool roomhaveReq();
 };
 
