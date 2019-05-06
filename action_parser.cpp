@@ -49,12 +49,10 @@ void ActionParser::handleInput(Player *p, string command)
         cout << "Direction to go: " << command.substr(3) << endl;
         //check direction
         if(p->getRoom() != NULL) 
-        if(false)
         {
             Room *adj = p->getRoom()->getAdjacent(command.substr(3)); 
             //get the container and if the container is empty
             if(adj == NULL)
-            if(false)
             {   
                 cout << p->getUsername() << " tried to go a dead end in dir " << command.substr(3) << endl;
                 server->printToUser(p, "That's a dead end");
@@ -66,10 +64,14 @@ void ActionParser::handleInput(Player *p, string command)
                 {
                     server->printToUser(p, "You're in room name");
                     server->printToUser(p, "room description");
-                server->printToUser(p, p->getRoom()->getTitle()); 
-                server->printToUser(p, p->getRoom()->getDesc()); 
-                //server->printToUser(p, output) << endl;
-                }       
+                    server->printToUser(p, p->getRoom()->getTitle()); 
+                    server->printToUser(p, p->getRoom()->getDesc()); 
+                    //server->printToUser(p, output) << endl;
+                } else if (!p->getRoom()->roomhaveReq()){
+                    p->setRoom(adj);
+                } else {
+                    server->printToUser(p, "Cannot go this way.");
+                }      
             }
 
         } else
