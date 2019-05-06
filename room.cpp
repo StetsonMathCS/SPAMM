@@ -9,6 +9,7 @@ Room::Room(string t, string d){
     title = t;
     desc = d;
     roomId = -1;
+    requirement == "No Req";
 }
 Room::Room(string t, string d, string r){
     title = t;
@@ -103,19 +104,39 @@ void Room::setReq(string req)
 }
 void Room::setDesc(string description)
 {
+    string req = this->getRequirement(); 
     string title = this->getTitle();
-    Room(title, description);
+    
+    if(roomhaveReq())
+    {
+        Room(title, description, req);    
+    }
+    else
+    {
+        Room(title, description);
+    }
 }
 void Room::setreqMove(string oldroom, string req, string newroom)
 {
-
+    if(this->roomhaveReq())
+    {
+                
+    }
+    
 }
 void Room::setChance(string oldRoom, double chance, string newroom)
 {
-
+    
 }
 
 bool Room::roomhaveReq()
 {
-    return true;
+    if(this->getRequirement() == "No Req")
+    {
+        return false;
+    }
+    else
+    {
+        return true;
+    }
 }
