@@ -16,7 +16,7 @@ void BuildParser::handleInput(Player *p, string command)
     regex setItemTypePattern ("set item (.+) (.+)");
     regex setStartingRoomPattern ("set room (.+) starting");
     regex setNotStartingRoomPattern("set room (.+) not starting");
-    regex deleteRoomPattern("delete room (.+) (.+)");
+    regex deleteRoomPattern("delete room (.+)");
 
     smatch m;
     
