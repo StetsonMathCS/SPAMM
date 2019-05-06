@@ -285,3 +285,7 @@ Room* Database::findRoomByName(string name) {
 vector<Player*> Database::getPlayers() {
     return players;
 }
+
+vector<Room*> Database::getRooms(){
+        return rooms;
+}

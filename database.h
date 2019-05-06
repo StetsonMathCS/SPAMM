@@ -39,6 +39,7 @@ class Database{
         Item * findItemByName(std::string);
         void addRoom(Room*);
         Room * findRoomByName(std::string);
+        vector<Room*> getRooms();
         vector<Player*> getPlayers();
         void clearDatabase(); //FLUSHALL
         void deleteObject(int id);

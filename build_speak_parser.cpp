@@ -105,6 +105,7 @@ bool BuildParser::handleInput(Player *p, string command)
                 return true;
                 }else{
                     server->printToUser(p, "Item already exists!");
+                return false;
                 }
             }
         }
@@ -197,7 +198,6 @@ bool BuildParser::handleInput(Player *p, string command)
         return true;
         }
     }
-    return false;
     if(regex_match(command, m, deleteRoomPattern)){
         string room = m[2];
         string roomName;
@@ -205,5 +205,7 @@ bool BuildParser::handleInput(Player *p, string command)
             db->deleteRoom(db->findRoomByName(roomName)->getID()); 
         }
     }
+
+    return false;
 }
 
