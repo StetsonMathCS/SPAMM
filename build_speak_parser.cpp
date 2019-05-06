@@ -179,10 +179,10 @@ void BuildParser::handleInput(Player *p, string command)
         }
     }
     if(regex_match(command, m, deleteRoomPattern)){
-        string room = m[1];
+        string room = m[2];
         string roomName;
         if(db->findRoomByName(roomName) != NULL){
-            db->deleteObject(db->findRoomByName(roomName)->getId()); 
+            db->deleteRoom(db->findRoomByName(roomName)->getId()); 
         }
     }
 }
