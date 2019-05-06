@@ -28,6 +28,7 @@ void BuildParser::handleInput(Player *p, string command)
         server->printToUser(p,  "To set item type - set item <itemname> (unique, perplayer)");
         server->printToUser(p,  "To set starting room - set room <roomname> starting");
         server->printToUser(p,  "To set room not starting room- set room <roomname> not starting");
+        server->printToUser(p,  "To delete a room - delete room <Roomname>");
     }
 
 
@@ -178,10 +179,10 @@ void BuildParser::handleInput(Player *p, string command)
         }
     }
     if(regex_match(command, m, deleteRoomPattern)){
-        string room = m[1];
+        string room = m[2];
         string roomName;
         if(db->findRoomByName(roomName) != NULL){
-            db->deleteObject(db->findRoomByName(roomName)->getID()); 
+            db->deleteRoom(db->findRoomByName(roomName)->getID()); 
         }
     }
 }
