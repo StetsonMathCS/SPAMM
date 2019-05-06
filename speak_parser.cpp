@@ -19,7 +19,7 @@ void SpeechParser::handlespeechInput(Player *p, string command)
     if(input == "help")
     {
         //Help
-        server->printToUser(p, "Avalible Speech Commands: \n");
+        server->printToUser(p, "Available Speech Commands: \n");
         server->printToUser(p, "To message another player online in the server - /msg <player> \"Message\"");
     }
 
