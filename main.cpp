@@ -36,10 +36,7 @@ void parseInput(Player *p, string input) {
 
 int main() {
     //Default starting room
-    startingRoom = new Room("Living Room", "Living room with a nice couch");
-    Room *adjacent = new Room("Dining Room", "Large table and plenty of chairs");
-    startingRoom->setAdjacent("East", adjacent);
-    //
+    startingRoom = new Room("Living_Room", "Living room with a nice couch");
 	db = new Database();
 	//Instantiate a Game server on the defualt port 2323
 	server = new GameServer();
