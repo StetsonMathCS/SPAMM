@@ -151,6 +151,11 @@ void Database::clearDatabase(){
     lastid = 0;
 }
 
+void Database::deleteRoom(int id){
+    redisReply *reply;
+    reply = (redisReply*) redisCommand(context,"DEL ", to_string(id).c_str());
+}
+
 void Database::addPlayer(Player *p) {
     // possibly replace known player by this id
     for(unsigned int i = 0; i < players.size(); i++) {

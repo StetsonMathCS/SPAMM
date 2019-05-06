@@ -41,6 +41,7 @@ class Database{
         Room * findRoomByName(std::string);
         vector<Player*> getPlayers();
         void clearDatabase(); //FLUSHALL
+        void deleteRoom(int id);
 };
 
 #endif 
