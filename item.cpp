@@ -46,11 +46,6 @@ ITEM_TYPE Item::getType()
     return type;
 }
 
-int Item::getItemId() const
-{
-    return itemId;
-}
-
 void Item::setItemId(int id)
 {
     itemId = id;

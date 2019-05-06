@@ -42,6 +42,9 @@ class Database{
         vector<Player*> getPlayers();
         void clearDatabase(); //FLUSHALL
         void deleteObject(int id);
+        void deleteRoom(int id);
+        void deleteItem(int id);
+        void deletePlayer(int id);
 };
 
 #endif 

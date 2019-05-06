@@ -20,7 +20,7 @@ class Item
 	std::string getName() const;
 	std::string getDesc() const;
 	std::string getOwner() const;
-    int getItemId() const;
+    int getID() const { return itemId; }
 	ITEM_TYPE getType();
 	void setName(string);
 	void setDesc(string);

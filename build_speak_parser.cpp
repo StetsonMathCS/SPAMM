@@ -181,7 +181,7 @@ void BuildParser::handleInput(Player *p, string command)
         string room = m[1];
         string roomName;
         if(db->findRoomByName(roomName) != NULL){
-            db->deleteObject(db->findRoomByName(roomName)->getId()); 
+            db->deleteObject(db->findRoomByName(roomName)->getID()); 
         }
     }
 }

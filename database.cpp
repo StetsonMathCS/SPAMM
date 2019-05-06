@@ -152,7 +152,43 @@ void Database::clearDatabase(){
 }
 
 void Database::deleteObject(int id){
-    redisCommand(context,"DEL ", to_string(id).c_str());
+    redisCommand(context,"DEL %s", to_string(id).c_str());
+}
+
+void Database::deleteRoom(int id) {
+    deleteObject(id);
+    // delete room from vector
+    auto it = rooms.begin();
+    for(; it != rooms.end(); ++it) {
+        if((*it)->getID() == id) break;
+    }
+    if(it != rooms.end()) {
+        rooms.erase(it);
+    }
+}
+
+void Database::deleteItem(int id) {
+    deleteObject(id);
+    // delete item from vector
+    auto it = items.begin();
+    for(; it != items.end(); ++it) {
+        if((*it)->getID() == id) break;
+    }
+    if(it != items.end()) {
+        items.erase(it);
+    }
+}
+
+void Database::deletePlayer(int id) {
+    deleteObject(id);
+    // delete player from vector
+    auto it = players.begin();
+    for(; it != players.end(); ++it) {
+        if((*it)->getID() == id) break;
+    }
+    if(it != players.end()) {
+        players.erase(it);
+    }
 }
 
 void Database::addPlayer(Player *p) {
