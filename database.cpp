@@ -144,6 +144,13 @@ void Database::increment_lastid(){
     write("lastid",to_string(lastid));
 }
 
+void Database::clearDatabase(){
+    redisReply *reply;
+    reply = (redisReply*) redisCommand(context,"FLUSHALL");
+    freeReplyObject(reply);
+    lastid = 0;
+}
+
 void Database::addPlayer(Player *p) {
     // possibly replace known player by this id
     for(unsigned int i = 0; i < players.size(); i++) {
