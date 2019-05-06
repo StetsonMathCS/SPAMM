@@ -8,7 +8,7 @@
 using namespace std;
 
 
-void ActionParser::handleInput(Player *p, string command)
+bool ActionParser::handleInput(Player *p, string command)
 {
     if(command == "help")
     {
@@ -19,9 +19,8 @@ void ActionParser::handleInput(Player *p, string command)
         server->printToUser(p, " -get [object name](Pick up items)");
         server->printToUser(p, " -drop [object name] (Drop an item from your backpack)");
         server->printToUser(p, " -quit");
+        return false;
         //server->printToUser(p, output) << endl;
-    } else if(command == "quit")
-    {
     } else if(command == "items")
     {
         //if(false) {// !p->listInventory().empty())
@@ -43,6 +42,8 @@ void ActionParser::handleInput(Player *p, string command)
             //server->printToUser(p, "- " + player->listInventory());
             //server->printToUser(p, outpout);
         }
+
+        return true;
     //} else if(command.find("go ") == 0)
     } else if(command == "go")
     {
@@ -66,19 +67,21 @@ void ActionParser::handleInput(Player *p, string command)
                     server->printToUser(p, "room description");
                     server->printToUser(p, p->getRoom()->getTitle()); 
                     server->printToUser(p, p->getRoom()->getDesc()); 
-                    //server->printToUser(p, output) << endl;
+                //server->printToUser(p, output) << endl;
                 } else if (!p->getRoom()->roomhaveReq()){
                     p->setRoom(adj);
                 } else {
                     server->printToUser(p, "Cannot go this way.");
-                }      
+                }       
             }
 
+        return true;
         } else
         {
             server->printToUser(p, "That's not a direction");
             server->printToUser(p, "Type 'help' for commands");
             //server->printToUser(p, output) << endl;
+            return true;
         }
     } else if(command == "check")
     {
@@ -91,6 +94,7 @@ void ActionParser::handleInput(Player *p, string command)
         {
             server->printToUser(p, "There are no items in here ");
             //server->printToUser(p, output) << endl;
+            return true;
         } else
         {
             server->printToUser(p, "Items in this room: ");
@@ -104,6 +108,7 @@ void ActionParser::handleInput(Player *p, string command)
             //for(int i = -1; i > 0;)
             //server->printToUser(p, "- " + room->listItemsOnFloor());
             //server->printTouser(id, output);
+            return true;
         }
     } else if(command == "get")
     {
@@ -120,6 +125,7 @@ void ActionParser::handleInput(Player *p, string command)
                 server->printToUser(p, "You grabbed a ");
                 p->addItemToInventory(*it);
                 p->getRoom()->dropItemFromFloor(*it);
+            return true;
             }
             //if the object entered matches an object in the container
             //if(false)
@@ -128,6 +134,7 @@ void ActionParser::handleInput(Player *p, string command)
                 //remove from container
                 //server->printToUser(p, output) << endl;
         }
+            return true;
     } else if(command == "drop")
     {
         bool in = false;
@@ -141,6 +148,7 @@ void ActionParser::handleInput(Player *p, string command)
             server->printToUser(p, "There is no command in your inventory");
            // server->printToUser(p, "There is no " + item->getName() + " in your inventory");
             //server->printToUser(p, output) << endl;
+            return true;
         } else
         {
             set<Item*>::iterator it;
@@ -162,10 +170,12 @@ void ActionParser::handleInput(Player *p, string command)
             //add that item to current container
             //remove from player container
             in = true;
+            return true;
         }
         if(!in)
         {
             server->printToUser(p, "You don't have a BLANK in your backpack.");
         }
     }
+    return false;
 }

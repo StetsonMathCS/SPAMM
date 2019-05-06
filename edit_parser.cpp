@@ -6,7 +6,7 @@
 
 using namespace std;
 
-void EditParser::handleeditInput(Player *p,  string command)
+bool EditParser::handleeditInput(Player *p,  string command)
 {
     //
     //    /setdesc <roomname> "description"
@@ -26,7 +26,7 @@ void EditParser::handleeditInput(Player *p,  string command)
     
     //ADD CAN PLAYER EDIT
 
-    if(input == "commands")
+    if(input == "help")
     {
         // HELP
          server->printToUser(p,  "Available editing commands: \n \n");
@@ -34,6 +34,7 @@ void EditParser::handleeditInput(Player *p,  string command)
          server->printToUser(p,  "To require an item to enter a room - /setreq <itemname> <roomname>");
          server->printToUser(p,  "To requre an item to stay in room otherwise moved - /setreqmove <roomname> <itemname> <newroomname>");
          server->printToUser(p,  "To set a chance teleportation - /setchance <roomname> <chance%> <newroomname> \n \n");
+    return false;
     }
     
 
@@ -136,4 +137,5 @@ void EditParser::handleeditInput(Player *p,  string command)
         
         }
     }
+        return false;
 }

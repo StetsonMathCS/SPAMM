@@ -15,7 +15,7 @@ class EditParser {
     
     public:
         
-        static void handleeditInput(Player*, std::string);
+        static bool handleeditInput(Player*, std::string);
 
 };
 
