@@ -95,6 +95,7 @@ Room * Database::read_lastid_room(int id){
     string title;
     string desc;
     string line;
+    string start;
 
     //The first line is just "room" disregard the line
     getline(data,line);
@@ -107,8 +108,13 @@ Room * Database::read_lastid_room(int id){
     //Line with the description of the room
     getline(data,line);
     desc = line.substr(5);
-    r->setDesc(desc); 
-    
+    r->setDesc(desc);
+    //Line that states whether or not it's the starting room 
+    getline(data,line);
+    start = line;
+    bool b;
+    istringstream(start) >> b;
+    r->setStartingRoom(b);
    return r;
 }
 
@@ -152,7 +158,43 @@ void Database::clearDatabase(){
 }
 
 void Database::deleteObject(int id){
-    redisCommand(context,"DEL ", to_string(id).c_str());
+    redisCommand(context,"DEL %s", to_string(id).c_str());
+}
+
+void Database::deleteRoom(int id) {
+    deleteObject(id);
+    // delete room from vector
+    auto it = rooms.begin();
+    for(; it != rooms.end(); ++it) {
+        if((*it)->getID() == id) break;
+    }
+    if(it != rooms.end()) {
+        rooms.erase(it);
+    }
+}
+
+void Database::deleteItem(int id) {
+    deleteObject(id);
+    // delete item from vector
+    auto it = items.begin();
+    for(; it != items.end(); ++it) {
+        if((*it)->getID() == id) break;
+    }
+    if(it != items.end()) {
+        items.erase(it);
+    }
+}
+
+void Database::deletePlayer(int id) {
+    deleteObject(id);
+    // delete player from vector
+    auto it = players.begin();
+    for(; it != players.end(); ++it) {
+        if((*it)->getID() == id) break;
+    }
+    if(it != players.end()) {
+        players.erase(it);
+    }
 }
 
 void Database::addPlayer(Player *p) {

@@ -17,7 +17,7 @@ Connect to londo
 ##### Compile
 `make `
 ##### Start the server
-`./main`
+`./main 2323`
 ##### In a different terminal
 `telnet localhost 2323`
 #### Create a telent proxy from PUTTY to londo and use PUTTY to telnet into the port

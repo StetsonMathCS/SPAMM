@@ -1,4 +1,5 @@
 #include <iostream>
+#include <sstream>
 #include "room.h"
 #include "common.h"
 #include "database.h"
@@ -22,7 +23,10 @@ void Room::save(){
     string temp;
     if(roomId == -1){
         roomId = db->lastid;
-        temp = "room \n title:"+getTitle()+"\n"+"desc:"+getDesc()+"\n";
+        stringstream converter;
+        bool b = isStartingRoom();
+        converter << boolalpha << b;
+        temp = "room \n title:"+getTitle()+"\n"+"desc:"+getDesc()+"\n"+converter.str()+"\n";
         db->write(to_string(roomId),temp);
         db->increment_lastid();
         db->addRoom(this);
