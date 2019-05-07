@@ -53,7 +53,7 @@ bool ActionParser::handleInput(Player *p, string command)
                 //server->printToUser(p, output) << endl;
             } else
             {
-                server->printToUser("SUCCESS");
+                server->printToUser(p, "SUCCESS");
                 if(p->getRoom()->roomhaveReq() && p->reqisPassed())
                 {
 		    p->setRoom(adj);
